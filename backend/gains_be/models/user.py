@@ -1,6 +1,9 @@
 from typing import Optional
 from dataclasses import dataclass
-from backend.database.connection import Database
+from database.connection import Database
+
+# Purpose of models/ User is to create the data class 
+# and then to have class/methods within the class that can interact with the database
 
 @dataclass
 class User:
