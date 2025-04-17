@@ -25,7 +25,7 @@ fun ResetPassword(navController: NavController, modifier: Modifier = Modifier) {
             .padding(horizontal = 24.dp)
     ) {
         Text(
-            text = "Gains",
+            text = "gAIns",
             color = Color.White,
             textAlign = TextAlign.Center,
             style = MaterialTheme.typography.headlineLarge,
@@ -132,33 +132,6 @@ fun ResetPassword(navController: NavController, modifier: Modifier = Modifier) {
                     modifier = Modifier
                         .wrapContentHeight(align = Alignment.CenterVertically))
             }
-            Text(
-                textAlign = TextAlign.Center,
-                lineHeight = 13.sp,
-                text = buildAnnotatedString {
-                    withStyle(style = SpanStyle(
-                        color = Color(0xffb4b4b4),
-                        fontSize = 12.sp)) {append("By clicking continue, you agree to our")}
-                    withStyle(style = SpanStyle(
-                        color = Color(0xff828282),
-                        fontSize = 12.sp)) {append(" ")}
-                    withStyle(style = SpanStyle(
-                        color = Color.White,
-                        fontSize = 12.sp)) {append("Terms of Service")}
-                    withStyle(style = SpanStyle(
-                        color = Color(0xff828282),
-                        fontSize = 12.sp)) {append(" ")}
-                    withStyle(style = SpanStyle(
-                        color = Color(0xffb4b4b4),
-                        fontSize = 12.sp)) {append("and")}
-                    withStyle(style = SpanStyle(
-                        color = Color(0xff828282),
-                        fontSize = 12.sp)) {append(" ")}
-                    withStyle(style = SpanStyle(
-                        color = Color.White,
-                        fontSize = 12.sp)) {append("Privacy Policy")}},
-                modifier = Modifier
-                    .fillMaxWidth())
         }
     }
 }

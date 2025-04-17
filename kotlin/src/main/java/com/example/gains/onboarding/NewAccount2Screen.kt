@@ -1,5 +1,7 @@
 package com.example.gains.onboarding
 
+import android.content.Context
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -18,12 +20,25 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.*
 import androidx.navigation.NavController
+import android.widget.Toast
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.example.gains.onboarding.FirebaseAuthSingleton.auth
 
 @Composable
-fun NewAccount2(navController: NavController, modifier: Modifier = Modifier) {
+fun NewAccount2(navController: NavController, email: String, modifier: Modifier = Modifier) {
+
+    // Access the FirebaseAuth instance from the singleton
+    //val auth = FirebaseAuthSingleton.auth
+
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var confirmPassword by remember { mutableStateOf("") }
+    var isLoading by remember { mutableStateOf(false) }
+    val context = LocalContext.current
+
     Box(
         modifier = modifier
             .fillMaxSize()
@@ -46,7 +61,7 @@ fun NewAccount2(navController: NavController, modifier: Modifier = Modifier) {
                 .offset(y = (-100).dp)
         ) {
             Text(
-                text = "Gains",
+                text = "gAIns",
                 color = Color.White,
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.headlineLarge,
@@ -141,6 +156,7 @@ fun NewAccount2(navController: NavController, modifier: Modifier = Modifier) {
                         onValueChange = {
                             password = it
                         }, // update the password state when the text changes
+                        visualTransformation = PasswordVisualTransformation(),
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(50.dp)
@@ -175,6 +191,7 @@ fun NewAccount2(navController: NavController, modifier: Modifier = Modifier) {
                         onValueChange = {
                             confirmPassword = it
                         },
+                        visualTransformation = PasswordVisualTransformation(),
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(50.dp)
@@ -192,9 +209,9 @@ fun NewAccount2(navController: NavController, modifier: Modifier = Modifier) {
                         keyboardActions = KeyboardActions(
                             onDone = {
                                 if (isNewAccountFormValid(username, password, confirmPassword)) {
-                                    navController.navigate("HomePage")
+                                    createNewUser(email, password, username, context, navController) { isLoading = it }
                                 } else {
-                                    // You can show an error state or Toast here
+                                    Toast.makeText(context, "Please fill out the form correctly", Toast.LENGTH_SHORT).show()
                                 }
                             }
                         )
@@ -203,25 +220,30 @@ fun NewAccount2(navController: NavController, modifier: Modifier = Modifier) {
                 Button(
                     onClick = {
                         if (isNewAccountFormValid(username, password, confirmPassword)) {
-                            navController.navigate("HomePage")
+                            createNewUser(email, password, username, context, navController) { isLoading = it }
                         } else {
-                            // Show error or Toast
+                            Toast.makeText(context, "Please fill out the form correctly", Toast.LENGTH_SHORT).show()
                         }
                     },
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(50.dp),
                     colors = ButtonDefaults.buttonColors(containerColor = Color.Black),
-                    shape = RoundedCornerShape(8.dp)
+                    shape = RoundedCornerShape(8.dp),
+                    enabled = !isLoading // Disable button when loading
                 ) {
-                    Text(
-                        text = "Continue",
-                        color = Color.White,
-                        style = TextStyle(
-                            fontSize = 14.sp,
-                            fontWeight = FontWeight.Medium
+                    if (isLoading) {
+                        CircularProgressIndicator(color = Color.White) // Show loading spinner
+                    } else {
+                        Text(
+                            text = "Continue",
+                            color = Color.White,
+                            style = TextStyle(
+                                fontSize = 14.sp,
+                                fontWeight = FontWeight.Medium
+                            )
                         )
-                    )
+                    }
                 }
             }
             Text(
@@ -283,4 +305,57 @@ fun isNewAccountFormValid(username: String, password: String, confirmPassword: S
             password.isNotBlank() &&
             confirmPassword.isNotBlank() &&
             password == confirmPassword
+}
+
+fun createNewUser(
+    email: String,
+    password: String,
+    username: String,
+    context: Context,
+    navController: NavController,
+    onLoadingChange: (Boolean) -> Unit
+) {
+    onLoadingChange(true) // Start loading
+
+    auth.createUserWithEmailAndPassword(email, password)
+        .addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val user = auth.currentUser
+                val userId = user?.uid
+
+                Log.d("CreateUser", "Account created successfully, userId: $userId")
+
+                if (userId == null) {
+                    Toast.makeText(context, "Error: User ID is null", Toast.LENGTH_SHORT).show()
+                    onLoadingChange(false)
+                    return@addOnCompleteListener
+                }
+
+                val db = FirebaseFirestore.getInstance()
+                val userRef = db.collection("users").document(userId)
+
+                userRef.set(mapOf(
+                    "username" to username,
+                    "email" to email
+                    ))
+                    .addOnSuccessListener {
+                        Log.d("CreateUser", "Username added to Firestore successfully")
+                        Toast.makeText(context, "Account created successfully!", Toast.LENGTH_SHORT).show()
+                        onLoadingChange(false)
+                        Log.d("CreateUser", "Navigating to HomeScreen")
+                        Toast.makeText(context, "Navigating to Home", Toast.LENGTH_SHORT).show()
+                        navController.navigate("HomeScreen") {
+                            popUpTo("Login") { inclusive = true }
+                            launchSingleTop = true
+                        }
+                    }
+                    .addOnFailureListener { e ->
+                        Toast.makeText(context, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+                        onLoadingChange(false)
+                    }
+            } else {
+                Toast.makeText(context, "Error: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
+                onLoadingChange(false)
+            }
+        }
 }
