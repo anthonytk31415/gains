@@ -22,14 +22,11 @@ from django.contrib import admin
 from django.urls import path
 from .views.test_views import test_view
 from .views.users import user_update
-
-# # two items to add: 
-# Need backend call for post for saving user data
-# Create prompt workflow (prompt data —> send workout to fe , save)
-
+from .views.workouts import generate_workout
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('test/', test_view, name='test'),
     path('user/update/', user_update, name='user_update'),
+    path('workout/generate/', generate_workout, name='generate_workout'),
 ]
