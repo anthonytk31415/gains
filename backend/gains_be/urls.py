@@ -21,8 +21,15 @@ We'll use the urls in the app to map the urls to the views.
 from django.contrib import admin
 from django.urls import path
 from .views.test_views import test_view
+from .views.users import user_update
+
+# # two items to add: 
+# Need backend call for post for saving user data
+# Create prompt workflow (prompt data —> send workout to fe , save)
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('test/', test_view, name='test'),
+    path('user/update/', user_update, name='user_update'),
 ]
