@@ -1,0 +1,12 @@
+# This is the requirements.txt file for the backend of the application. 
+# It is used to install the dependencies for the backend of the application. 
+# The dependencies are listed in the file and the versions are specified. 
+# The dependencies are installed using the pip install command. 
+# The dependencies are installed using the requirements.txt file. 
+
+asgiref==3.8.1
+Django==5.2
+sqlparse==0.5.3
+asyncpg==0.30.0
+psycopg2-binary==2.9.9 
+

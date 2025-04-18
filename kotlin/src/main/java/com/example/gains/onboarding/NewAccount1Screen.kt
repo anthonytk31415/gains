@@ -1,5 +1,8 @@
 package com.example.gains.onboarding
 
+import android.content.Context
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -18,10 +21,19 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.*
 import androidx.navigation.NavController
+import androidx.compose.ui.platform.LocalContext
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.FirebaseNetworkException
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
+import com.example.gains.onboarding.FirebaseAuthSingleton.auth
 
 @Composable
 fun NewAccount1(navController: NavController, modifier: Modifier = Modifier) {
     var email by remember { mutableStateOf("") }
+    var isLoading by remember { mutableStateOf(false) }
+    val context = LocalContext.current
+    //val auth = FirebaseAuth.getInstance()
+
     Box(
         modifier = modifier
             .fillMaxSize()
@@ -44,7 +56,7 @@ fun NewAccount1(navController: NavController, modifier: Modifier = Modifier) {
                 .offset(y = (-100).dp)
         ) {
             Text(
-                text = "Gains",
+                text = "gAIns",
                 color = Color.White,
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.headlineLarge,
@@ -109,14 +121,20 @@ fun NewAccount1(navController: NavController, modifier: Modifier = Modifier) {
                         onDone = {
                             if (email.isNotBlank()) {
                                 // Navigate when the Enter key is pressed and email is not empty
-                                navController.navigate("NewAccount2")
+                                //navController.navigate("NewAccount2")
+                                checkEmailAndProceed(email, auth, context, navController){ isLoading = it }
                             }
                         }
                     )
                 )
                 Button(
                     onClick = {
-                        navController.navigate("NewAccount2")
+                        //navController.navigate("NewAccount2")
+                        if (email.isNotBlank()) {
+                            // Navigate when the Enter key is pressed and email is not empty
+                            //navController.navigate("NewAccount2")
+                            checkEmailAndProceed(email, auth, context, navController){ isLoading = it }
+                        }
                     },
                     modifier = Modifier
                         .fillMaxWidth()
@@ -132,34 +150,39 @@ fun NewAccount1(navController: NavController, modifier: Modifier = Modifier) {
                     )
                 }
             }
-            Text(
-                textAlign = TextAlign.Center,
-                lineHeight = 13.sp,
-                text = buildAnnotatedString {
-                    withStyle(style = SpanStyle(
-                        color = Color(0xffb4b4b4),
-                        fontSize = 12.sp)) { append("By clicking continue, you agree to our") }
-                    withStyle(style = SpanStyle(
-                        color = Color(0xff828282),
-                        fontSize = 12.sp)) { append(" ") }
-                    withStyle(style = SpanStyle(
-                        color = Color.White,
-                        fontSize = 12.sp)) { append("Terms of Service") }
-                    withStyle(style = SpanStyle(
-                        color = Color(0xff828282),
-                        fontSize = 12.sp)) { append(" ") }
-                    withStyle(style = SpanStyle(
-                        color = Color(0xffb4b4b4),
-                        fontSize = 12.sp)) { append("and") }
-                    withStyle(style = SpanStyle(
-                        color = Color(0xff828282),
-                        fontSize = 12.sp)) { append(" ") }
-                    withStyle(style = SpanStyle(
-                        color = Color.White,
-                        fontSize = 12.sp)) { append("Privacy Policy") }
-                },
-                modifier = Modifier.fillMaxWidth()
-            )
         }
     }
+}
+
+fun checkEmailAndProceed(
+    email: String,
+    auth: FirebaseAuth,
+    context: Context,
+    navController: NavController,
+    onLoadingChange: (Boolean) -> Unit
+) {
+    onLoadingChange(true)
+    auth.fetchSignInMethodsForEmail(email)
+        .addOnCompleteListener { task ->
+            onLoadingChange(false)
+            if (task.isSuccessful) {
+                val signInMethods = task.result?.signInMethods ?: emptyList()
+                if (signInMethods.isEmpty()) {
+                    navController.navigate("NewAccount2/${email}")
+                } else {
+                    Toast.makeText(context, "Email is already registered.", Toast.LENGTH_SHORT).show()
+                }
+            } else {
+                val exception = task.exception
+                Log.e("FirebaseAuth", "Error checking email", exception)
+
+                val message = when (exception) {
+                    is FirebaseAuthInvalidCredentialsException -> "Invalid email format."
+                    is FirebaseNetworkException -> "Network error. Check your internet connection."
+                    else -> exception?.localizedMessage ?: "Unknown error occurred."
+                }
+
+                Toast.makeText(context, "Error: $message", Toast.LENGTH_LONG).show()
+            }
+        }
 }

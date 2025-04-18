@@ -12,12 +12,19 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.gains.onboarding.FirebaseAuthSingleton.auth
 
 @Composable
 fun HomeScreen(navController: NavController) {
-    Surface(
-        modifier = Modifier.fillMaxSize(),
-        color = MaterialTheme.colorScheme.background
+    BaseScreen(
+        username = "John Doe",
+        onLogout = {
+            auth.signOut()
+            navController.navigate("Login") {
+                popUpTo(0) { inclusive = true } // clear entire backstack
+                launchSingleTop = true
+            }
+        }
     ) {
         Column(
             modifier = Modifier

@@ -12,9 +12,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import androidx.compose.foundation.clickable
 
 @Composable
-fun HomeScreen(navController: NavController) {
+fun ViewScreen(navController: NavController) {
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.background
@@ -27,8 +28,25 @@ fun HomeScreen(navController: NavController) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "Welcome to Gains App",
+                text = "View Screen",
                 style = MaterialTheme.typography.headlineMedium
+            )
+            Text(
+                text = "Leg Raises",
+                modifier = Modifier
+                    .clickable {
+                        navController.navigate("exerciseDetail/leg_raises")
+                    }
+                    .padding(8.dp)
+            )
+
+            Text(
+                text = "Push Ups",
+                modifier = Modifier
+                    .clickable {
+                        navController.navigate("exerciseDetail/push_ups")
+                    }
+                    .padding(8.dp)
             )
         }
     }
