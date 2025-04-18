@@ -192,7 +192,7 @@ fun Login(navController: NavController, modifier: Modifier = Modifier) {
                         keyboardActions = KeyboardActions(
                             onDone = {
                                     //if (isLoginFormValid(username, password)) {
-                                    //    navController.navigate("HomePage")
+                                    //    navController.navigate("HomeNav")
                                     //} else {
                                     // You can show an error state or Toast here
                                 //}
@@ -228,7 +228,7 @@ fun Login(navController: NavController, modifier: Modifier = Modifier) {
                                 auth.signInWithEmailAndPassword(username, password)
                                     .addOnCompleteListener { task ->
                                         if (task.isSuccessful) {
-                                            navController.navigate("HomeScreen") {
+                                            navController.navigate("HomeNav") {
                                                 popUpTo("Login") {
                                                     inclusive = true
                                                 } // Remove Login from back stack
@@ -249,7 +249,7 @@ fun Login(navController: NavController, modifier: Modifier = Modifier) {
                                         auth.signInWithEmailAndPassword(email, password)
                                             .addOnCompleteListener { task ->
                                                 if (task.isSuccessful) {
-                                                    navController.navigate("HomeScreen") {
+                                                    navController.navigate("HomeNav") {
                                                         popUpTo("Login") { inclusive = true }
                                                         launchSingleTop = true
                                                     }

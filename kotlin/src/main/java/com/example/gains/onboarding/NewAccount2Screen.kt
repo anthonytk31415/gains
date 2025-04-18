@@ -344,7 +344,7 @@ fun createNewUser(
                         onLoadingChange(false)
                         Log.d("CreateUser", "Navigating to HomeScreen")
                         Toast.makeText(context, "Navigating to Home", Toast.LENGTH_SHORT).show()
-                        navController.navigate("HomeScreen") {
+                        navController.navigate("HomeNav") {
                             popUpTo("Login") { inclusive = true }
                             launchSingleTop = true
                         }
