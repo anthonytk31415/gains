@@ -21,12 +21,12 @@ We'll use the urls in the app to map the urls to the views.
 from django.contrib import admin
 from django.urls import path
 from .views.test_views import test_view
-from .views.users import user_update
+from .views.users import update_user
 from .views.workouts import generate_workout
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('test/', test_view, name='test'),
-    path('user/update/', user_update, name='user_update'),
+    path('user/update/', update_user, name='update_user'),
     path('workout/generate/', generate_workout, name='generate_workout'),
 ]

@@ -5,6 +5,22 @@ import json
 # from django.http import JsonResponse
 
 
+def get_workout(request): 
+    pass
+
+def get_workouts(request): 
+    pass
+
+def create_workout(request): 
+    pass
+
+def edit_workout(request): 
+    pass
+
+def delete_workout(request): 
+    pass
+
+
 @csrf_exempt
 @require_http_methods(["POST"])
 def generate_workout(request):

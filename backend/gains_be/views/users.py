@@ -11,9 +11,20 @@ DUMMY_USER = User(
     email="markhenry@google.com",  # any email string
     password="123456789"  # any password string
 )
+
+def create_user(request): 
+    pass
+
+def get_user(request): 
+    pass
+
+def delete_user(request): 
+    pass
+
+
 @csrf_exempt
 @require_http_methods(["PUT"])
-def user_update(request):
+def update_user(request):
     '''Given the user id and a payload of user data, update the user.'''
 
     try:
