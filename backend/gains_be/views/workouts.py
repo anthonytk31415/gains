@@ -5,10 +5,15 @@ import json
 # from django.http import JsonResponse
 
 
+# focus now 
 def get_workout(request): 
     pass
 
 def get_workouts(request): 
+    pass
+
+# focus now 
+def get_last_week_workouts(request): 
     pass
 
 def create_workout(request): 
