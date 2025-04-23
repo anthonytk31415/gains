@@ -6,7 +6,7 @@ import json
 
 
 # focus now 
-def get_workout(request): 
+def get_workout(request):
     pass
 
 def get_workouts(request): 
