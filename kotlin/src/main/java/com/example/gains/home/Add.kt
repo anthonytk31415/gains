@@ -41,6 +41,8 @@ import androidx.navigation.NavController
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
+import com.example.gains.home.network.WorkoutService
+import kotlinx.coroutines.runBlocking
 
 
 @Composable
@@ -425,7 +427,15 @@ fun AIWorkoutForm(onBack: () -> Unit) {
 
                 // Use your networking library (like Retrofit or Ktor) here to send a POST request
                 // to Django backend endpoint (e.g., "http://yourbackend.com/api/ai-workout/")
-                println("Sending data to backend: $data")
+                println("Sending data to backend: $data");
+                runBlocking {
+                    try {
+                        val response = WorkoutService.sendWorkoutData()
+                        println("Response: $response")
+                    } catch (e: Exception) {
+                        errorMessage = "Failed to send data: ${e.message}"
+                    }
+                }
 
             }) {
                 Text("Submit")
