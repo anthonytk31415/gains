@@ -9,4 +9,4 @@ Set the venv properly by running in ~backend:
 `source venv/bin/activate`
 
 To run the backend server, navigate to ~/backend and run: 
-`python manage.py runserver`
+`python3 manage.py runserver 0.0.0.0:8000`
