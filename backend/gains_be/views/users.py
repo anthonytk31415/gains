@@ -27,7 +27,7 @@ def get_all_users(request):
     '''Get all users from the database.'''
     try:
         users = User.objects.all()
-        users_data = list(users.values('user_id', 'name', 'email'))  # Exclude password for security
+        users_data = list(users.values('user_id', 'age', 'height', 'weight', 'email'))  # Exclude password for security
         return JsonResponse({
             'users': users_data
         })
