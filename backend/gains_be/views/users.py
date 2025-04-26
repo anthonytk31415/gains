@@ -2,9 +2,10 @@ from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
 from gains_be.models.user import User
 from django.views.decorators.csrf import csrf_exempt
+from django.core.serializers import serialize
+import json
 
 # from database.connection import Database
-import json
 
 DUMMY_USER = User(
     user_id=1,  # or any integer
@@ -21,6 +22,17 @@ def get_user(request):
 def delete_user(request): 
     pass
 
+@require_http_methods(["GET"])
+def get_all_users(request):
+    '''Get all users from the database.'''
+    try:
+        users = User.objects.all()
+        users_data = list(users.values('user_id', 'name', 'email'))  # Exclude password for security
+        return JsonResponse({
+            'users': users_data
+        })
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
 
 @csrf_exempt
 @require_http_methods(["PUT"])
