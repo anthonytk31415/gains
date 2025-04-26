@@ -74,12 +74,24 @@ WSGI_APPLICATION = 'gains_be.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+# LOCAL DATABASE
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'gains_db',         # your DB name
+        'USER': 'anthonytk',       # your DB user
+        # 'PASSWORD': 'yourpassword',# your DB password
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
-}
+}   
+
 
 
 # Password validation
