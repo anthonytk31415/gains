@@ -2,15 +2,16 @@ from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
 from gains_be.models.user import User
 from django.views.decorators.csrf import csrf_exempt
-
-# from database.connection import Database
+from django.core.serializers import serialize
 import json
 
-DUMMY_USER = User(
-    user_id=1,  # or any integer
-    email="markhenry@google.com",  # any email string
-    password="123456789"  # any password string
-)
+# from database.connection import Database
+
+# DUMMY_USER = User(
+#     user_id=1,  # or any integer
+#     email="markhenry@google.com",  # any email string
+#     password="123456789"  # any password string
+# )
 
 def create_user(request): 
     pass
@@ -21,6 +22,17 @@ def get_user(request):
 def delete_user(request): 
     pass
 
+@require_http_methods(["GET"])
+def get_all_users(request):
+    '''Get all users from the database.'''
+    try:
+        users = User.objects.all()
+        users_data = list(users.values('user_id', 'age', 'height', 'weight', 'email'))  # Exclude password for security
+        return JsonResponse({
+            'users': users_data
+        })
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
 
 @csrf_exempt
 @require_http_methods(["PUT"])

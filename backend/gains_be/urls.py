@@ -20,14 +20,20 @@ We'll use the urls in the app to map the urls to the views.
 """
 from django.contrib import admin
 from django.urls import path
-from .views.test_views import test_view, test_db
-from .views.users import update_user
-from .views.workouts import generate_workout
+from .views.test_views import test_view
+from .views.users import update_user, get_all_users
+from .views.workouts import generate_workout, get_workout, get_last_week_workouts, get_current_week_workouts
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('test/', test_view, name='test'),
-    path('test_db/', test_db, name='test_db'),
+    path('api/workouts/<int:workout_id>/', get_workout, name='get_workout'),
+    path('api/workouts/generate/', generate_workout, name='generate_workout'),
+    path('api/workouts/last_week/', get_last_week_workouts, name='get_last_week_workouts'),
+    path('api/workouts/current_week/', get_current_week_workouts, name='get_current_week_workouts'),
+
+
     path('user/update/', update_user, name='update_user'),
-    path('workout/generate/', generate_workout, name='generate_workout'),
+    path('user/all/', get_all_users, name='get_all_users'),
+
 ]

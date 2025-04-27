@@ -1,19 +1,138 @@
-from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
+from django.http import HttpResponse, JsonResponse
 from django.views.decorators.http import require_http_methods
+from ..models import Workout, ExerciseSet, Exercise
+from django.core.serializers import serialize
+from django.views.decorators.csrf import csrf_exempt
 import json
-# from django.http import JsonResponse
+import datetime
 
+def marshall_exercise_set(exercise_set): 
+    '''Given an exercise set, return a dictionary of the exercise set.'''
+    return {
+        'set_id': exercise_set.set_id,
+        'exercise_id': exercise_set.exercise.exercise_id,
+        'reps': exercise_set.reps,
+        'weight': float(exercise_set.weight),
+        'is_done': exercise_set.is_done
+    }
 
-# focus now 
-def get_workout(request):
-    pass
+def marshall_workout(workout): 
+    return {
+        'workout_id': workout.workout_id,
+        'user_id': workout.user.user_id,
+        'workout_date': workout.workout_date.isoformat(),
+        'exercise_sets': [marshall_exercise_set(exercise_set) for exercise_set in workout.exercise_sets.all()]
+    }
 
+@csrf_exempt
+@require_http_methods(["GET"])
 def get_workouts(request): 
+    '''Get all workouts for a user.'''
+    try:
+        user_id = request.GET.get('user_id')
+        if not user_id:
+            return JsonResponse({'error': 'user_id is required'}, status=400)
+
+        # Get all workouts for the user with related exercise sets and exercises
+        workouts = Workout.objects.select_related('user').prefetch_related(
+            'exercise_sets__exercise'
+        ).filter(user_id=user_id).order_by('-workout_date')
+        workouts_data = [marshall_workout(workout) for workout in workouts]
+        return JsonResponse({'workouts': workouts_data})
+        
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
+
+@csrf_exempt
+@require_http_methods(["GET"])
+def get_workouts_by_date_range(request, start_date, end_date): 
+    '''Given a user_id, Given a start date and end date, return all workouts in that date range.'''
+    try:
+        # Get user_id from query parameters
+        user_id = request.GET.get('user_id')
+        if not user_id:
+            return JsonResponse({'error': 'user_id is required'}, status=400)
+
+        # Get workouts within the date range for the user
+        workouts = Workout.objects.select_related('user').prefetch_related(
+            'exercise_sets__exercise'
+        ).filter(
+            user_id=user_id,
+            workout_date__gte=start_date,
+            workout_date__lte=end_date
+        ).order_by('-workout_date')
+        
+        workouts_data = [marshall_workout(workout) for workout in workouts]
+        return JsonResponse({'workouts': workouts_data})
+        
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
+
+
+def get_last_week_range(date):
+    weekdate_num = (date.weekday() + 1)%7    
+    last_sun = date + datetime.timedelta(days=- weekdate_num - 7)
+    last_sat = last_sun + datetime.timedelta(days=6)    
+    return last_sun, last_sat
+
+def get_current_week_range(date):
+    weekdate_num = (date.weekday() + 1)%7    
+    cur_sun = date + datetime.timedelta(days=- weekdate_num)
+    cur_sat = cur_sun + datetime.timedelta(days=6)    
+    return cur_sun, cur_sat
+
+@csrf_exempt
+@require_http_methods(["GET"])
+def get_last_week_workouts(request): 
+    '''Given a user_id, return all workouts for the last week.'''
+    try:
+        data = json.loads(request.body)   
+        user_id = data.get('user_id')
+        if not user_id:
+            return JsonResponse({'error': 'user_id is required'}, status=400)
+        
+        start_date, end_date = get_last_week_range(datetime.datetime.now())
+        workouts = Workout.objects.select_related('user').prefetch_related(
+            'exercise_sets__exercise'
+        ).filter(
+            user_id=user_id,
+            workout_date__gte=start_date,
+            workout_date__lte=end_date
+        ).order_by('-workout_date')
+        workouts_data = [marshall_workout(workout) for workout in workouts]
+        return JsonResponse({'workouts': workouts_data})
+    
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
+
+@csrf_exempt
+@require_http_methods(["GET"])
+def get_current_week_workouts(request): 
+    '''Given a user_id, return all workouts for the current week.'''
+    try:
+        data = json.loads(request.body)   
+        user_id = data.get('user_id')
+        if not user_id:
+            return JsonResponse({'error': 'user_id is required'}, status=400)
+        
+        start_date, end_date = get_current_week_range(datetime.datetime.now())
+        workouts = Workout.objects.select_related('user').prefetch_related(
+            'exercise_sets__exercise'
+        ).filter(
+            user_id=user_id,
+            workout_date__gte=start_date,
+            workout_date__lte=end_date
+        ).order_by('-workout_date') 
+        workouts_data = [marshall_workout(workout) for workout in workouts]
+        return JsonResponse({'workouts': workouts_data})
+    
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
+
+def get_last_month_workouts(request): 
     pass
 
-# focus now 
-def get_last_week_workouts(request): 
+def get_this_month_workouts(request): 
     pass
 
 def create_workout(request): 
@@ -25,6 +144,19 @@ def edit_workout(request):
 def delete_workout(request): 
     pass
 
+def mark_exercise_set_done(request): 
+    pass
+
+def mark_exercise_set_undone(request): 
+    pass
+
+def mark_workout_done(request): 
+    pass
+
+def mark_workout_undone(request): 
+    pass
+
+
 
 @csrf_exempt
 @require_http_methods(["POST"])
@@ -32,7 +164,6 @@ def generate_workout(request):
     '''Given user input, call the LLM, generate a workout, save it, and return the workout.'''
 
     try:
-        # Parse the request body
         data = json.loads(request.body)        
         print("data for generate workout call: ", data)
         # create dummy workout id as a placeholder
@@ -51,5 +182,22 @@ def generate_workout(request):
         
     except json.JSONDecodeError:
         return JsonResponse({'error': 'Invalid JSON'}, status=400)
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
+    
+@csrf_exempt
+@require_http_methods(["GET"])
+def get_workout(request, workout_id):
+    '''Given a workout id, return the workout.'''
+    try:
+        # build safeguard so that body must have user id in it and and we filter on user id? 
+        
+        workout = Workout.objects.select_related('user').prefetch_related(
+            'exercise_sets__exercise'
+        ).get(workout_id=workout_id)       
+        return JsonResponse(marshall_workout(workout))
+        
+    except Workout.DoesNotExist:
+        return JsonResponse({'error': 'Workout not found'}, status=404)
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
