@@ -22,12 +22,16 @@ from django.contrib import admin
 from django.urls import path
 from .views.test_views import test_view
 from .views.users import update_user, get_all_users
-from .views.workouts import generate_workout
+from .views.workouts import generate_workout, get_workout
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('test/', test_view, name='test'),
+    path('api/workouts/<int:workout_id>/', get_workout, name='get_workout'),
+    path('api/workouts/generate/', generate_workout, name='generate_workout'),
+
+
     path('user/update/', update_user, name='update_user'),
     path('user/all/', get_all_users, name='get_all_users'),
-    path('workout/generate/', generate_workout, name='generate_workout'),
+
 ]

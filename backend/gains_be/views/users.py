@@ -7,11 +7,11 @@ import json
 
 # from database.connection import Database
 
-DUMMY_USER = User(
-    user_id=1,  # or any integer
-    email="markhenry@google.com",  # any email string
-    password="123456789"  # any password string
-)
+# DUMMY_USER = User(
+#     user_id=1,  # or any integer
+#     email="markhenry@google.com",  # any email string
+#     password="123456789"  # any password string
+# )
 
 def create_user(request): 
     pass

@@ -1,19 +1,24 @@
-from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
+from django.http import HttpResponse, JsonResponse
 from django.views.decorators.http import require_http_methods
+from ..models import Workout, ExerciseSet, Exercise
+from django.core.serializers import serialize
+from django.views.decorators.csrf import csrf_exempt
 import json
-# from django.http import JsonResponse
-
-
-# focus now 
-def get_workout(request):
-    pass
 
 def get_workouts(request): 
     pass
 
 # focus now 
 def get_last_week_workouts(request): 
+    pass
+
+def get_this_week_workouts(request): 
+    pass
+
+def get_last_month_workouts(request): 
+    pass
+
+def get_this_month_workouts(request): 
     pass
 
 def create_workout(request): 
@@ -51,5 +56,43 @@ def generate_workout(request):
         
     except json.JSONDecodeError:
         return JsonResponse({'error': 'Invalid JSON'}, status=400)
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
+    
+
+@require_http_methods(["GET"])
+def get_workout(request, workout_id):
+    '''Given a workout id, return the workout.'''
+    try:
+        # Get the workout with related exercise sets and exercises
+        workout = Workout.objects.select_related('user').prefetch_related(
+            'exercise_sets__exercise'
+        ).get(workout_id=workout_id)
+        
+        workout_data = {
+            'workout_id': workout.workout_id,
+            'user_id': workout.user.user_id,
+            'workout_date': workout.workout_date.isoformat(),
+            'exercise_sets': []
+        }
+        
+        # Add exercise sets and their exercises
+        for exercise_set in workout.exercise_sets.all():
+            set_data = {
+                'set_id': exercise_set.set_id,
+                'exercise': {
+                    'exercise_id': exercise_set.exercise.exercise_id,
+                    'name': exercise_set.exercise.name
+                },
+                'reps': exercise_set.reps,
+                'weight': float(exercise_set.weight),  # Convert Decimal to float for JSON
+                'is_done': exercise_set.is_done
+            }
+            workout_data['exercise_sets'].append(set_data)
+        
+        return JsonResponse(workout_data)
+        
+    except Workout.DoesNotExist:
+        return JsonResponse({'error': 'Workout not found'}, status=404)
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
