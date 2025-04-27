@@ -3,7 +3,7 @@ from .user import User
 
 class Workout(models.Model):
     workout_id = models.AutoField(primary_key=True)
-    user = models.ForeignKey(User, to_field='user_id', on_delete=models.CASCADE)  # Reference user_id explicitly
+    user = models.ForeignKey(User, to_field='user_id', on_delete=models.CASCADE)
     workout_date = models.DateField()
 
     def __str__(self):
