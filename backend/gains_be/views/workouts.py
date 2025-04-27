@@ -29,22 +29,25 @@ def marshall_workout(workout):
 @csrf_exempt
 @require_http_methods(["GET"])
 def get_workouts(request): 
-    '''Get all workouts for a user.'''
+    '''Given a user_id, return all workouts for the last week.'''
     try:
-        data = json.loads(request.body)   
+        data = json.loads(request.body)
+        print("data: {}".format(data))   
         user_id = data.get('user_id')
         if not user_id:
             return JsonResponse({'error': 'user_id is required'}, status=400)
-
-        # Get all workouts for the user with related exercise sets and exercises
+        
         workouts = Workout.objects.select_related('user').prefetch_related(
             'exercise_sets__exercise'
-        ).filter(user_id=user_id).order_by('-workout_date')
+        ).filter(
+            user_id=user_id
+        ).order_by('-workout_date')
         workouts_data = [marshall_workout(workout) for workout in workouts]
         return JsonResponse({'workouts': workouts_data})
-        
+    
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
+
 
 @csrf_exempt
 @require_http_methods(["GET"])
@@ -89,7 +92,8 @@ def get_current_week_range(date):
 def get_last_week_workouts(request): 
     '''Given a user_id, return all workouts for the last week.'''
     try:
-        data = json.loads(request.body)   
+        data = json.loads(request.body)
+        print("data: {}".format(data))   
         user_id = data.get('user_id')
         if not user_id:
             return JsonResponse({'error': 'user_id is required'}, status=400)

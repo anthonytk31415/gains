@@ -34,7 +34,6 @@ urlpatterns = [
     path('api/workouts/save/', save_workout, name='save_workout'),
     path('api/workouts/all/', get_workouts, name='get_workouts'),
 
-
     path('user/update/', update_user, name='update_user'),
     path('user/all/', get_all_users, name='get_all_users'),
 

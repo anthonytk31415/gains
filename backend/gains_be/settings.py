@@ -82,20 +82,20 @@ WSGI_APPLICATION = 'gains_be.wsgi.application'
 # }
 # LOCAL DATABASE
 
-"""
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'gains_db',         # your DB name
-        'USER': 'anthonytk',       # your DB user
-        # 'PASSWORD': 'yourpassword',# your DB password
-        'HOST': 'localhost',
-        'PORT': '5432',
-    }
-}   
-"""
 
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'gains_db',         # your DB name
+#         'USER': 'anthonytk',       # your DB user
+#         # 'PASSWORD': 'yourpassword',# your DB password
+#         'HOST': 'localhost',
+#         'PORT': '5432',
+#     }
+# }   
+
+# AWS Database
 DATABASES = {
     'default': {
         'ENGINE': config('DB_ENGINE'),   
