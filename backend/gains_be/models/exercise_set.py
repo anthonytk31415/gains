@@ -7,7 +7,7 @@ class ExerciseSet(models.Model):
     workout = models.ForeignKey(Workout, on_delete=models.CASCADE, related_name='exercise_sets')
     exercise = models.ForeignKey(Exercise, on_delete=models.CASCADE)
     reps = models.IntegerField()
-    weight = models.DecimalField(max_digits=10, decimal_places=2)  # Using DecimalField for precise weight values
+    weight = models.DecimalField(max_digits=10, decimal_places=2)
     is_done = models.BooleanField(default=False)
 
     def __str__(self):
