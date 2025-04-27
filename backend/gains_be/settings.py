@@ -26,7 +26,7 @@ SECRET_KEY = config('DJANGO_SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['34.220.16.210', 'localhost', '127.0.0.1', '34.219.204.231', '10.0.2.2']
+ALLOWED_HOSTS = ['34.220.16.210', 'localhost', '127.0.0.1', '34.219.204.231', '10.0.2.2', '54.187.98.76']
 
 # Application definition
 
@@ -81,6 +81,8 @@ WSGI_APPLICATION = 'gains_be.wsgi.application'
 #     }
 # }
 # LOCAL DATABASE
+
+"""
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -91,6 +93,22 @@ DATABASES = {
         'PORT': '5432',
     }
 }   
+"""
+
+
+DATABASES = {
+    'default': {
+        'NAME': config('DB_NAME'),    
+        'USER': config('DB_USER'),      
+        'PASSWORD': config('DB_PASSWORD'), 
+        'HOST': config('DB_HOST', default='localhost'),
+        'PORT': config('DB_PORT', default='5432'),
+    }
+}
+
+
+
+
 
 
 # need to add in CLOUD DATABASE
