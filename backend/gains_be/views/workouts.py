@@ -31,7 +31,8 @@ def marshall_workout(workout):
 def get_workouts(request): 
     '''Get all workouts for a user.'''
     try:
-        user_id = request.GET.get('user_id')
+        data = json.loads(request.body)   
+        user_id = data.get('user_id')
         if not user_id:
             return JsonResponse({'error': 'user_id is required'}, status=400)
 

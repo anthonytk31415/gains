@@ -22,7 +22,7 @@ from django.contrib import admin
 from django.urls import path
 from .views.test_views import test_view
 from .views.users import update_user, get_all_users
-from .views.workouts import generate_workout, get_workout, get_last_week_workouts, get_current_week_workouts, save_workout
+from .views.workouts import generate_workout, get_workout, get_last_week_workouts, get_current_week_workouts, save_workout, get_workouts
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -32,6 +32,8 @@ urlpatterns = [
     path('api/workouts/last_week/', get_last_week_workouts, name='get_last_week_workouts'),
     path('api/workouts/current_week/', get_current_week_workouts, name='get_current_week_workouts'),
     path('api/workouts/save/', save_workout, name='save_workout'),
+    path('api/workouts/all/', get_workouts, name='get_workouts'),
+
 
     path('user/update/', update_user, name='update_user'),
     path('user/all/', get_all_users, name='get_all_users'),
