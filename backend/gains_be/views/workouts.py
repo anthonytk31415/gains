@@ -86,7 +86,6 @@ def get_current_week_range(date):
 def get_last_week_workouts(request): 
     '''Given a user_id, return all workouts for the last week.'''
     try:
-        print("getting workouts...")
         data = json.loads(request.body)   
         user_id = data.get('user_id')
         if not user_id:
@@ -101,8 +100,6 @@ def get_last_week_workouts(request):
             workout_date__lte=end_date
         ).order_by('-workout_date')
         workouts_data = [marshall_workout(workout) for workout in workouts]
-        print("user_id: ", user_id, "start_date: ", start_date, "end_date: ", end_date)
-        print("workouts_data: ", workouts_data)
         return JsonResponse({'workouts': workouts_data})
     
     except Exception as e:
@@ -167,7 +164,6 @@ def generate_workout(request):
     '''Given user input, call the LLM, generate a workout, save it, and return the workout.'''
 
     try:
-        # Parse the request body
         data = json.loads(request.body)        
         print("data for generate workout call: ", data)
         # create dummy workout id as a placeholder
@@ -194,7 +190,8 @@ def generate_workout(request):
 def get_workout(request, workout_id):
     '''Given a workout id, return the workout.'''
     try:
-        # Get the workout with related exercise sets and exercises
+        # build safeguard so that body must have user id in it and and we filter on user id? 
+        
         workout = Workout.objects.select_related('user').prefetch_related(
             'exercise_sets__exercise'
         ).get(workout_id=workout_id)       
