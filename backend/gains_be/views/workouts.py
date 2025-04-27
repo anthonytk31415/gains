@@ -12,6 +12,7 @@ def marshall_exercise_set(exercise_set):
     return {
         'set_id': exercise_set.set_id,
         'exercise_id': exercise_set.exercise.exercise_id,
+        'exercise_name': exercise_set.exercise.name,
         'reps': exercise_set.reps,
         'weight': float(exercise_set.weight),
         'is_done': exercise_set.is_done
@@ -139,8 +140,15 @@ def get_this_month_workouts(request):
 def create_workout(request): 
     pass
 
+
+
+## focus on this
 def edit_workout(request): 
     pass
+
+## take prior workout, get LLM to generate new metrics, return new workout 
+
+
 
 def delete_workout(request): 
     pass
@@ -206,38 +214,28 @@ def get_workout(request, workout_id):
 @csrf_exempt
 @require_http_methods(["POST"])
 def save_workout(request):
-    '''Save a workout from request data to the database.'''
+    '''Save a new workout from request data to the database.'''
     try:
-        data = json.loads(request.body)
-        print("Received data:", data)  # Debug log
-        
-        # Validate required fields
+        data = json.loads(request.body)        
         if not data.get('user_id'):
-            return JsonResponse({'error': 'user_id is required'}, status=400)
-            
+            return JsonResponse({'error': 'user_id is required'}, status=400)            
         if not data.get('workout'):
-            return JsonResponse({'error': 'workout data is required'}, status=400)
-            
+            return JsonResponse({'error': 'workout data is required'}, status=400)            
         workout_data = data['workout']
-        print("Workout data:", workout_data)  # Debug log
-        
         # Parse the workout date
         try:
             workout_date = dt.fromisoformat(workout_data['workout_date'].replace('Z', '+00:00'))
         except (ValueError, TypeError) as e:
             return JsonResponse({'error': f'Invalid date format: {str(e)}'}, status=400)
-        
         # Create the workout
         try:
             workout = Workout.objects.create(
                 user_id=data['user_id'],
                 workout_date=workout_date
             )
-            print("Created workout:", workout.workout_id)  # Debug log
         except Exception as e:
             print("Error creating workout:", str(e))  # Debug log
             return JsonResponse({'error': f'Failed to create workout: {str(e)}'}, status=500)
-        
         # Create exercise sets
         for set_data in workout_data['exercise_sets']:
             try:
@@ -248,13 +246,9 @@ def save_workout(request):
                     weight=set_data['weight'],
                     is_done=set_data.get('is_done', False)
                 )
-                print("Created exercise set:", exercise_set.set_id)  # Debug log
             except Exception as e:
-                print("Error creating exercise set:", str(e))  # Debug log
-                # If exercise set creation fails, delete the workout to maintain consistency
                 workout.delete()
                 return JsonResponse({'error': f'Failed to create exercise set: {str(e)}'}, status=500)
-            
         return JsonResponse({
             'message': 'Successfully saved workout',
             'workout': marshall_workout(workout)
@@ -265,3 +259,8 @@ def save_workout(request):
     except Exception as e:
         print("Unexpected error:", str(e))  # Debug log
         return JsonResponse({'error': str(e)}, status=500)
+
+
+
+
+# save workouts 
