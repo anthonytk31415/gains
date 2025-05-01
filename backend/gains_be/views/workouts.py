@@ -175,7 +175,10 @@ def mark_workout_undone(request):
 
 @csrf_exempt
 @require_http_methods(["POST"])
-def generate_workout(request):
+def generate_workout(request): 
+    #First upon creation of the account
+    #Second Add Workout go to AI this part (random)
+    #Third Add Workout (history)
     '''Given user input, call the LLM, generate a workout, save it, and return the workout.'''
 
     try:
