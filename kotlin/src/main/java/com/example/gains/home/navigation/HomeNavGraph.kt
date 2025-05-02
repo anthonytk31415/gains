@@ -110,12 +110,8 @@ fun HomeNavGraph(
 
                 exercise?.let {
                     ExerciseDetailsScreen(
-                        exerciseName = it.name,
-                        imageRes = it.imageRes,
-                        videoUrl = it.videoUrl,
-                        instructions = it.instructions,
-                        breathingTips = it.breathingTips,
-                        commonMistakes = it.commonMistakes
+                        navController = homeNavController,
+                        exercise = it
                     )
                 }
             }
