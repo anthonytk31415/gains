@@ -4,6 +4,7 @@ from ..models import Workout, ExerciseSet, Exercise
 from django.core.serializers import serialize
 from django.views.decorators.csrf import csrf_exempt
 import json
+from services.gemini_service import generate_workout_routine
 import datetime
 from datetime import datetime as dt
 
@@ -253,22 +254,55 @@ def mark_workout_undone(request):
 
 @csrf_exempt
 @require_http_methods(["POST"])
-def generate_workout(request):
+def generate_workout(request): 
+    #First upon creation of the account
+    #Second Add Workout go to AI this part (random)
+    #Third Add Workout (history)
     '''Given user input, call the LLM, generate a workout, save it, and return the workout.'''
 
     try:
         data = json.loads(request.body)        
         print("data for generate workout call: ", data)
-        # create dummy workout id as a placeholder
+
+        #Extracting the structured data from  the frontend
+        age = data.get('age')
+        height = data.get('height')
+        weight = data.get('weight')
+        goal = data.get('goal')
+        experience = data.get('experience')  # Example: "Intermediate"
+        workout_days = data.get('workout_days', 5)  # Default to 5 days/week if not provided
+        location = data.get('location', 'Gym')  # Default to 'Gym'
+        muscle_focus = data.get('muscle_focus')
+
+        # Build the llm form here
+        form_text = f"""
+        I am a {age}-year-old individual.
+        My height is {height} and my weight is {weight} kgs.
+        My goal is {goal}.
+        My experience level is {experience}.
+        I am willing to work {workout_days} days a week.
+        I will workout from {location}.
+        I want to build my {muscle_focus} muscles.
+        Give me a workout routine only for targeted muscle.
+        """
+
+        if not form_text.strip():
+            return JsonResponse({'error': 'Invalid or incomplete form data'}, status=400)
         
         # call LLM and get the workout 
+        # create dummy workout id as a placeholder
         print("calling LLM for workout...")
         workout_id = 123
+        workout_data = generate_workout_routine(form_text)
+
+        if 'error' in workout_data:
+            return JsonResponse({'error': workout_data['error']}, status=500)
 
         return JsonResponse({
             'message': 'Successfully created workout',
             'workout': {
                 'workout_id': workout_id,
+                'workout_data': workout_data,
                 # 'email': email
             }
         })
