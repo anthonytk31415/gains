@@ -1,0 +1,52 @@
+[
+  {
+    "id": "leg_raises",
+    "name": "Leg Raises",
+    "imageResName": "leg_raises",
+    "videoUrl": "https://www.youtube.com/watch?v=jBhZWX91bec",
+    "instructions": "Lie flat and raise legs...",
+    "breathingTips": "Exhale while lifting legs.",
+    "commonMistakes": "Don't arch the back.",
+    "focusAreas": ["Abs", "Hip Flexors"]
+  },
+  {
+    "id": "push_ups",
+    "name": "Push Ups",
+    "imageResName": "push_ups",
+    "videoUrl": "https://www.youtube.com/watch?v=jBhZWX91bec",
+    "instructions": "Keep your core tight...",
+    "breathingTips": "Inhale down, exhale up.",
+    "commonMistakes": "Avoid flared elbows.",
+    "focusAreas": ["Chest", "Triceps", "Core"]
+  },
+  {
+    "id": "squats",
+    "name": "Squats",
+    "imageResName": "squats",
+    "videoUrl": "https://www.youtube.com/watch?v=jBhZWX91bec",
+    "instructions": "Lower hips, keep chest up...",
+    "breathingTips": "Inhale down, exhale up.",
+    "commonMistakes": "Knees cave in, heels lift.",
+    "focusAreas": ["Glutes", "Quads", "Hamstrings"]
+  },
+  {
+    "id": "bicep_curls",
+    "name": "Bicep Curls",
+    "imageResName": "bicep_curls",
+    "videoUrl": "https://www.youtube.com/watch?v=jBhZWX91bec",
+    "instructions": "Curl dumbbells up, control down.",
+    "breathingTips": "Exhale curl, inhale lower.",
+    "commonMistakes": "Swinging or using momentum.",
+    "focusAreas": ["Biceps"]
+  },
+  {
+    "id": "shoulder_press",
+    "name": "Shoulder Press",
+    "imageResName": "shoulder_press",
+    "videoUrl": "https://www.youtube.com/watch?v=jBhZWX91bec",
+    "instructions": "Press dumbbells overhead.",
+    "breathingTips": "Exhale press, inhale lower.",
+    "commonMistakes": "Arching back, flared elbows.",
+    "focusAreas": ["Shoulders", "Triceps"]
+  }
+]

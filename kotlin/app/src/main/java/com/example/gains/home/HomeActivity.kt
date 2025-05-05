@@ -10,24 +10,28 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.gains.home.model.EditableExercise
 import com.example.gains.home.model.ExerciseDetail
 import com.example.gains.home.model.WorkoutRoutine
 import com.example.gains.home.network.WorkoutApi
+import com.example.gains.home.exercise.*
 import kotlinx.coroutines.launch
+
 
 @Composable
 fun HomeScreen(navController: NavController) {
+    val context = LocalContext.current
+    val exercises = remember { loadExercisesFromJson(context) }
+    val nameToId = remember { exercises.associate { it.name to it.id } }
+
     val coroutineScope = rememberCoroutineScope()
     var workoutRoutine by remember { mutableStateOf<WorkoutRoutine?>(null) }
     var expandedDayIndex by remember { mutableStateOf<Int?>(null) }
 
-    val nameToId = mapOf(
-        "Push Ups" to "push_ups",
-        "Leg Raises" to "leg_raises"
-    )
+
 
     LaunchedEffect(Unit) {
         coroutineScope.launch {
