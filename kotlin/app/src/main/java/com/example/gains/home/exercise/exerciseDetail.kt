@@ -15,6 +15,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
@@ -25,6 +26,12 @@ import com.example.gains.R
 @Composable
 fun ExerciseDetailsScreen(navController: NavController, exercise: Exercise) {
     var playVideo by remember { mutableStateOf(false) }
+    val context = LocalContext.current
+
+    // Dynamically resolve drawable resource from imageResName
+    val imageResId = remember(exercise.imageResName) {
+        context.resources.getIdentifier(exercise.imageResName, "drawable", context.packageName)
+    }
 
     Column(
         modifier = Modifier
@@ -38,11 +45,11 @@ fun ExerciseDetailsScreen(navController: NavController, exercise: Exercise) {
 
         if (playVideo) {
             AndroidView(
-                factory = { context ->
-                    WebView(context).apply {
+                factory = { ctx ->
+                    WebView(ctx).apply {
                         settings.javaScriptEnabled = true
                         webViewClient = WebViewClient()
-                        exercise.videoUrl?.let { loadUrl(it) }
+                        loadUrl(exercise.videoUrl)
                     }
                 },
                 modifier = Modifier
@@ -57,7 +64,7 @@ fun ExerciseDetailsScreen(navController: NavController, exercise: Exercise) {
                     .clickable { playVideo = true }
             ) {
                 Image(
-                    painter = painterResource(id = exercise.imageRes ?: R.drawable.push_ups),
+                    painter = painterResource(id = imageResId),
                     contentDescription = null,
                     modifier = Modifier.fillMaxSize()
                 )
@@ -81,15 +88,11 @@ fun ExerciseDetailsScreen(navController: NavController, exercise: Exercise) {
 
         Text("FOCUS AREA", style = MaterialTheme.typography.titleMedium, color = Color.Blue)
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            listOf("Abs", "Glutes", "Quadriceps").forEach {
+            exercise.focusAreas.forEach {
                 AssistChip(onClick = {}, label = { Text(it) })
             }
         }
-        Spacer(modifier = Modifier.height(8.dp))
-        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
-            Image(painter = painterResource(id = R.drawable.body_front), contentDescription = null, modifier = Modifier.height(150.dp))
-            Image(painter = painterResource(id = R.drawable.body_back), contentDescription = null, modifier = Modifier.height(150.dp))
-        }
+
 
         Spacer(modifier = Modifier.height(16.dp))
 

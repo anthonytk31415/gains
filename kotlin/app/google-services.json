@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "351749131217",
+    "project_id": "gains-c42dd",
+    "storage_bucket": "gains-c42dd.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:351749131217:android:3f3d42d41a521f4b052ef0",
+        "android_client_info": {
+          "package_name": "com.example.gains"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDrE4bg69l1nlnMHqB9nRFJD1l_EAvaa3U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

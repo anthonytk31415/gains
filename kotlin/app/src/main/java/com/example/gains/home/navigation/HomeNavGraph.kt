@@ -1,31 +1,25 @@
 package com.example.gains.home.navigation
 
+import android.content.Context
 import androidx.compose.foundation.layout.padding
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.*
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import com.example.gains.R
-import com.example.gains.home.AddScreen
-import com.example.gains.home.exercise.ExerciseDetailsScreen
-import com.example.gains.home.HomeScreen
-import com.example.gains.home.ProfileScreen
-import com.example.gains.home.SettingsScreen
-import com.example.gains.home.ViewScreen
+import com.example.gains.home.*
 import com.example.gains.home.exercise.Exercise
+import com.example.gains.home.exercise.loadExercisesFromJson
+import com.example.gains.home.exercise.ExerciseDetailsScreen
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -34,6 +28,13 @@ fun HomeNavGraph(
     username: String
 ) {
     val homeNavController = rememberNavController()
+    val context = LocalContext.current
+
+    // Load exercises once and remember
+    val exercises by remember {
+        mutableStateOf(loadExercisesFromJson(context))
+    }
+
     val navItems = listOf(
         BottomNav.Home,
         BottomNav.Add,
@@ -44,9 +45,7 @@ fun HomeNavGraph(
 
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = { Text("gAIns- $username") }
-            )
+            TopAppBar(title = { Text("gAIns - $username") })
         },
         bottomBar = {
             NavigationBar {
@@ -60,9 +59,7 @@ fun HomeNavGraph(
                         selected = currentRoute == item.route,
                         onClick = {
                             homeNavController.navigate(item.route) {
-                                popUpTo(homeNavController.graph.startDestinationId) {
-                                    saveState = true
-                                }
+                                popUpTo(homeNavController.graph.startDestinationId) { saveState = true }
                                 launchSingleTop = true
                                 restoreState = true
                             }
@@ -77,45 +74,29 @@ fun HomeNavGraph(
             startDestination = BottomNav.Home.route,
             modifier = Modifier.padding(innerPadding)
         ) {
-            composable(BottomNav.Home.route) {  HomeScreen(navController = homeNavController) }
+            composable(BottomNav.Home.route) { HomeScreen(navController = homeNavController) }
             composable(BottomNav.Add.route) { AddScreen(navController = homeNavController) }
             composable(BottomNav.View.route) { ViewScreen(navController = homeNavController) }
             composable(BottomNav.Profile.route) { ProfileScreen(navController = homeNavController) }
             composable(BottomNav.Settings.route) { SettingsScreen(navController = homeNavController) }
+
             composable(
                 route = "exerciseDetail/{exerciseId}",
                 arguments = listOf(navArgument("exerciseId") { type = NavType.StringType })
             ) { backStackEntry ->
                 val exerciseId = backStackEntry.arguments?.getString("exerciseId") ?: ""
+                val matched = exercises.find { it.id == exerciseId }
 
-                val exercise = when (exerciseId) {
-                    "leg_raises" -> Exercise(
-                        name = "Leg Raises",
-                        imageRes = R.drawable.leg_raises,
-                        videoUrl = "https://www.youtube.com/watch?v=jBhZWX91bec",
-                        instructions = "Lie flat and raise legs...",
-                        breathingTips = "Exhale while lifting legs.",
-                        commonMistakes = "Don't arch the back."
-                    )
-                    "push_ups" -> Exercise(
-                        name = "Push Ups",
-                        imageRes = R.drawable.push_ups,
-                        videoUrl = "https://www.youtube.com/watch?v=jBhZWX91bec",
-                        instructions = "Keep your core tight...",
-                        breathingTips = "Inhale down, exhale up.",
-                        commonMistakes = "Avoid flared elbows."
-                    )
-                    else -> null
-                }
-
-                exercise?.let {
+                matched?.let {
+                    val resId = context.resources.getIdentifier(it.imageResName, "drawable", context.packageName)
                     ExerciseDetailsScreen(
                         navController = homeNavController,
-                        exercise = it
+                        exercise = it.copy(imageRes = resId)
                     )
                 }
             }
-
         }
     }
 }
+
+

@@ -37,8 +37,8 @@ object WorkoutApi {
                   "day": "Day 1",
                   "exercises": [
                     {"name": "Leg Raises", "sets": 3, "reps": "8-12"},
-                    {"name": "Lunges", "sets": 3, "reps": "10-15 per leg"},
-                    {"name": "Glute Bridges", "sets": 3, "reps": "15-20"},
+                    {"name": "Bicep Curls", "sets": 3, "reps": "10-15 per leg"},
+                    {"name": "Squats", "sets": 3, "reps": "15-20"},
                     {"name": "Calf Raises", "sets": 3, "reps": "15-20"}
                   ]
                 },
