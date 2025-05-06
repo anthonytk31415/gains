@@ -25,7 +25,7 @@ def test_get_workout(request, workout_id):
         workout_data = {
             'workout_id': workout.workout_id,
             'user_id': workout.user.user_id,
-            'workout_date': workout.workout_date.isoformat(),
+            'execution_date': workout.execution_date.isoformat() if workout.execution_date else None,
             'exercise_sets': []
         }
         

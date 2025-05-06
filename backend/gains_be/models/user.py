@@ -3,7 +3,7 @@ from django.db import models
 class User(models.Model):
     user_id = models.AutoField(primary_key=True)
     email = models.EmailField(max_length=200, unique=True)
-    age = models.IntegerField(null=True, blank=True)
+    dob = models.DateField(null=True, blank=True)
     height = models.FloatField(null=True, blank=True)  # Height in cm
     weight = models.FloatField(null=True, blank=True)  # Weight in kg
     created_at = models.DateTimeField(auto_now_add=True)
