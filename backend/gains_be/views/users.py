@@ -4,20 +4,61 @@ from gains_be.models.user import User
 from django.views.decorators.csrf import csrf_exempt
 from django.core.serializers import serialize
 import json
+from datetime import datetime
 
-# from database.connection import Database
-
-# DUMMY_USER = User(
-#     user_id=1,  # or any integer
-#     email="markhenry@google.com",  # any email string
-#     password="123456789"  # any password string
-# )
-
+@csrf_exempt
+@require_http_methods(["POST"])
 def create_user(request): 
-    pass
+    '''Create a new user.'''
+    try:
+        data = json.loads(request.body)
+        # required fields
+        for field in ['email', 'password']:
+            if not data.get(field):
+                return JsonResponse({'error': f'{field} is required'}, status=400)
+        
+        # Check if user already exists
+        if User.objects.filter(email=data['email']).exists():
+            return JsonResponse({'error': 'Email address already exists'}, status=400)
 
-def get_user(request): 
-    pass
+        # Create user with required fields and optional fields if provided
+        user = User.objects.create(
+            email=data.get('email'),
+            password=data.get('password'),
+            dob=data.get('dob'),  
+            height=data.get('height'),  
+            weight=data.get('weight')  
+        )
+        user.save()
+        return JsonResponse({
+            'message': 'User created successfully',
+            'user_id': user.user_id
+        })
+    except json.JSONDecodeError:
+        return JsonResponse({'error': 'Invalid JSON'}, status=400)
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
+
+@csrf_exempt
+@require_http_methods(["POST"])
+def login_user(request): 
+    ''' Given a email, return the user_id and thus login the user'''
+    try:
+        print('hello this path1')
+        data = json.loads(request.body) 
+        print("data", data)
+        email = data.get('email')
+        print(email)
+        if not email:
+            return JsonResponse({'error': 'Email is required'}, status=400)
+        print('hello this path')
+        user = User.objects.get(email=email)
+        print(user)
+        return JsonResponse({'user_id': user.user_id})
+    except User.DoesNotExist:
+        return JsonResponse({'error': 'Error with email address'}, status=404)
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
 
 def delete_user(request): 
     pass
@@ -47,11 +88,19 @@ def update_user(request, user_id):
             return JsonResponse({'error': 'User not found'}, status=404)
             
         # Update allowed fields
-        allowed_fields = ['email', 'dob', 'height', 'weight']
+        if 'email' in data:
+            if User.objects.filter(email=data['email']).exists():
+                return JsonResponse({'error': 'Email address already exists'}, status=400)
+            else:
+                user.email = data['email']
+
+        # if email is provided, update the email
+        allowed_fields = ['dob', 'height', 'weight']
         for field in allowed_fields:
             if field in data:
                 setattr(user, field, data[field])
                 
+        user.updated_at = datetime.now()
         user.save()
             
         return JsonResponse({
