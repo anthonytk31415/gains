@@ -83,7 +83,7 @@ WSGI_APPLICATION = 'gains_be.wsgi.application'
 # LOCAL DATABASE
 
 
-
+# Anthony local db
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.postgresql',

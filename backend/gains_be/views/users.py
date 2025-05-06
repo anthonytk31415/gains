@@ -22,49 +22,46 @@ def get_user(request):
 def delete_user(request): 
     pass
 
-@require_http_methods(["GET"])
-def get_all_users(request):
-    '''Get all users from the database.'''
-    try:
-        users = User.objects.all()
-        users_data = list(users.values('user_id', 'age', 'height', 'weight', 'email'))  # Exclude password for security
-        return JsonResponse({
-            'users': users_data
-        })
-    except Exception as e:
-        return JsonResponse({'error': str(e)}, status=500)
+# @require_http_methods(["GET"])
+# def get_all_users(request):
+#     '''Get all users from the database.'''
+#     try:
+#         users = User.objects.all()
+#         users_data = list(users.values('user_id', 'email', 'dob', 'height', 'weight'))  # Updated fields to match model
+#         return JsonResponse({
+#             'users': users_data
+#         })
+#     except Exception as e:
+#         return JsonResponse({'error': str(e)}, status=500)
 
 @csrf_exempt
 @require_http_methods(["PUT"])
-def update_user(request):
+def update_user(request, user_id):
     '''Given the user id and a payload of user data, update the user.'''
-
     try:
         # Parse the request body
-        data = json.loads(request.body)        
-        user_id = data.get('user_id')        
-        if not user_id:
-            return JsonResponse({'error': 'user_id is required'}, status=400)
+        data = json.loads(request.body)                    
+        try:
+            user = User.objects.get(user_id=user_id)
+        except User.DoesNotExist:
+            return JsonResponse({'error': 'User not found'}, status=404)
             
-        # Initialize database connection and repository
-        # db = Database()  # You'll need to configure this with your actual database settings
-        # user_repo = UserRepository(db)
-        
-        # Update the user
-        # updated_user = user_repo.update_user(
-        #     user_id=user_id,
-        #     email=email,
-        #     password=password
-        # )
-        
-        # if not updated_user:
-        #     return JsonResponse({'error': 'User not found'}, status=404)
+        # Update allowed fields
+        allowed_fields = ['email', 'dob', 'height', 'weight']
+        for field in allowed_fields:
+            if field in data:
+                setattr(user, field, data[field])
+                
+        user.save()
             
         return JsonResponse({
             'message': 'Successfully updated user',
             'user': {
-                'user_id': user_id,
-                # 'email': email
+                'user_id': user.user_id,
+                'email': user.email,
+                'dob': user.dob,
+                'height': user.height,
+                'weight': user.weight
             }
         })
         

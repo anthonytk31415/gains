@@ -23,7 +23,6 @@ def generate_workout_routine(form_text, max_input_len=4000, max_output_len=10000
         #Beginner: 20-45lbs Beginner
         #Intermediate: 45-60
         
-
         #history = db.get(user_id, exercises.get(n-1))
         # Ask for JSON only
         #Make sure that the exercise follows the list of recognized exercises provided above.
@@ -132,20 +131,20 @@ def clean_and_parse_json(raw_text):
         except json.JSONDecodeError:
             return {"error": "Response is not valid JSON", "raw": cleaned}
 
-# Sample form data
-form_input = """
-I am a Male 25 years of age
-My height is 5'6 and weight is 55 kgs
-My goal is Muscle Gain
-My experience is Intermediate
-I am willing to work 3 days a week
-I will workout from my gym
-I want to build my every muscles
-Give me a workout routine only for targeted muscle
-Include my history to generate a workout for this week
-"""
-#Add a plank exercise for each day
-#Focus on a descending pyramid workout style
-#Include a cardio exercise at the end of each day
-result = generate_workout_routine_with_history(form_input)
-print(result)
+# # Sample form data
+# form_input = """
+# I am a Male 25 years of age
+# My height is 5'6 and weight is 55 kgs
+# My goal is Muscle Gain
+# My experience is Intermediate
+# I am willing to work 3 days a week
+# I will workout from my gym
+# I want to build my every muscles
+# Give me a workout routine only for targeted muscle
+# Include my history to generate a workout for this week
+# """
+# #Add a plank exercise for each day
+# #Focus on a descending pyramid workout style
+# #Include a cardio exercise at the end of each day
+# # result = generate_workout_routine_with_history(form_input)
+# # print(result)
