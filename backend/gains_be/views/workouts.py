@@ -260,7 +260,7 @@ def mark_workout_undone(request):
 
 @csrf_exempt
 @require_http_methods(["POST"])
-def generate_workout(request): 
+def generate_workout(request, user_id): 
     #First upon creation of the account
     #Second Add Workout go to AI this part (random)
     #Third Add Workout (history)
