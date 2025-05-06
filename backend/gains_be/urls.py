@@ -21,7 +21,7 @@ We'll use the urls in the app to map the urls to the views.
 from django.contrib import admin
 from django.urls import path
 from .views.test_views import test_view
-from .views.users import update_user
+from .views.users import update_user, create_user, login_user
 from .views.workouts import generate_workout, get_workout, get_last_week_workouts, get_current_week_workouts, save_workout, get_workouts
 from .views.exercises import get_all_exercises
 
@@ -29,7 +29,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('test/', test_view, name='test'),
     path('api/<int:user_id>/workouts/<int:workout_id>/', get_workout, name='get_workout'),
-    path('api/<int:user_id>/workouts/generate/', generate_workout, name='generate_workout'),
+    path('api/<int:user_id>/workouts/generate/', generate_workout, name='generate_workout'), # test
     path('api/<int:user_id>/workouts/last_week/', get_last_week_workouts, name='get_last_week_workouts'),
     path('api/<int:user_id>/workouts/current_week/', get_current_week_workouts, name='get_current_week_workouts'),
     path('api/<int:user_id>/workouts/save/', save_workout, name='save_workout'),
@@ -37,6 +37,8 @@ urlpatterns = [
 
     path('api/<int:user_id>/user/update/', update_user, name='update_user'),
     # path('api/<int:user_id>/user/all/', get_all_users, name='get_all_users'),
-    
+    path('api/user/create/', create_user, name='create_user'),
+    path('api/user/login/', login_user, name='login_user'),
     path('api/exercises/all/', get_all_exercises, name='get_all_exercises'),
+
 ]
