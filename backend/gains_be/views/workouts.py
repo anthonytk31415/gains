@@ -342,24 +342,29 @@ def get_workout(request, user_id, workout_id):
 
 @csrf_exempt
 @require_http_methods(["POST"])
-def save_workout(request):
+def save_workout(request, user_id):
     '''Save a new workout from request data to the database.'''
     try:
-        data = json.loads(request.body)        
-        if not data.get('user_id'):
+        if not user_id:
             return JsonResponse({'error': 'user_id is required'}, status=400)            
-        if not data.get('workout'):
-            return JsonResponse({'error': 'workout data is required'}, status=400)            
+        try:
+            User.objects.get(user_id=user_id)
+        except User.DoesNotExist:
+            return JsonResponse({'error': 'User not found'}, status=404)    
+        data = json.loads(request.body)        
         workout_data = data['workout']
         # Parse the workout date
         try:
-            execution_date = dt.fromisoformat(workout_data['execution_date'].replace('Z', '+00:00'))
+            if workout_data['execution_date']:
+                execution_date = dt.fromisoformat(workout_data['execution_date'].replace('Z', '+00:00'))
+            else: 
+                execution_date = None
         except (ValueError, TypeError) as e:
             return JsonResponse({'error': f'Invalid date format: {str(e)}'}, status=400)
         # Create the workout
         try:
             workout = Workout.objects.create(
-                user_id=data['user_id'],
+                user_id=user_id,
                 execution_date=execution_date
             )
         except Exception as e:

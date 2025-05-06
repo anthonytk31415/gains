@@ -23,6 +23,7 @@ class ExerciseSet(models.Model):
     )
     weight = models.DecimalField(max_digits=10, decimal_places=4)
     is_done = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"Set {self.set_id} - {self.exercise.name} ({self.reps} reps @ {self.weight})" 
