@@ -9,7 +9,7 @@ import datetime
 from datetime import datetime as dt
 
 
-def serialize_exercise_set(exercise_set): 
+def serialize_exercise_set(exercise_set):
     '''Given an exercise set, return a dictionary of the exercise set.'''
     return {
         'exercise_set_id': exercise_set.exercise_set_id,
@@ -21,7 +21,7 @@ def serialize_exercise_set(exercise_set):
         'is_done': exercise_set.is_done
     }
 
-def serialize_workout(workout): 
+def serialize_workout(workout):
     return {
         'workout_id': workout.workout_id,
         'user_id': workout.user.user_id,
@@ -30,32 +30,32 @@ def serialize_workout(workout):
     }
 
 # def deserialize_workout(workout):
-#     ''' Given a workout object, return a workout object that can be saved to the database.''' 
+#     ''' Given a workout object, return a workout object that can be saved to the database.'''
 #     pass
 
 # NEED TO TEST
 def update_exercise_set(exercise_set_object):
     '''Prepare an exercise set with the provided data.
-    if it is acceptable, return the exercise set. If not, raise an exception. 
+    if it is acceptable, return the exercise set. If not, raise an exception.
     '''
     try:
         exercise_set_id = exercise_set_object['exercise_set_id']
         if not exercise_set_id:
             raise ValueError('exercise_set_id is required')
-            
+
         try:
             exercise_set = ExerciseSet.objects.get(exercise_set_id=exercise_set_id)
         except ExerciseSet.DoesNotExist:
             raise ValueError('Exercise set not found')
-            
+
         # Update the exercise set fields
         fields_to_update = ['exercise_id', 'sets', 'reps', 'weight', 'is_done']
         for field in exercise_set_object:
             if field in fields_to_update:
                 setattr(exercise_set, field, exercise_set_object[field])
             else:
-                raise ValueError(f'Invalid field: {field}')            
-        return exercise_set        
+                raise ValueError(f'Invalid field: {field}')
+        return exercise_set
     except KeyError as e:
         raise ValueError(f'Missing required field: {str(e)}')
     except Exception as e:
@@ -80,22 +80,22 @@ def delete_old_exercise_sets(set_old_exercise_sets_ids, set_new_exercise_sets_id
 # NEED TO TEST
 @csrf_exempt
 @require_http_methods(["PUT"])
-def update_workout(request): 
+def update_workout(request):
     '''Given a workout id, update the workout, or return a json response with an error.'''
     try:
         data = json.loads(request.body)
         workout_object = data.get('workout')
         workout_id = workout_object['workout_id']
-        workout = Workout.objects.get(workout_id=workout_id)        
-        if workout_object['execution_date']: 
+        workout = Workout.objects.get(workout_id=workout_id)
+        if workout_object['execution_date']:
             workout.execution_date = workout_object['execution_date']
 
         new_exercise_sets = workout_object['exercise_sets']
-        if not new_exercise_sets: 
+        if not new_exercise_sets:
             raise ValueError('No exercise sets provided')
 
         exercise_set_objects_to_save = [update_exercise_set(exercise_set) for exercise_set in new_exercise_sets]
-        
+
         # all exercises and workouts are valid
         # delete old exercise sets that are not in the new workout
         set_old_exercise_sets_ids = set([exercise_set.set_id for exercise_set in workout.exercise_sets.all()])
@@ -111,7 +111,7 @@ def update_workout(request):
             'message': 'Successfully updated workout',
             'workout': serialize_workout(workout)
         })
-        
+
     except json.JSONDecodeError:
         return JsonResponse({'error': 'Invalid JSON'}, status=400)
     except Exception as e:
@@ -119,23 +119,23 @@ def update_workout(request):
 
 @csrf_exempt
 @require_http_methods(["GET"])
-def get_workouts(request, user_id):     
+def get_workouts(request, user_id):
     '''Given a user_id, return all workouts for the last week.'''
     try:
         if not user_id:
-            return JsonResponse({'error': 'user_id is required'}, status=400)            
+            return JsonResponse({'error': 'user_id is required'}, status=400)
         try:
             User.objects.get(user_id=user_id)
         except User.DoesNotExist:
             return JsonResponse({'error': 'User not found'}, status=404)
-            
+
         workouts = Workout.objects.select_related('user').prefetch_related(
             'exercise_sets__exercise'
         ).filter(
             user_id=user_id
         ).order_by('-execution_date')
         workouts_data = [serialize_workout(workout) for workout in workouts]
-        return JsonResponse({'workouts': workouts_data})    
+        return JsonResponse({'workouts': workouts_data})
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
 
@@ -143,7 +143,7 @@ def get_workouts(request, user_id):
 # -- need upated; do we need?
 # @csrf_exempt
 # @require_http_methods(["GET"])
-# def get_workouts_by_date_range(request, start_date, end_date): 
+# def get_workouts_by_date_range(request, start_date, end_date):
 #     '''Given a user_id, Given a start date and end date, return all workouts in that date range.'''
 #     try:
 #         # Get user_id from query parameters
@@ -159,38 +159,38 @@ def get_workouts(request, user_id):
 #             execution_date__gte=start_date,
 #             execution_date__lte=end_date
 #         ).order_by('-execution_date')
-        
+
 #         workouts_data = [serialize_workout(workout) for workout in workouts]
 #         return JsonResponse({'workouts': workouts_data})
-        
+
 #     except Exception as e:
 #         return JsonResponse({'error': str(e)}, status=500)
 
 
 def get_last_week_range(date):
-    weekdate_num = (date.weekday() + 1)%7    
+    weekdate_num = (date.weekday() + 1)%7
     last_sun = date + datetime.timedelta(days=- weekdate_num - 7)
-    last_sat = last_sun + datetime.timedelta(days=6)    
+    last_sat = last_sun + datetime.timedelta(days=6)
     return last_sun, last_sat
 
 def get_current_week_range(date):
-    weekdate_num = (date.weekday() + 1)%7    
+    weekdate_num = (date.weekday() + 1)%7
     cur_sun = date + datetime.timedelta(days=- weekdate_num)
-    cur_sat = cur_sun + datetime.timedelta(days=6)    
+    cur_sat = cur_sun + datetime.timedelta(days=6)
     return cur_sun, cur_sat
 
 @csrf_exempt
 @require_http_methods(["GET"])
-def get_last_week_workouts(request, user_id): 
+def get_last_week_workouts(request, user_id):
     '''Given a user_id, return all workouts for the last week.'''
     try:
         if not user_id:
-            return JsonResponse({'error': 'user_id is required'}, status=400)            
+            return JsonResponse({'error': 'user_id is required'}, status=400)
         try:
             User.objects.get(user_id=user_id)
         except User.DoesNotExist:
             return JsonResponse({'error': 'User not found'}, status=404)
-        
+
         start_date, end_date = get_last_week_range(datetime.datetime.now())
         workouts = Workout.objects.select_related('user').prefetch_related(
             'exercise_sets__exercise'
@@ -201,22 +201,22 @@ def get_last_week_workouts(request, user_id):
         ).order_by('-execution_date')
         workouts_data = [serialize_workout(workout) for workout in workouts]
         return JsonResponse({'workouts': workouts_data})
-    
+
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
 
 @csrf_exempt
 @require_http_methods(["GET"])
-def get_current_week_workouts(request, user_id): 
+def get_current_week_workouts(request, user_id):
     '''Given a user_id, return all workouts for the current week.'''
     try:
         if not user_id:
-            return JsonResponse({'error': 'user_id is required'}, status=400)            
+            return JsonResponse({'error': 'user_id is required'}, status=400)
         try:
             User.objects.get(user_id=user_id)
         except User.DoesNotExist:
             return JsonResponse({'error': 'User not found'}, status=404)
-        
+
         start_date, end_date = get_current_week_range(datetime.datetime.now())
         workouts = Workout.objects.select_related('user').prefetch_related(
             'exercise_sets__exercise'
@@ -224,50 +224,113 @@ def get_current_week_workouts(request, user_id):
             user_id=user_id,
             execution_date__gte=start_date,
             execution_date__lte=end_date
-        ).order_by('-execution_date') 
+        ).order_by('-execution_date')
         workouts_data = [serialize_workout(workout) for workout in workouts]
-        return JsonResponse({'workouts': workouts_data})
-    
+        #return JsonResponse({'workouts': workouts_data})
+        return JsonResponse({
+          "creation_date": "2025-04-28",
+        "schedule": [
+            {
+                      "workout_id": 2,
+                "exercise_sets": [
+                    {
+                                  "exercise_id": 1,
+                                  "sets": 3,
+                                  "reps": 8,
+                                  "weights": 52.5
+
+                    },
+                    {
+                                  "exercise_id": 2,
+                                  "sets": 3,
+                                  "reps": 8,
+                                  "weights": 42.5
+
+                    },
+                    {
+                                  "exercise_id": 3,
+                                  "sets": 3,
+                                  "reps": 8,
+                                  "weights": 42.5
+
+                    }
+
+                ]
+
+            },
+            {
+                      "workout_id": 2,
+                "exercises": [
+                    {
+                                  "exercise_id": 1,
+                                  "sets": 1,
+                                  "reps": 5,
+                                  "weights": 65.0
+
+                    },
+                    {
+                                  "exercise_id": 2,
+                                  "sets": 3,
+                                  "reps": 10,
+                                  "weights": 85.0
+
+                    },
+                    {
+                                  "exercise_id": 3,
+                                  "sets": 3,
+                                  "reps": 8,
+                                  "weights": 50.0
+
+                    }
+
+                ]
+
+            }
+
+        ]
+
+    })
+
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
 
-def get_last_month_workouts(request): 
+def get_last_month_workouts(request):
     pass
 
-def get_this_month_workouts(request): 
+def get_this_month_workouts(request):
     pass
 
 
-def create_workout(request): 
+def create_workout(request):
     pass
 
-def delete_workout(request): 
+def delete_workout(request):
     pass
 
-def mark_exercise_set_done(request): 
+def mark_exercise_set_done(request):
     pass
 
-def mark_exercise_set_undone(request): 
+def mark_exercise_set_undone(request):
     pass
 
-def mark_workout_done(request): 
+def mark_workout_done(request):
     pass
 
-def mark_workout_undone(request): 
+def mark_workout_undone(request):
     pass
 
 
 
 @csrf_exempt
 @require_http_methods(["POST"])
-def generate_workout(request, user_id): 
+def generate_workout(request, user_id):
     #First upon creation of the account
     #Second Add Workout go to AI this part (random)
     #Third Add Workout (history)
     '''Given user input, call the LLM, generate a workout, save it, and return the workout.'''
 
     try:
-        data = json.loads(request.body)        
+        data = json.loads(request.body)
         print("data for generate workout call: ", data)
 
         #Extracting the structured data from  the frontend
@@ -294,8 +357,8 @@ def generate_workout(request, user_id):
 
         if not form_text.strip():
             return JsonResponse({'error': 'Invalid or incomplete form data'}, status=400)
-        
-        # call LLM and get the workout 
+
+        # call LLM and get the workout
         # create dummy workout id as a placeholder
         print("calling LLM for workout...")
         workout_id = 123
@@ -312,19 +375,19 @@ def generate_workout(request, user_id):
                 # 'email': email
             }
         })
-        
+
     except json.JSONDecodeError:
         return JsonResponse({'error': 'Invalid JSON'}, status=400)
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
-    
+
 @csrf_exempt
 @require_http_methods(["GET"])
 def get_workout(request, user_id, workout_id):
     '''Given a workout id, return the workout.'''
     try:
         if not user_id:
-            return JsonResponse({'error': 'user_id is required'}, status=400)            
+            return JsonResponse({'error': 'user_id is required'}, status=400)
         try:
             User.objects.get(user_id=user_id)
         except User.DoesNotExist:
@@ -332,9 +395,9 @@ def get_workout(request, user_id, workout_id):
 
         workout = Workout.objects.select_related('user').prefetch_related(
             'exercise_sets__exercise'
-        ).get(workout_id=workout_id)       
+        ).get(workout_id=workout_id)
         return JsonResponse(serialize_workout(workout))
-        
+
     except Workout.DoesNotExist:
         return JsonResponse({'error': 'Workout not found'}, status=404)
     except Exception as e:
@@ -346,18 +409,18 @@ def save_workout(request, user_id):
     '''Save a new workout from request data to the database.'''
     try:
         if not user_id:
-            return JsonResponse({'error': 'user_id is required'}, status=400)            
+            return JsonResponse({'error': 'user_id is required'}, status=400)
         try:
             User.objects.get(user_id=user_id)
         except User.DoesNotExist:
-            return JsonResponse({'error': 'User not found'}, status=404)    
-        data = json.loads(request.body)        
+            return JsonResponse({'error': 'User not found'}, status=404)
+        data = json.loads(request.body)
         workout_data = data['workout']
         # Parse the workout date
         try:
             if workout_data['execution_date']:
                 execution_date = dt.fromisoformat(workout_data['execution_date'].replace('Z', '+00:00'))
-            else: 
+            else:
                 execution_date = None
         except (ValueError, TypeError) as e:
             return JsonResponse({'error': f'Invalid date format: {str(e)}'}, status=400)
@@ -388,7 +451,7 @@ def save_workout(request, user_id):
             'message': 'Successfully saved workout',
             'workout': serialize_workout(workout)
         })
-        
+
     except json.JSONDecodeError:
         return JsonResponse({'error': 'Invalid JSON'}, status=400)
     except Exception as e:
@@ -398,4 +461,4 @@ def save_workout(request, user_id):
 
 
 
-# save workouts 
+# save workouts
