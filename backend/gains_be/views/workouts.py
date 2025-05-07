@@ -12,9 +12,9 @@ from datetime import datetime as dt
 def serialize_exercise_set(exercise_set): 
     '''Given an exercise set, return a dictionary of the exercise set.'''
     return {
-        'exercise_set_id': exercise_set.exercise_set_id,
+        # 'exercise_set_id': exercise_set.exercise_set_id,
         'exercise_id': exercise_set.exercise.exercise_id,
-        'exercise_name': exercise_set.exercise.name,
+        # 'exercise_name': exercise_set.exercise.name,
         'sets': exercise_set.sets,
         'reps': exercise_set.reps,
         'weight': float(exercise_set.weight),
@@ -24,8 +24,9 @@ def serialize_exercise_set(exercise_set):
 def serialize_workout(workout): 
     return {
         'workout_id': workout.workout_id,
-        'user_id': workout.user.user_id,
+        # 'user_id': workout.user.user_id,
         'execution_date': workout.execution_date.isoformat() if workout.execution_date else None,
+        'created_at': workout.created_at.date().isoformat() if workout.created_at else None,
         'exercise_sets': [serialize_exercise_set(exercise_set) for exercise_set in workout.exercise_sets.all()]
     }
 
@@ -200,7 +201,7 @@ def get_last_week_workouts(request, user_id):
             execution_date__lte=end_date
         ).order_by('-execution_date')
         workouts_data = [serialize_workout(workout) for workout in workouts]
-        return JsonResponse({'workouts': workouts_data})
+        return JsonResponse({'schedule': workouts_data})
     
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
@@ -226,7 +227,7 @@ def get_current_week_workouts(request, user_id):
             execution_date__lte=end_date
         ).order_by('-execution_date') 
         workouts_data = [serialize_workout(workout) for workout in workouts]
-        return JsonResponse({'workouts': workouts_data})
+        return JsonResponse({'schedule': workouts_data})
     
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
