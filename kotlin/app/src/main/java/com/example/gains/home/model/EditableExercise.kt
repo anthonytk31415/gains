@@ -6,8 +6,8 @@ data class EditableWorkoutDay(
 )
 
 data class EditableExercise(
-    val name: String,
+    val exerciseId: Int,
     var sets: Int,
-    var reps: String,
-    var weight: String
+    var reps: Int,
+    var weight: Float
 )

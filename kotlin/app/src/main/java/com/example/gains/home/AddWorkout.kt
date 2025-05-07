@@ -14,30 +14,35 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.gains.home.model.EditableExercise
 import com.example.gains.home.model.EditableWorkoutDay
+import com.example.gains.home.model.ExerciseMappings
 import com.example.gains.home.model.WorkoutRoutine
 import com.example.gains.home.network.WorkoutApi
 import kotlinx.coroutines.launch
+import androidx.compose.foundation.layout.Box
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun GeneratedWorkoutScreen(navController: NavController) {
     val coroutineScope = rememberCoroutineScope()
 
     var workoutRoutine by remember { mutableStateOf<WorkoutRoutine?>(null) }
     var editableWorkout by remember { mutableStateOf<MutableList<EditableWorkoutDay>>(mutableListOf()) }
+    val userId = "1";
 
     LaunchedEffect(Unit) {
         coroutineScope.launch {
-            val fetchedWorkout = WorkoutApi.getWorkout() // Your GET API Call
+            val fetchedWorkout = WorkoutApi.getWorkout(userId)
             workoutRoutine = fetchedWorkout
-            editableWorkout = fetchedWorkout.schedule.map { day ->
+            editableWorkout = fetchedWorkout.schedule.mapIndexed { index, day ->
+                val exercisesRaw = day.exercise_sets ?: day.exercises ?: emptyList()
                 EditableWorkoutDay(
-                    day = day.day,
-                    exercises = day.exercises.map { ex ->
+                    day = "Day ${index + 1}",
+                    exercises = exercisesRaw.map { ex ->
                         EditableExercise(
-                            name = ex.name,
+                            exerciseId = ex.exercise_id,
                             sets = ex.sets,
                             reps = ex.reps,
-                            weight = ex.weight // Initially no weight
+                            weight = ex.weights
                         )
                     }.toMutableList()
                 )
@@ -46,11 +51,7 @@ fun GeneratedWorkoutScreen(navController: NavController) {
     }
 
     if (workoutRoutine == null) {
-        // Loading state
-        Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center
-        ) {
+        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
             CircularProgressIndicator()
         }
     } else {
@@ -60,6 +61,14 @@ fun GeneratedWorkoutScreen(navController: NavController) {
                 .padding(16.dp)
         ) {
             items(editableWorkout) { day ->
+                var expanded by remember { mutableStateOf(false) }
+                var selectedExerciseName by remember { mutableStateOf("") }
+                var sets by remember { mutableStateOf("") }
+                var reps by remember { mutableStateOf("") }
+                var weight by remember { mutableStateOf("") }
+                var dropdownExpanded by remember { mutableStateOf(false) }
+                val exerciseNames = ExerciseMappings.nameToId.keys.toList()
+
                 Card(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -76,7 +85,7 @@ fun GeneratedWorkoutScreen(navController: NavController) {
                                 modifier = Modifier.fillMaxWidth()
                             ) {
                                 Text(
-                                    text = "• ${exercise.name} - ${exercise.sets} sets, ${exercise.reps} reps",
+                                    text = "• ${ExerciseMappings.getExerciseName(exercise.exerciseId)} - ${exercise.sets} sets, ${exercise.reps} reps",
                                     modifier = Modifier.weight(1f)
                                 )
                                 IconButton(onClick = {
@@ -91,14 +100,102 @@ fun GeneratedWorkoutScreen(navController: NavController) {
                                 }
                             }
                         }
+
                         Spacer(modifier = Modifier.height(8.dp))
-                        AddExerciseSection(day.day) { newExercise ->
-                            val updatedExercises = day.exercises.toMutableList()
-                            updatedExercises.add(newExercise)
-                            val updatedDay = day.copy(exercises = updatedExercises)
-                            editableWorkout = editableWorkout.map {
-                                if (it.day == day.day) updatedDay else it
-                            }.toMutableList()
+
+                        Button(onClick = { expanded = !expanded }) {
+                            Icon(imageVector = Icons.Default.Add, contentDescription = "Add Exercise")
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text("Add Exercise")
+                        }
+
+                        if (expanded) {
+                            Spacer(modifier = Modifier.height(8.dp))
+
+                            // Dropdown for Exercise Name
+                            ExposedDropdownMenuBox(
+                                expanded = dropdownExpanded,
+                                onExpandedChange = { dropdownExpanded = !dropdownExpanded }
+                            ) {
+                                OutlinedTextField(
+                                    readOnly = true,
+                                    value = selectedExerciseName,
+                                    onValueChange = {},
+                                    label = { Text("Select Exercise") },
+                                    trailingIcon = {
+                                        ExposedDropdownMenuDefaults.TrailingIcon(expanded = dropdownExpanded)
+                                    },
+                                    modifier = Modifier.menuAnchor().fillMaxWidth()
+                                )
+                                ExposedDropdownMenu(
+                                    expanded = dropdownExpanded,
+                                    onDismissRequest = { dropdownExpanded = false }
+                                ) {
+                                    exerciseNames.forEach { name ->
+                                        DropdownMenuItem(
+                                            text = { Text(name) },
+                                            onClick = {
+                                                selectedExerciseName = name
+                                                dropdownExpanded = false
+                                            }
+                                        )
+                                    }
+                                }
+                            }
+
+                            Spacer(modifier = Modifier.height(8.dp))
+
+                            OutlinedTextField(
+                                value = sets,
+                                onValueChange = { sets = it },
+                                label = { Text("Sets") },
+                                modifier = Modifier.fillMaxWidth()
+                            )
+                            Spacer(modifier = Modifier.height(8.dp))
+                            OutlinedTextField(
+                                value = reps,
+                                onValueChange = { reps = it },
+                                label = { Text("Reps") },
+                                modifier = Modifier.fillMaxWidth()
+                            )
+                            Spacer(modifier = Modifier.height(8.dp))
+                            OutlinedTextField(
+                                value = weight,
+                                onValueChange = { weight = it },
+                                label = { Text("Weight (optional)") },
+                                modifier = Modifier.fillMaxWidth()
+                            )
+                            Spacer(modifier = Modifier.height(8.dp))
+
+                            Button(
+                                onClick = {
+                                    val exerciseId = ExerciseMappings.getExerciseId(selectedExerciseName)
+                                    if (exerciseId != -1 && sets.isNotBlank() && reps.isNotBlank()) {
+                                        val newExercise = EditableExercise(
+                                            exerciseId = exerciseId,
+                                            sets = sets.toIntOrNull() ?: 0,
+                                            reps = reps.toIntOrNull() ?: 0,
+                                            weight = weight.toFloatOrNull() ?: 0f
+                                        )
+                                        val updatedExercises = day.exercises.toMutableList()
+                                        updatedExercises.add(newExercise)
+                                        val updatedDay = day.copy(exercises = updatedExercises)
+                                        editableWorkout = editableWorkout.map {
+                                            if (it.day == day.day) updatedDay else it
+                                        }.toMutableList()
+
+                                        // Reset form
+                                        expanded = false
+                                        selectedExerciseName = ""
+                                        sets = ""
+                                        reps = ""
+                                        weight = ""
+                                    }
+                                },
+                                modifier = Modifier.align(Alignment.End)
+                            ) {
+                                Text("Confirm")
+                            }
                         }
                     }
                 }
@@ -107,74 +204,3 @@ fun GeneratedWorkoutScreen(navController: NavController) {
     }
 }
 
-@Composable
-fun AddExerciseSection(day: String, onAdd: (EditableExercise) -> Unit) {
-    var expanded by remember { mutableStateOf(false) }
-    var selectedExercise by remember { mutableStateOf("") }
-    var sets by remember { mutableStateOf("") }
-    var reps by remember { mutableStateOf("") }
-    var weight by remember { mutableStateOf("") }
-
-    Column {
-        Button(onClick = { expanded = !expanded }) {
-            Icon(imageVector = Icons.Default.Add, contentDescription = "Add Exercise")
-            Spacer(modifier = Modifier.width(8.dp))
-            Text("Add Exercise")
-        }
-
-        if (expanded) {
-            Spacer(modifier = Modifier.height(8.dp))
-            OutlinedTextField(
-                value = selectedExercise,
-                onValueChange = { selectedExercise = it },
-                label = { Text("Exercise Name") },
-                modifier = Modifier.fillMaxWidth()
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            OutlinedTextField(
-                value = sets,
-                onValueChange = { sets = it },
-                label = { Text("Sets") },
-                modifier = Modifier.fillMaxWidth()
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            OutlinedTextField(
-                value = reps,
-                onValueChange = { reps = it },
-                label = { Text("Reps") },
-                modifier = Modifier.fillMaxWidth()
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            OutlinedTextField(
-                value = weight,
-                onValueChange = { weight = it },
-                label = { Text("Weight (optional)") },
-                modifier = Modifier.fillMaxWidth()
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            Button(
-                onClick = {
-                    if (selectedExercise.isNotBlank() && sets.isNotBlank() && reps.isNotBlank()) {
-                        onAdd(
-                            EditableExercise(
-                                name = selectedExercise,
-                                sets = sets.toIntOrNull() ?: 0,
-                                reps = reps,
-                                weight = weight
-                            )
-                        )
-                        // Reset fields after adding
-                        expanded = false
-                        selectedExercise = ""
-                        sets = ""
-                        reps = ""
-                        weight = ""
-                    }
-                },
-                modifier = Modifier.align(Alignment.End)
-            ) {
-                Text("Confirm")
-            }
-        }
-    }
-}
