@@ -13,7 +13,7 @@ if api_key is None:
 
 client = genai.Client(api_key=api_key)
 
-def generate_workout_routine(form_text, max_input_len=4000, max_output_len=10000):
+def generate_workout_routine(form_text, max_input_len=5000, max_output_len=10000):
     try:
         # Clean and curtail input
         cleaned_input = form_text.strip()[:max_input_len]
@@ -27,20 +27,35 @@ def generate_workout_routine(form_text, max_input_len=4000, max_output_len=10000
         # Ask for JSON only
         #Make sure that the exercise follows the list of recognized exercises provided above.
         #"and ensure that it follows the recognized exercises in the  + recognized_exercise + and given  + history +"
+        #approved_exercise_list = db.getExercises()
+        approved_exercise_list = [{1, 'Bench Press'}, {2, 'Dips'}, {3, 'Back Squat'}, {4, 'Front Squat'}, {5, 'Barbell Row'}, {6, 'Bent-over Dumbell Row'}, {7, 'Box Jumps'}, {8, 'Bulgarian Split Squat'}, {9, 'Chest Fly'}, {10, 'Clean and Press'}, {11, 'Deadlift'}, {12, 'Incline Bench Press'}, {13, 'Decline Bench Press'}, {14, 'Kettlebell Swings'}, {15, 'Lunges'}, {16, 'Mountain Climbers'}, {17, 'Overhead Press'}, {18, 'Plank'}, {19, 'Power Clean'}, {20, 'Pull-ups'}, {21, 'Push-ups'}, {22, 'Sit-ups'}, {23, 'Romanian Deadlift'}, {24, 'Russian Twists'}, {25, 'Hip Thrust'}, {26, 'Wall Balls'}, {27, 'Lateral Raises'}, {28, 'Egyptian Lateral Raise'}, {29, 'Jogging'}, {30, 'Running'}, {31, 'Sprinting'}, {32, 'Goblet Squats'}, {33, 'Leg Press'}, {34, 'Calf Raises'}, {35, 'Leg Extension'}, {36, 'Leg Curls'}, {37, 'Good mornings'}, {38, 'Single-Leg Deadlift'}, {39, 'Triceps Extension'}, {40, 'Skull Crushers'}, {41, 'Tricep Pushdown'}, {42, 'Diamond Push-ups'}, {43, 'Dumbell Bench Press'}, {44, 'Close-grip Bench Press'}, {45, 'Close-grip Dumbell Bench Press'}, {46, 'Bird Dog'}, {47, 'Heel Tap'}, {48, 'Side Plank'}, {49, 'Side Plank with Dips'}, {50, 'Flutter Kicks'}, {51, 'Dead Bugs'}, {52, 'V-ups'}]
+
         final_prompt = (
-            cleaned_input + 
+            cleaned_input +
             """
             Respond ONLY with a raw JSON object (not a string or code block). Do NOT wrap in quotes, markdown, or escape characters. Ensure it is directly parseable by json.loads().
             Generate a workout routine. Do not add any explanation.
             Ensure the response is complete and NOT truncated. Also have it conform to this format
             as an example
-            {'workout_routine': {'days_per_week': 5, 'focus': 'Core', 'experience_level': 'Intermediate', 'location': 'Gym', 'schedule': [{'day': '1', 'exercises': [{'name': 'Plank', 'sets': '3', 'reps': '60 seconds', 'weights': '0'}, {'name': 'Russian Twists', 'sets': '3', 'reps': '20', 'weights': '5'}, {'name': 'Hanging Leg Raises', 'sets': '3', 'reps': '15', 'weights': '0'}]}, {'day': '2', 'exercises': [{'name': 'Crunches', 'sets': '3', 'reps': '15', 'weights': '0'}, {'name': 'Leg Raises', 'sets': '3', 'reps': '15', 'weights': '0'}, {'name': 'Bicycle Crunches', 'sets': '3', 'reps': '15', 'weights': '0'}]}, {'day': '3', 'exercises': [{'name': 'Side Plank', 'sets': '3', 'reps': '60 seconds', 'weights': '0'}, {'name': 'Woodchops', 'sets': '3', 'reps': '15', 'weights': '10'}, {'name': 'Dead Bug', 'sets': '3', 'reps': '15', 'weights': '0'}]}, {'day': '4', 'exercises': [{'name': 'Reverse Crunches', 'sets': '3', 'reps': '20', 'weights': '0'}, {'name': 'Flutter Kicks', 'sets': '3', 'reps': '30', 'weights': '0'}, {'name': 'Heel Touches', 'sets': '3', 'reps': '20', 'weights': '0'}]}, {'day': '5', 'exercises': [{'name': 'Cable Crunch', 'sets': '3', 'reps': '15', 'weights': '15'}, {'name': 'Hyperextensions', 'sets': '3', 'reps': '20', 'weights': '0'}, {'name': 'Barbell Rollout', 'sets': '3', 'reps': '12', 'weights': '0'}]}]}}
-            Makes sure it includes name, sets, reps, and weights for each exercise. Make sure exercises for each day are grouped appropriately
-            and not over the place like day 1 having bicep curls and squats. 
-            Also keep in mind experience level as Beginners should not be doing too many exercises or should start at low weights, Intermediate should either increase reps, more exercises, or increase weight, Advanced should either increase reps, more exercises, or increase weight too but more than at Intermediate
+            {"workout_routine":{"creation_date": "2025-04-28","schedule":[{"workout_id" : 2,"exercise_sets":[{"exercise_id":1,"sets":"3","reps":"8","weights":52.5,},{"exercise_id":12,"sets":"3","reps":"8","weights":42.5},{"exercise_id":"45","sets":"3","reps":"8","weights":42.5},{"exercise_id":"56","sets":"3","reps":"8","weights":27.5},{"exercise_id":"35","sets":"3","reps":"10","weights":22.5},{"exercise_id":"22","sets":"3","reps":"12","weights":32.5}]},{"workout_id" : 2,"exercises":[{"exercise_id":"12","sets":"1","reps":"5","weights":65.0},{"exercise_id":"45","sets":"3","reps":"10","weights":85.0},{"exercise_id":"32","sets":"3","reps":"8","weights":50.0},{"exercise_id":"27","sets":"3","reps":"10","weights":17.5},{"exercise_id":"56","sets":"3","reps":"10","weights":17.5},{"exercise_id":"13","sets":"3","reps":"10","weights":42.5}]},{"workout_id" : 2,"exercises":[{"exercise_id":"3","sets":"3","reps":"8","weights":0.0},{"exercise_id":"5","sets":"3","reps":"12","weights":12.5},{"exercise_id":"6","sets":"3","reps":"12","weights":12.5},{"exercise_id":"18","sets":"3","reps":"12","weights":17.5},{"exercise_id":"9","sets":"3","reps":"10","weights":50.0},{"exercise_id":"4","sets":"3","reps":"8","weights":15.0}]}]}}
+            Makes sure it includes exercise_id number, sets, reps, and weights for each exercise. Make sure exercises for each day are grouped appropriately
+            and not over the place like day 1 having bicep curls and squats.
+            Also ensure that we don't get leg exercises or chest exercises in core exercises.
+            Create a workout with exercise names first and then convert each name to its corresponding exercise_id number provided below
+            Do not output the exercise name.
+            Make sure all exercises you give are within the approved_exercise_list.
+            Make sure all exercise_id numbers you give are within the approved_exercise_list number length 
+            approved_exercise_list is this:  approved_exercise_list = [{1, 'Bench Press'}, {2, 'Dips'}, {3, 'Back Squat'}, {4, 'Front Squat'}, {5, 'Barbell Row'}, {6, 'Bent-over Dumbell Row'}, {7, 'Box Jumps'}, {8, 'Bulgarian Split Squat'}, {9, 'Chest Fly'}, {10, 'Clean and Press'}, {11, 'Deadlift'}, {12, 'Incline Bench Press'}, {13, 'Decline Bench Press'}, {14, 'Kettlebell Swings'}, {15, 'Lunges'}, {16, 'Mountain Climbers'}, {17, 'Overhead Press'}, {18, 'Plank'}, {19, 'Power Clean'}, {20, 'Pull-ups'}, {21, 'Push-ups'}, {22, 'Sit-ups'}, {23, 'Romanian Deadlift'}, {24, 'Russian Twists'}, {25, 'Hip Thrust'}, {26, 'Wall Balls'}, {27, 'Lateral Raises'}, {28, 'Egyptian Lateral Raise'}, {29, 'Jogging'}, {30, 'Running'}, {31, 'Sprinting'}, {32, 'Goblet Squats'}, {33, 'Leg Press'}, {34, 'Calf Raises'}, {35, 'Leg Extension'}, {36, 'Leg Curls'}, {37, 'Good mornings'}, {38, 'Single-Leg Deadlift'}, {39, 'Triceps Extension'}, {40, 'Skull Crushers'}, {41, 'Tricep Pushdown'}, {42, 'Diamond Push-ups'}, {43, 'Dumbell Bench Press'}, {44, 'Close-grip Bench Press'}, {45, 'Close-grip Dumbell Bench Press'}, {46, 'Bird Dog'}, {47, 'Heel Tap'}, {48, 'Side Plank'}, {49, 'Side Plank with Dips'}, {50, 'Flutter Kicks'}, {51, 'Dead Bugs'}, {52, 'V-ups'}]
+            Also keep in mind experience level as Beginners should not be doing too many exercises and or should start at low weights, Intermediate should either increase reps, more exercises, or increase weight, Advanced should either increase reps, more exercises, or increase weight too but more than at Intermediate
+            For example, Beginners may do 3-5 exercises, Intermediate may do 5-6 exercises, and Advanced may do 6-8 exercises
             Avoid using Moderate for weights or 50-70% 1RM. Make an actual workout regimen.
             Also no need to add per dumbell or per leg as we will have images for each exercise.
             Try to avoid having a range for reps except when the exercise is timed, just settle on a reasonable number based on their experience_level.
+            When an exercise is typically timed in seconds you can say in reps the number of seconds.
+            For example with plank exercises
+            When an exercise is typically timed in minutes you can say in reps the number of minutes.
+            For example with Jogging exercises
+            All weights should return a float number.
             If the user says their workout style is until failure reps should say Until Failure
             If you do respond with As Many Reps as Possible change that response to Until Failure.
             If a user says their workout style is descending pyramid make weights have different weights based on the number of sets like 'sets': '3', 'weights': '20, 15, 10'
@@ -85,8 +100,8 @@ def generate_workout_routine_with_history(form_text, max_input_len=4000, max_out
             Generate a workout routine. Do not add any explanation.
             Ensure the response is complete and NOT truncated. Also have it conform to this format
             as an example
-            {'workout_routine': {'days_per_week': 5, 'focus': 'Core', 'experience_level': 'Intermediate', 'location': 'Gym', 'schedule': [{'day': '1', 'exercises': [{'name': 'Plank', 'sets': '3', 'reps': '60 seconds', 'weights': '0'}, {'name': 'Russian Twists', 'sets': '3', 'reps': '20', 'weights': '5'}, {'name': 'Hanging Leg Raises', 'sets': '3', 'reps': '15', 'weights': '0'}]}, {'day': '2', 'exercises': [{'name': 'Crunches', 'sets': '3', 'reps': '15', 'weights': '0'}, {'name': 'Leg Raises', 'sets': '3', 'reps': '15', 'weights': '0'}, {'name': 'Bicycle Crunches', 'sets': '3', 'reps': '15', 'weights': '0'}]}, {'day': '3', 'exercises': [{'name': 'Side Plank', 'sets': '3', 'reps': '60 seconds', 'weights': '0'}, {'name': 'Woodchops', 'sets': '3', 'reps': '15', 'weights': '10'}, {'name': 'Dead Bug', 'sets': '3', 'reps': '15', 'weights': '0'}]}, {'day': '4', 'exercises': [{'name': 'Reverse Crunches', 'sets': '3', 'reps': '20', 'weights': '0'}, {'name': 'Flutter Kicks', 'sets': '3', 'reps': '30', 'weights': '0'}, {'name': 'Heel Touches', 'sets': '3', 'reps': '20', 'weights': '0'}]}, {'day': '5', 'exercises': [{'name': 'Cable Crunch', 'sets': '3', 'reps': '15', 'weights': '15'}, {'name': 'Hyperextensions', 'sets': '3', 'reps': '20', 'weights': '0'}, {'name': 'Barbell Rollout', 'sets': '3', 'reps': '12', 'weights': '0'}]}]}}
-            Makes sure it includes name, sets, reps, and weights for each exercise. Make sure exercises for each day are grouped appropriately
+            {"workout_routine":{"creation_date": "2025-04-28","schedule":[{"workout_id" : 2,"exercise_sets":[{"exercise_id":1,"sets":"3","reps":"8","weights":52.5,},{"exercise_id":12,"sets":"3","reps":"8","weights":42.5},{"exercise_id":"45","sets":"3","reps":"8","weights":42.5},{"exercise_id":"56","sets":"3","reps":"8","weights":27.5},{"exercise_id":"35","sets":"3","reps":"10","weights":22.5},{"exercise_id":"22","sets":"3","reps":"12","weights":32.5}]},{"workout_id" : 2,"exercises":[{"exercise_id":"12","sets":"1","reps":"5","weights":65.0},{"exercise_id":"45","sets":"3","reps":"10","weights":85.0},{"exercise_id":"32","sets":"3","reps":"8","weights":50.0},{"exercise_id":"87","sets":"3","reps":"10","weights":17.5},{"exercise_id":"56","sets":"3","reps":"10","weights":17.5},{"exercise_id":"13","sets":"3","reps":"10","weights":42.5}]},{"workout_id" : 2,"exercises":[{"exercise_id":"3","sets":"3","reps":"8","weights":0.0},{"exercise_id":"5","sets":"3","reps":"12","weights":12.5},{"exercise_id":"6","sets":"3","reps":"12","weights":12.5},{"exercise_id":"78","sets":"3","reps":"12","weights":17.5},{"exercise_id":"9","sets":"3","reps":"10","weights":50.0},{"exercise_id":"4","sets":"3","reps":"8","weights":15.0}]}]}}
+            Makes sure it includes exercise_id number, sets, reps, and weights for each exercise. Make sure exercises for each day are grouped appropriately
             and not over the place like day 1 having bicep curls and squats. 
             Also keep in mind experience level as Beginners should not be doing too many exercises or should start at low weights, Intermediate should either increase reps, more exercises, or increase weight, Advanced should either increase reps, more exercises, or increase weight too but more than at Intermediate
             Avoid using Moderate for weights or 50-70% 1RM. Make an actual workout regimen.
@@ -96,6 +111,7 @@ def generate_workout_routine_with_history(form_text, max_input_len=4000, max_out
             If you do respond with As Many Reps as Possible change that response to Until Failure.
             If a user says their workout style is descending pyramid make weights have different weights based on the number of sets like 'sets': '3', 'weights': '20, 15, 10'
             If the user says to include my history try giving the same exercises or very similar ones to last week
+            Make sure that for weights it is a floating point number or floating point number list, it cannot have Bodyweight as a response
             """
         )
 
@@ -132,19 +148,18 @@ def clean_and_parse_json(raw_text):
             return {"error": "Response is not valid JSON", "raw": cleaned}
 
 # # Sample form data
-# form_input = """
-# I am a Male 25 years of age
-# My height is 5'6 and weight is 55 kgs
-# My goal is Muscle Gain
-# My experience is Intermediate
-# I am willing to work 3 days a week
-# I will workout from my gym
-# I want to build my every muscles
-# Give me a workout routine only for targeted muscle
-# Include my history to generate a workout for this week
-# """
+form_input = """
+I am a Male 25 years of age
+My height is 5'6 and weight is 55 kgs
+My goal is Muscle Gain
+My experience is Beginner
+I am willing to work 2 days a week
+I will workout from my gym
+I want to build my core muscles
+Give me a workout routine only for targeted muscle
+"""
 # #Add a plank exercise for each day
 # #Focus on a descending pyramid workout style
 # #Include a cardio exercise at the end of each day
-# # result = generate_workout_routine_with_history(form_input)
-# # print(result)
+result = generate_workout_routine(form_input)
+print(result)
