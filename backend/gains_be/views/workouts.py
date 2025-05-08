@@ -40,7 +40,7 @@ def update_exercise_set(exercise_set_object):
     if it is acceptable, return the exercise set. If not, raise an exception. 
     '''
     try:
-        exercise_set_id = exercise_set_object['exercise_set_id']
+        exercise_set_id = exercise_set_object.get('exercise_set_id')
         if not exercise_set_id:
             raise ValueError('exercise_set_id is required')
             
@@ -52,11 +52,12 @@ def update_exercise_set(exercise_set_object):
         # Update the exercise set fields
         fields_to_update = ['exercise_id', 'sets', 'reps', 'weight', 'is_done']
         for field in exercise_set_object:
-            if field in fields_to_update:
-                setattr(exercise_set, field, exercise_set_object[field])
-            else:
-                raise ValueError(f'Invalid field: {field}')            
-        return exercise_set        
+            print(field)
+            # if field in fields_to_update:
+            #     setattr(exercise_set, field, exercise_set_object[field])
+            # else:
+            #     raise ValueError(f'Invalid field: {field}')            
+        return exercise_set
     except KeyError as e:
         raise ValueError(f'Missing required field: {str(e)}')
     except Exception as e:
@@ -81,36 +82,37 @@ def delete_old_exercise_sets(set_old_exercise_sets_ids, set_new_exercise_sets_id
 # NEED TO TEST
 @csrf_exempt
 @require_http_methods(["PUT"])
-def update_workout(request): 
+def update_workout(request, user_id): 
     '''Given a workout id, update the workout, or return a json response with an error.'''
     try:
         data = json.loads(request.body)
         workout_object = data.get('workout')
         workout_id = workout_object['workout_id']
         workout = Workout.objects.get(workout_id=workout_id)        
-        if workout_object['execution_date']: 
+        if workout_object.get('execution_date'): 
             workout.execution_date = workout_object['execution_date']
 
         new_exercise_sets = workout_object['exercise_sets']
         if not new_exercise_sets: 
             raise ValueError('No exercise sets provided')
 
+        # print([exercise_set.get('exercise_set_id') for exercise_set in new_exercise_sets])
         exercise_set_objects_to_save = [update_exercise_set(exercise_set) for exercise_set in new_exercise_sets]
         
-        # all exercises and workouts are valid
-        # delete old exercise sets that are not in the new workout
-        set_old_exercise_sets_ids = set([exercise_set.set_id for exercise_set in workout.exercise_sets.all()])
-        set_new_exercise_sets_ids = set([exercise_set.set_id for exercise_set in exercise_set_objects_to_save])
-        delete_old_exercise_sets(set_old_exercise_sets_ids, set_new_exercise_sets_ids)
-        workout.exercise_sets.set(exercise_set_objects_to_save)
+        # # all exercises and workouts are valid
+        # # delete old exercise sets that are not in the new workout
+        # set_old_exercise_sets_ids = set([exercise_set.exercise_set_id for exercise_set in workout.exercise_sets.all()])
+        # set_new_exercise_sets_ids = set([exercise_set.exercise_set_id for exercise_set in exercise_set_objects_to_save])
+        # delete_old_exercise_sets(set_old_exercise_sets_ids, set_new_exercise_sets_ids)
+        # workout.exercise_sets.set(exercise_set_objects_to_save)
 
-        # save all exercise sets and workout and return payload
-        for exercise_set in exercise_set_objects_to_save:
-            exercise_set.save()
-        workout.save()
+        # # save all exercise sets and workout and return payload
+        # for exercise_set in exercise_set_objects_to_save:
+        #     exercise_set.save()
+        # workout.save()
         return JsonResponse({
             'message': 'Successfully updated workout',
-            'workout': serialize_workout(workout)
+            # 'workout': serialize_workout(workout)
         })
         
     except json.JSONDecodeError:
