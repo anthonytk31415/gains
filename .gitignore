@@ -10,3 +10,20 @@ venv/
 
 # Kotlin/Gradle
 **/.gradle/
+build/
+
+# Android Studio
+.idea/
+*.iml
+
+# Build output
+app/build/
+*/build/
+
+# Kotlin specific
+*.class
+*.jar
+*.dex
+
+# Other temporary/intermediate files
+local.properties
