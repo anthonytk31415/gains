@@ -1,12 +1,63 @@
+# Django imports
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.http import require_http_methods
 from ..models import Workout, ExerciseSet, Exercise, User
 from django.core.serializers import serialize
 from django.views.decorators.csrf import csrf_exempt
 import json
-from ..services.gemini_service import generate_workout_routine
+from ..services.gemini_service import generate_workout_routine, format_llm_workout
 import datetime
 from datetime import datetime as dt
+
+
+
+
+class ExerciseSetData: 
+    def __init__(self, exercise_id, sets, reps, weight): 
+        self.exercise_id = exercise_id
+        self.sets = sets
+        self.reps = reps
+        self.weight = weight 
+        
+    def __str__(self):
+        return "exercise_id: {}, reps: {}, sets: {}, weight: {}".format(self.exercise_id, self.reps, self.sets, self.weight)
+        
+    def get_json_properties(self): 
+        return {
+            "exercise_id": self.exercise_id,
+            "sets": self.sets,
+            "reps": self.reps, 
+            "weight": self.weight, 
+            "is_done": False
+        }
+
+
+def get_workout_objects(schedule_llm): 
+    """given LLM output, get the workout frontend payload"""
+    workouts = []
+    for workout in schedule_llm: 
+        # print("workout: ", i)
+        exercise_sets = []
+        for exercise_set in workout: 
+            ex_object = ExerciseSetData(exercise_set['exercise_id'], exercise_set['sets'], exercise_set['reps'], exercise_set['weight'])        
+            exercise_sets.append(ex_object.get_json_properties())
+            # print(ex_object)
+        clean_workout = {
+            "created_at": datetime.date.today(),
+            "exercise_sets": exercise_sets
+        }
+        workouts.append(clean_workout)
+    return workouts
+
+def build_exercise_set(exercise_set_data, workout):
+    '''Given an exercise set data, return an exercise set object.'''
+    return ExerciseSet.objects.create(
+        workout=workout,
+        exercise_id=exercise_set_data['exercise_id'],
+        sets=exercise_set_data['sets'],
+        reps=exercise_set_data['reps'],
+        weight=exercise_set_data['weight']
+    )
 
 
 def serialize_exercise_set(exercise_set): 
@@ -97,7 +148,7 @@ def update_workout(request, user_id):
             raise ValueError('No exercise sets provided')
 
         # print([exercise_set.get('exercise_set_id') for exercise_set in new_exercise_sets])
-        exercise_set_objects_to_save = [update_exercise_set(exercise_set) for exercise_set in new_exercise_sets]
+        # exercise_set_objects_to_save = [update_exercise_set(exercise_set) for exercise_set in new_exercise_sets]
         
         # # all exercises and workouts are valid
         # # delete old exercise sets that are not in the new workout
@@ -112,6 +163,7 @@ def update_workout(request, user_id):
         # workout.save()
         return JsonResponse({
             'message': 'Successfully updated workout',
+            # 'workout': workout_object
             # 'workout': serialize_workout(workout)
         })
         
@@ -123,7 +175,7 @@ def update_workout(request, user_id):
 @csrf_exempt
 @require_http_methods(["GET"])
 def get_workouts(request, user_id):     
-    '''Given a user_id, return all workouts for the last week.'''
+    '''Given a user_id, return all workouts.'''
     try:
         if not user_id:
             return JsonResponse({'error': 'user_id is required'}, status=400)            
@@ -244,8 +296,15 @@ def get_this_month_workouts(request):
 def create_workout(request): 
     pass
 
-def delete_workout(request): 
-    pass
+def delete_workout(request, user_id, workout_id):
+    '''Given a user_id and a workout_id, delete the workout. Cascade delete the exercise sets.'''
+    try:            
+        workout = Workout.objects.get(workout_id=workout_id)
+        workout.delete()
+    except Workout.DoesNotExist:
+        return JsonResponse({'error': 'Workout not found'}, status=404)
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
 
 def mark_exercise_set_done(request): 
     pass
@@ -300,20 +359,18 @@ def generate_workout(request, user_id):
         
         # call LLM and get the workout 
         # create dummy workout id as a placeholder
-        print("calling LLM for workout...")
-        workout_id = 123
-        workout_data = generate_workout_routine(form_text)
+        # print("calling LLM for workout...")
 
-        if 'error' in workout_data:
-            return JsonResponse({'error': workout_data['error']}, status=500)
+        workouts_data_llm = generate_workout_routine(form_text)
+        workkouts_data = get_workout_objects(workouts_data_llm)
+        # workout_data = format_llm_workout(workout_data_llm)
+        print("workkouts_data: ", workkouts_data)
+        if 'error' in workouts_data_llm:
+            return JsonResponse({'error': workouts_data_llm['error']}, status=500)
 
         return JsonResponse({
             'message': 'Successfully created workout',
-            'workout': {
-                'workout_id': workout_id,
-                'workout_data': workout_data,
-                # 'email': email
-            }
+            'schedule': workkouts_data
         })
         
     except json.JSONDecodeError:
