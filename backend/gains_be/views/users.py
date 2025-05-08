@@ -13,7 +13,7 @@ def create_user(request):
     try:
         data = json.loads(request.body)
         # required fields
-        for field in ['email', 'password']:
+        for field in ['email']:  #maybe include password later
             if not data.get(field):
                 return JsonResponse({'error': f'{field} is required'}, status=400)
         
@@ -24,7 +24,6 @@ def create_user(request):
         # Create user with required fields and optional fields if provided
         user = User.objects.create(
             email=data.get('email'),
-            password=data.get('password'),
             dob=data.get('dob'),  
             height=data.get('height'),  
             weight=data.get('weight')  
@@ -62,6 +61,31 @@ def login_user(request):
 
 def delete_user(request): 
     pass
+
+
+def serialize_user(user): 
+    '''Given a user, return a dictionary of the user.'''
+    return {
+        # 'exercise_set_id': exercise_set.exercise_set_id,
+        'user_id': user.user_id,
+        'email': user.email,
+        'dob': user.dob,
+        'height': user.height,
+        'weight': user.weight
+    }
+
+@csrf_exempt
+@require_http_methods(["GET"])
+def get_user(request, user_id):
+    '''Given the user id, return the user.'''
+    try:
+        print("hello get user")
+        print(user_id)
+        user = User.objects.get(user_id=user_id)
+        return JsonResponse({'user': serialize_user(user)})
+    except User.DoesNotExist:
+        return JsonResponse({'error': 'User not found'}, status=404)
+
 
 # @require_http_methods(["GET"])
 # def get_all_users(request):
