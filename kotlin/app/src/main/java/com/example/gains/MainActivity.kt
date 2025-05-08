@@ -51,7 +51,7 @@ class MainActivity : ComponentActivity() {
                         ResetPassword(navController = navController)
                     }
                     composable("HomeNav") {
-                        HomeNavGraph(mainNavController = navController, username = "John Doe")
+                        HomeNavGraph(mainNavController = navController, username = UserSession.userId)
                     }
                 }
             }
