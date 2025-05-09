@@ -93,7 +93,7 @@ def is_valid_exercise_set_object(exercise_set_object):
     if not exercise_set_object: 
         return False
     for field in ['exercise_id', 'sets', 'reps', 'weight']:
-        if not exercise_set_object.get(field):
+        if field not in exercise_set_object:
             return False
     return True
 
@@ -167,33 +167,6 @@ def get_workouts(request, user_id):
         return JsonResponse({'workouts': workouts_data})    
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
-
-
-# -- need upated; do we need?
-# @csrf_exempt
-# @require_http_methods(["GET"])
-# def get_workouts_by_date_range(request, start_date, end_date): 
-#     '''Given a user_id, Given a start date and end date, return all workouts in that date range.'''
-#     try:
-#         # Get user_id from query parameters
-#         user_id = request.GET.get('user_id')
-#         if not user_id:
-#             return JsonResponse({'error': 'user_id is required'}, status=400)
-
-#         # Get workouts within the date range for the user
-#         workouts = Workout.objects.select_related('user').prefetch_related(
-#             'exercise_sets__exercise'
-#         ).filter(
-#             user_id=user_id,
-#             execution_date__gte=start_date,
-#             execution_date__lte=end_date
-#         ).order_by('-execution_date')
-        
-#         workouts_data = [serialize_workout(workout) for workout in workouts]
-#         return JsonResponse({'workouts': workouts_data})
-        
-#     except Exception as e:
-#         return JsonResponse({'error': str(e)}, status=500)
 
 
 def get_last_week_range(date):
@@ -398,3 +371,82 @@ def save_workout(request, user_id):
     except Exception as e:
         print("Unexpected error:", str(e)) 
         return JsonResponse({'error': str(e)}, status=500)
+    
+
+
+@csrf_exempt
+@require_http_methods(["POST"])
+def save_schedule(request, user_id):
+    '''Save a schedule, a list of workouts from request data to the database.'''
+    try:
+        is_valid, err = is_valid_user_id(user_id)
+        if not is_valid:
+            return err
+        data = json.loads(request.body)        
+        schedule = data['schedule']
+        for workout_data in schedule: 
+            is_valid = is_valid_workout_object(workout_data)
+            if not is_valid:
+                print("Invalid workout object:", workout_data)
+                return JsonResponse({'error': 'Invalid workout object'}, status=400)
+        
+        # Create all workouts gracefully
+        workouts_created = []
+        for workout_data in schedule: 
+            try:
+                workout = Workout.objects.create(
+                    user_id=user_id,
+                    execution_date=dt.fromisoformat(workout_data['execution_date'].replace('Z', '+00:00')).date()
+                )
+                workouts_created.append(workout)
+            except Exception as e:
+                print("Error creating workout:", str(e)) 
+                workouts_created.apply(lambda x: x.delete())
+                return JsonResponse({'error': f'Failed to create workout: {str(e)}'}, status=500)
+            # Create exercise sets
+            for set_data in workout_data['exercise_sets']:
+                try:
+                    create_exercise_set(set_data, workout)
+                except Exception as e:
+                    workouts_created.apply(lambda x: x.delete())
+                    workout.delete()
+                    return JsonResponse({'error': f'Failed to create exercise set: {str(e)}'}, status=500)
+            return JsonResponse({
+                'message': 'Successfully saved workout',
+                'schedule': [serialize_workout(workout) for workout in workouts_created]
+            })
+        
+    except json.JSONDecodeError:
+        return JsonResponse({'error': 'Invalid JSON'}, status=400)
+    except Exception as e:
+        print("Unexpected error:", str(e)) 
+        return JsonResponse({'error': str(e)}, status=500)
+    
+
+
+
+# -- need upated; do we need?
+# @csrf_exempt
+# @require_http_methods(["GET"])
+# def get_workouts_by_date_range(request, start_date, end_date): 
+#     '''Given a user_id, Given a start date and end date, return all workouts in that date range.'''
+#     try:
+#         # Get user_id from query parameters
+#         user_id = request.GET.get('user_id')
+#         if not user_id:
+#             return JsonResponse({'error': 'user_id is required'}, status=400)
+
+#         # Get workouts within the date range for the user
+#         workouts = Workout.objects.select_related('user').prefetch_related(
+#             'exercise_sets__exercise'
+#         ).filter(
+#             user_id=user_id,
+#             execution_date__gte=start_date,
+#             execution_date__lte=end_date
+#         ).order_by('-execution_date')
+        
+#         workouts_data = [serialize_workout(workout) for workout in workouts]
+#         return JsonResponse({'workouts': workouts_data})
+        
+#     except Exception as e:
+#         return JsonResponse({'error': str(e)}, status=500)
