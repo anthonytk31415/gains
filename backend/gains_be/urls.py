@@ -35,7 +35,7 @@ urlpatterns = [
     path('api/<int:user_id>/workouts/save/', save_workout, name='save_workout'),
     path('api/<int:user_id>/workouts/all/', get_workouts, name='get_workouts'),
     
-    path('api/<int:user_id>/workouts/update/', update_workout, name='update_workout'),
+    path('api/<int:user_id>/workouts/<int:workout_id>/update/', update_workout, name='update_workout'),
 
     path('api/<int:user_id>/user/', get_user, name='get_user'),
     path('api/<int:user_id>/user/update/', update_user, name='update_user'),
