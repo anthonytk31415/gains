@@ -8,20 +8,24 @@
         "source": "C:\\Users\\james\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\mipmap-anydpi-v26\\ic_launcher_round.xml"
     },
     {
-        "merged": "C:\\Users\\james\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\mipmap-xhdpi_ic_launcher.webp.flat",
-        "source": "C:\\Users\\james\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\mipmap-xhdpi\\ic_launcher.webp"
+        "merged": "C:\\Users\\james\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\drawable_squats.png.flat",
+        "source": "C:\\Users\\james\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\drawable\\squats.png"
     },
     {
-        "merged": "C:\\Users\\james\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\mipmap-hdpi_ic_launcher.webp.flat",
-        "source": "C:\\Users\\james\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\mipmap-hdpi\\ic_launcher.webp"
+        "merged": "C:\\Users\\james\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\mipmap-xhdpi_ic_launcher.webp.flat",
+        "source": "C:\\Users\\james\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\mipmap-xhdpi\\ic_launcher.webp"
     },
     {
         "merged": "C:\\Users\\james\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\raw_exercises.json.flat",
         "source": "C:\\Users\\james\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\raw\\exercises.json"
     },
     {
-        "merged": "com.example.gains.app-debug-65:/drawable_squats.png.flat",
-        "source": "com.example.gains.app-main-67:/drawable/squats.png"
+        "merged": "C:\\Users\\james\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\mipmap-hdpi_ic_launcher.webp.flat",
+        "source": "C:\\Users\\james\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\mipmap-hdpi\\ic_launcher.webp"
+    },
+    {
+        "merged": "com.example.gains.app-debug-65:/xml_network_security_config.xml.flat",
+        "source": "com.example.gains.app-main-67:/xml/network_security_config.xml"
     },
     {
         "merged": "C:\\Users\\james\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\mipmap-xxhdpi_ic_launcher.webp.flat",
@@ -48,20 +52,16 @@
         "source": "C:\\Users\\james\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\drawable\\body_back.png"
     },
     {
-        "merged": "com.example.gains.app-debug-65:/raw_exercises.json.flat",
-        "source": "com.example.gains.app-main-67:/raw/exercises.json"
-    },
-    {
         "merged": "C:\\Users\\james\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\xml_data_extraction_rules.xml.flat",
         "source": "C:\\Users\\james\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\xml\\data_extraction_rules.xml"
     },
     {
-        "merged": "C:\\Users\\james\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\xml_network_security_config.xml.flat",
-        "source": "C:\\Users\\james\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\xml\\network_security_config.xml"
-    },
-    {
         "merged": "C:\\Users\\james\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\mipmap-mdpi_ic_launcher_round.webp.flat",
         "source": "C:\\Users\\james\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\mipmap-mdpi\\ic_launcher_round.webp"
+    },
+    {
+        "merged": "C:\\Users\\james\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\xml_network_security_config.xml.flat",
+        "source": "C:\\Users\\james\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\xml\\network_security_config.xml"
     },
     {
         "merged": "C:\\Users\\james\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\mipmap-anydpi-v26_ic_launcher.xml.flat",
@@ -80,10 +80,6 @@
         "source": "C:\\Users\\james\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\drawable\\shoulder_press.png"
     },
     {
-        "merged": "C:\\Users\\james\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\drawable_squat.png.flat",
-        "source": "C:\\Users\\james\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\drawable\\squat.png"
-    },
-    {
         "merged": "C:\\Users\\james\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\drawable_body_front.png.flat",
         "source": "C:\\Users\\james\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\drawable\\body_front.png"
     },
@@ -92,12 +88,12 @@
         "source": "C:\\Users\\james\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\mipmap-xxhdpi\\ic_launcher_round.webp"
     },
     {
-        "merged": "C:\\Users\\james\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\mipmap-xxxhdpi_ic_launcher.webp.flat",
-        "source": "C:\\Users\\james\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\mipmap-xxxhdpi\\ic_launcher.webp"
-    },
-    {
         "merged": "C:\\Users\\james\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\mipmap-xxxhdpi_ic_launcher_round.webp.flat",
         "source": "C:\\Users\\james\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\mipmap-xxxhdpi\\ic_launcher_round.webp"
+    },
+    {
+        "merged": "C:\\Users\\james\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\mipmap-xxxhdpi_ic_launcher.webp.flat",
+        "source": "C:\\Users\\james\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\mipmap-xxxhdpi\\ic_launcher.webp"
     },
     {
         "merged": "C:\\Users\\james\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\mipmap-hdpi_ic_launcher_round.webp.flat",
