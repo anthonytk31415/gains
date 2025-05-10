@@ -4,13 +4,14 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class WorkoutRoutine(
-    val creation_date: String,
     val schedule: List<WorkoutDay>
 )
 
 @Serializable
 data class WorkoutDay(
-    val workout_id: Int,
+    val workout_id: Int? = null,
+    val execution_date: String? = null,
+    val created_at: String,
     val exercise_sets: List<ExerciseDetail>? = null,
     val exercises: List<ExerciseDetail>? = null
 )
@@ -20,6 +21,6 @@ data class ExerciseDetail(
     val exercise_id: Int,
     val sets: Int,
     val reps: Int,
-    val weights: Float,
-    var isDone: Boolean = false
+    val weight: Float,
+    var is_done: Boolean = false
 )

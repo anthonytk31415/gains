@@ -33,6 +33,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import com.example.gains.UserSession
 import com.example.gains.onboarding.FirebaseAuthSingleton.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
@@ -228,12 +229,19 @@ fun Login(navController: NavController, modifier: Modifier = Modifier) {
                                 auth.signInWithEmailAndPassword(username, password)
                                     .addOnCompleteListener { task ->
                                         if (task.isSuccessful) {
-                                            navController.navigate("HomeNav") {
-                                                popUpTo("Login") {
-                                                    inclusive = true
-                                                } // Remove Login from back stack
-                                                launchSingleTop = true
-                                            }
+                                            UserSession.loadUserData(
+                                                onComplete = {
+                                                    val isNewAccount = false
+                                                    navController.navigate("HomeNav/$isNewAccount") {
+                                                        popUpTo("Login") { inclusive = true }
+                                                        launchSingleTop = true
+                                                    }
+                                                },
+                                                onError = { error ->
+                                                    Log.e("Login", "Failed to load user data: ${error.message}")
+                                                    Toast.makeText(context, "Failed to load user data", Toast.LENGTH_SHORT).show()
+                                                }
+                                            )
                                         } else {
                                             val errorMessage =
                                                 task.exception?.message ?: "Login failed"

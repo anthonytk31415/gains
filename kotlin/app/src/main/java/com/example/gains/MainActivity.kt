@@ -1,6 +1,7 @@
 package com.example.gains
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -10,6 +11,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.compose.composable
 import com.example.gains.ui.theme.GainsTheme
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import com.google.firebase.FirebaseApp
 
 //Navigation paths
@@ -50,8 +56,18 @@ class MainActivity : ComponentActivity() {
                     composable("ResetPassword") {
                         ResetPassword(navController = navController)
                     }
-                    composable("HomeNav") {
-                        HomeNavGraph(mainNavController = navController, username = UserSession.userId)
+                    composable(
+                        route = "HomeNav/{isNewAccount}",
+                        arguments = listOf(navArgument("isNewAccount") { type = NavType.StringType })
+                    )   { backStackEntry ->
+                        val isNewAccount = backStackEntry.arguments?.getString("isNewAccount")?.toBoolean() ?: false
+
+                        HomeNavGraph(
+                            mainNavController = navController,
+                            username = UserSession.username ?: "Unknown",
+                            email = UserSession.email ?: "Unknown",
+                            isNewAccount = isNewAccount
+                        )
                     }
                 }
             }

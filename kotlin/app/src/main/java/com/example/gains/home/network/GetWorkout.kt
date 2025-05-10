@@ -25,7 +25,7 @@ import kotlinx.serialization.json.Json
 
 object WorkoutApi {
 
-    suspend fun getWorkout(userId: String): WorkoutRoutine {
+    suspend fun getWorkout(userId: Int): WorkoutRoutine {
         val mockJson = """
              {
   
@@ -39,20 +39,20 @@ object WorkoutApi {
                                "exercise_id":1,
                                "sets":3,
                                "reps":8,
-                               "weights":52.5
+                               "weight":52.5
              		  
                             },
                             {
                                "exercise_id":2,
                                "sets":3,
                                "reps":8,
-                               "weights":42.5
+                               "weight":42.5
                             },
                             {
                                "exercise_id":3,
                                "sets":3,
                                "reps":8,
-                               "weights":42.5
+                               "weight":42.5
                             }
                          ]
                       },
@@ -65,19 +65,19 @@ object WorkoutApi {
                                "exercise_id":1,
                                "sets":1,
                                "reps":5,
-                               "weights":65.0
+                               "weight":65.0
                             },
                             {
                                "exercise_id":2,
                                "sets":3,
                                "reps":10,
-                               "weights":85.0
+                               "weight":85.0
                             },
                             {
                                "exercise_id":3,
                                "sets":3,
                                "reps":8,
-                               "weights":50.0
+                               "weight":50.0
                             }
                          ]
                       }

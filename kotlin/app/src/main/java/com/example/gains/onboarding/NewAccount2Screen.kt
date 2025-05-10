@@ -23,6 +23,7 @@ import androidx.navigation.NavController
 import android.widget.Toast
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import com.example.gains.UserSession
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.example.gains.onboarding.FirebaseAuthSingleton.auth
@@ -339,15 +340,20 @@ fun createNewUser(
                     "email" to email
                     ))
                     .addOnSuccessListener {
-                        Log.d("CreateUser", "Username added to Firestore successfully")
-                        Toast.makeText(context, "Account created successfully!", Toast.LENGTH_SHORT).show()
-                        onLoadingChange(false)
-                        Log.d("CreateUser", "Navigating to HomeScreen")
-                        Toast.makeText(context, "Navigating to Home", Toast.LENGTH_SHORT).show()
-                        navController.navigate("HomeNav") {
-                            popUpTo("Login") { inclusive = true }
-                            launchSingleTop = true
-                        }
+                        UserSession.loadUserData(
+                            onComplete = {
+                                onLoadingChange(false)
+                                val isNewAccount = true
+                                navController.navigate("HomeNav/$isNewAccount") {
+                                    popUpTo("Login") { inclusive = true }
+                                    launchSingleTop = true
+                                }
+                            },
+                            onError = { e ->
+                                Toast.makeText(context, "Error loading user data: ${e.message}", Toast.LENGTH_SHORT).show()
+                                onLoadingChange(false)
+                            }
+                        )
                     }
                     .addOnFailureListener { e ->
                         Toast.makeText(context, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
