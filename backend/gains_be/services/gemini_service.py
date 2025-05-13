@@ -13,6 +13,31 @@ if api_key is None:
 
 client = genai.Client(api_key=api_key)
 
+def build_llm_form(data):
+    ''' Helper functiont to build form data for generate_workout_routine call '''
+    age = data.get('age')
+    height = data.get('height')
+    weight = data.get('weight')
+    goal = data.get('goal')
+    experience = data.get('experience')  # Example: "Intermediate"
+    workout_days = data.get('workout_days', 5)  # Default to 5 days/week if not provided
+    location = data.get('location', 'Gym')  # Default to 'Gym'
+    muscle_focus = data.get('muscle_focus')
+
+    # Build the llm form here
+    form_text = f"""
+    I am a {age}-year-old individual.
+    My height is {height} and my weight is {weight} kgs.
+    My goal is {goal}.
+    My experience level is {experience}.
+    I am willing to work {workout_days} days a week.
+    I will workout from {location}.
+    I want to build my {muscle_focus} muscles.
+    Give me a workout routine only for targeted muscle.
+    """
+    return form_text
+
+
 def generate_workout_routine(form_text, max_input_len=5000, max_output_len=10000):
     try:
         # Clean and curtail input
