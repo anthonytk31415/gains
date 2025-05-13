@@ -204,7 +204,6 @@ def update_workout_helper(workout_data_object):
     ''' Assumes a valid data object'''
     workout_id = workout_data_object['workout_id']
     workout = Workout.objects.get(workout_id=workout_id)
-    print("doing workout update: ", workout)
 
     with transaction.atomic():
         # handle exercise_sets
@@ -213,12 +212,10 @@ def update_workout_helper(workout_data_object):
         for new_exercise_set in new_exercise_sets: 
             # udpate new ones 
             if 'exercise_set_id' in new_exercise_set and new_exercise_set['exercise_set_id'] != None: 
-                print("need to update exercise set: ", new_exercise_set)
                 update_exercise_set(new_exercise_set)
                 new_exercise_set_ids.append(new_exercise_set['exercise_set_id'])
             # create new ones if not in db
             else: 
-                print("need to create exercise set: ", new_exercise_set)
                 new_exercise_set_obj = create_exercise_set(new_exercise_set, workout)
                 new_exercise_set_ids.append(new_exercise_set_obj.exercise_set_id)
 
@@ -421,7 +418,7 @@ def save_schedule(request, user_id):
     except json.JSONDecodeError:
         return JsonResponse({'error': 'Invalid JSON'}, status=400)
     except Exception as e:
-        print("Unexpected error:", str(e)) 
+        logging.error(f"Unexpected error: {e}")
         return JsonResponse({'error': str(e)}, status=500)
     
 
