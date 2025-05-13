@@ -5,11 +5,9 @@ from ..models import Workout, ExerciseSet, Exercise, User
 from django.core.serializers import serialize
 from django.views.decorators.csrf import csrf_exempt
 import json
-from ..services.gemini_service import generate_workout_routine, format_llm_workout
+from ..services.gemini_service import generate_workout_routine, format_llm_workout, build_llm_form
 import datetime
 from datetime import datetime as dt
-
-
 
 
 class ExerciseSetData: 
@@ -30,6 +28,11 @@ class ExerciseSetData:
             "weight": self.weight, 
             "is_done": False
         }
+# to do: 
+# - add Schedule Data 
+# - add LLM input data
+
+
 
 def is_valid_user_id(user_id):
     '''Given a user_id, return a tuple of (is_valid, error_response).
@@ -264,29 +267,11 @@ def generate_workout(request, user_id):
         if not is_valid:
             return err
         data = json.loads(request.body)        
-        print("data for generate workout call: ", data)
+
+        # TO DO: extract data in a predefined object
 
         #Extracting the structured data from  the frontend
-        age = data.get('age')
-        height = data.get('height')
-        weight = data.get('weight')
-        goal = data.get('goal')
-        experience = data.get('experience')  # Example: "Intermediate"
-        workout_days = data.get('workout_days', 5)  # Default to 5 days/week if not provided
-        location = data.get('location', 'Gym')  # Default to 'Gym'
-        muscle_focus = data.get('muscle_focus')
-
-        # Build the llm form here
-        form_text = f"""
-        I am a {age}-year-old individual.
-        My height is {height} and my weight is {weight} kgs.
-        My goal is {goal}.
-        My experience level is {experience}.
-        I am willing to work {workout_days} days a week.
-        I will workout from {location}.
-        I want to build my {muscle_focus} muscles.
-        Give me a workout routine only for targeted muscle.
-        """
+        form_text = build_llm_form(data)
 
         if not form_text.strip():
             return JsonResponse({'error': 'Invalid or incomplete form data'}, status=400)
@@ -297,7 +282,6 @@ def generate_workout(request, user_id):
 
         workouts_data_llm = generate_workout_routine(form_text)
         workkouts_data = get_workout_objects(workouts_data_llm)
-        # workout_data = format_llm_workout(workout_data_llm)
         print("workkouts_data: ", workkouts_data)
         if 'error' in workouts_data_llm:
             return JsonResponse({'error': workouts_data_llm['error']}, status=500)
@@ -377,7 +361,9 @@ def save_workout(request, user_id):
 @csrf_exempt
 @require_http_methods(["POST"])
 def save_schedule(request, user_id):
-    '''Save a schedule, a list of workouts from request data to the database.'''
+    '''Save a schedule, a list of workouts from request data to the database.
+    Note: we don't define it anywhere, but a schedule is a list of workouts.
+    '''
     try:
         is_valid, err = is_valid_user_id(user_id)
         if not is_valid:
