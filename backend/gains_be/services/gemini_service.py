@@ -227,8 +227,7 @@ Give me a workout routine only for targeted muscle
 # # #Add a plank exercise for each day
 # # #Focus on a descending pyramid workout style
 # # #Include a cardio exercise at the end of each day
-result = generate_workout_routine(form_input)
-print(result)
+
 
 def format_llm_workout(workout_data_llm):
     """
