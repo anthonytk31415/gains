@@ -38,6 +38,8 @@ def build_llm_form(data):
     return form_text
 
 
+
+
 def generate_workout_routine(form_text, max_input_len=5000, max_output_len=10000):
     try:
         # Clean and curtail input
