@@ -23,7 +23,7 @@ from django.urls import path
 from .views.test_views import test_view
 from .views.users import update_user, create_user, login_user, get_user
 from .views.workouts import (generate_workout, get_workout, get_last_week_workouts, get_current_week_workouts, 
-                             save_workout, get_workouts, update_workout, save_schedule)
+                             save_workout, get_workouts, update_workout, save_schedule, update_schedule)
 from .views.exercises import get_all_exercises
 
 urlpatterns = [
@@ -37,7 +37,7 @@ urlpatterns = [
     path('api/<int:user_id>/workouts/all/', get_workouts, name='get_workouts'),
     path('api/<int:user_id>/workouts/<int:workout_id>/update/', update_workout, name='update_workout'),
     path('api/<int:user_id>/schedule/save/', save_schedule, name='save_schedule'),
-
+    path('api/<int:user_id>/schedule/update/', update_schedule, name='update_schedule'),
     path('api/<int:user_id>/user/', get_user, name='get_user'),
     path('api/<int:user_id>/user/update/', update_user, name='update_user'),
     # path('api/<int:user_id>/user/all/', get_all_users, name='get_all_users'),
