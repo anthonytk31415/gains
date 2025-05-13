@@ -1,52 +1,528 @@
 [
   {
-    "id": "leg_raises",
-    "name": "Leg Raises",
-    "imageResName": "leg_raises",
-    "videoUrl": "https://www.youtube.com/watch?v=jBhZWX91bec",
-    "instructions": "Lie flat and raise legs...",
-    "breathingTips": "Exhale while lifting legs.",
-    "commonMistakes": "Don't arch the back.",
-    "focusAreas": ["Abs", "Hip Flexors"]
+    "id": 1,
+    "name": "Bench Press",
+    "imageResName": "bench_press",
+    "videoUrl": "https://www.youtube.com/watch?v=gRVjAtPip0Y",
+    "instructions": "Lie flat on a bench, grip the bar just wider than shoulder-width, lower the bar to your chest, then press it back up until your arms are fully extended.",
+    "breathingTips": "Inhale as you lower the bar, exhale as you press it up.",
+    "commonMistakes": "Bouncing the bar off your chest, flaring elbows, arching your lower back excessively.",
+    "focusAreas": ["Chest", "Triceps", "Shoulders"]
   },
   {
-    "id": "push_ups",
-    "name": "Push Ups",
+    "id": 2,
+    "name": "Dips",
+    "imageResName": "dips",
+    "videoUrl": "https://www.youtube.com/watch?v=2z8JmcrW-As",
+    "instructions": "Hold onto parallel bars with straight arms. Lower your body until your shoulders are below your elbows, then push back up to the starting position.",
+    "breathingTips": "Inhale on the way down, exhale as you push up.",
+    "commonMistakes": "Letting shoulders shrug, not lowering far enough, flaring elbows out.",
+    "focusAreas": ["Triceps", "Chest", "Shoulders"]
+  },
+  {
+    "id": 3,
+    "name": "Back Squat",
+    "imageResName": "back_squat",
+    "videoUrl": "https://www.youtube.com/watch?v=Dy28eq2PjcM",
+    "instructions": "Rest the bar on your upper traps. With feet shoulder-width apart, lower into a squat until thighs are parallel to the floor, then drive back up.",
+    "breathingTips": "Inhale before you descend, exhale as you push up.",
+    "commonMistakes": "Letting knees cave in, lifting heels, rounding the back.",
+    "focusAreas": ["Quads", "Glutes", "Hamstrings", "Lower Back"]
+  },
+  {
+    "id": 4,
+    "name": "Front Squat",
+    "imageResName": "front_squat",
+    "videoUrl": "https://www.youtube.com/watch?v=tlfGU8Q3xV0",
+    "instructions": "Place the bar on your front delts, keep your elbows high. Lower into a squat, keeping your torso upright, then stand back up.",
+    "breathingTips": "Inhale on the way down, exhale as you stand up.",
+    "commonMistakes": "Dropping elbows, leaning forward, shallow squats.",
+    "focusAreas": ["Quads", "Core", "Glutes", "Upper Back"]
+  },
+  {
+    "id": 5,
+    "name": "Barbell Row",
+    "imageResName": "barbell_row",
+    "videoUrl": "https://www.youtube.com/watch?v=vT2GjY_Umpw",
+    "instructions": "Hinge at the hips with a barbell, pull the bar to your lower chest while squeezing your shoulder blades together, then lower under control.",
+    "breathingTips": "Exhale during the pull, inhale when lowering.",
+    "commonMistakes": "Using momentum, rounding the back, flaring elbows.",
+    "focusAreas": ["Lats", "Rhomboids", "Traps", "Biceps"]
+  },
+  {
+    "id": 6,
+    "name": "Bent-over Dumbell Row",
+    "imageResName": "bent_over_dumbbell_row",
+    "videoUrl": "https://www.youtube.com/watch?v=pYcpY20QaE8",
+    "instructions": "With a dumbbell in each hand and torso bent, pull the weights towards your sides, keeping elbows close, then lower them slowly.",
+    "breathingTips": "Exhale when rowing, inhale when lowering.",
+    "commonMistakes": "Shrugging shoulders, jerking the weight, limited range of motion.",
+    "focusAreas": ["Lats", "Rear Delts", "Biceps", "Core"]
+  },
+  {
+    "id": 7,
+    "name": "Box Jumps",
+    "imageResName": "box_jumps",
+    "videoUrl": "https://www.youtube.com/watch?v=52rDh1e9z1M",
+    "instructions": "Stand facing a sturdy box. Jump explosively onto it, land softly, then step down carefully and repeat.",
+    "breathingTips": "Inhale before jumping, exhale upon landing.",
+    "commonMistakes": "Jumping too far forward, landing hard, using an unstable box.",
+    "focusAreas": ["Glutes", "Quads", "Calves", "Core"]
+  },
+  {
+    "id": 8,
+    "name": "Bulgarian Split Squat",
+    "imageResName": "bulgarian_split_squat",
+    "videoUrl": "https://www.youtube.com/watch?v=2C-uNgKwPLE",
+    "instructions": "Place one foot behind you on a bench. Lower your back knee toward the ground, keeping the front shin vertical, then return to standing.",
+    "breathingTips": "Inhale going down, exhale coming up.",
+    "commonMistakes": "Forward knee overextending toes, losing balance, rushing reps.",
+    "focusAreas": ["Quads", "Glutes", "Hamstrings", "Core"]
+  },
+  {
+    "id": 9,
+    "name": "Chest Fly",
+    "imageResName": "chest_fly",
+    "videoUrl": "https://www.youtube.com/watch?v=eozdVDA78K0",
+    "instructions": "Lie on a bench with dumbbells above your chest, lower your arms to the sides with a slight bend, then bring them back together at the top.",
+    "breathingTips": "Inhale during the descent, exhale during the squeeze.",
+    "commonMistakes": "Overstretching, bending elbows too much, rushing the movement.",
+    "focusAreas": ["Chest", "Shoulders"]
+  },
+  {
+    "id": 10,
+    "name": "Clean and Press",
+    "imageResName": "clean_and_press",
+    "videoUrl": "https://www.youtube.com/watch?v=U3HlEF_E9fo",
+    "instructions": "Lift the bar from the ground to your shoulders using your legs and hips (clean), then press it overhead (press), and lower back down.",
+    "breathingTips": "Inhale during setup, exhale during the press.",
+    "commonMistakes": "Pulling with arms instead of hips, poor catch position, not locking out.",
+    "focusAreas": ["Shoulders", "Quads", "Glutes", "Traps", "Core"]
+  },
+  {
+    "id": 11,
+    "name": "Deadlift",
+    "imageResName": "deadlift",
+    "videoUrl": "https://www.youtube.com/watch?v=op9kVnSso6Q",
+    "instructions": "Stand with feet hip-width apart, barbell over mid-foot. Bend at hips and knees to grip the bar just outside knees. Keep back flat, chest up, and engage core. Push through heels to lift the bar by extending hips and knees, keeping the bar close to the body. Stand fully upright, then reverse the movement to lower the bar.",
+    "breathingTips": "Inhale before lifting; exhale as you pass the sticking point.",
+    "commonMistakes": "Rounding the back, jerking the bar, not engaging the core.",
+    "focusAreas": ["Hamstrings", "Glutes", "Lower Back", "Core"]
+  },
+  {
+    "id": 12,
+    "name": "Incline Bench Press",
+    "imageResName": "incline_bench_press",
+    "videoUrl": "https://www.youtube.com/watch?v=SrqOu55lrYU",
+    "instructions": "Set bench to a 30-45° incline. Lie back with feet flat on the floor. Grip the bar slightly wider than shoulder-width. Unrack the bar and lower it to the upper chest, then press it back up until arms are fully extended.",
+    "breathingTips": "Inhale while lowering; exhale while pressing up.",
+    "commonMistakes": "Flaring elbows, bouncing the bar off the chest, arching the back excessively.",
+    "focusAreas": ["Upper Chest", "Shoulders", "Triceps"]
+  },
+  {
+    "id": 13,
+    "name": "Decline Bench Press",
+    "imageResName": "decline_bench_press",
+    "videoUrl": "https://www.youtube.com/watch?v=YCSb3fV2dI4",
+    "instructions": "Set bench to a 15-30° decline. Secure feet under foot pads. Lie back and grip the bar slightly wider than shoulder-width. Unrack the bar, lower it to the lower chest, then press it back up until arms are fully extended.",
+    "breathingTips": "Inhale while lowering; exhale while pressing up.",
+    "commonMistakes": "Using momentum, improper grip width, not controlling the descent.",
+    "focusAreas": ["Lower Chest", "Triceps", "Shoulders"]
+  },
+  {
+    "id": 14,
+    "name": "Kettlebell Swings",
+    "imageResName": "kettlebell_swings",
+    "videoUrl": "https://www.youtube.com/watch?v=YSxHifyI9gY",
+    "instructions": "Stand with feet shoulder-width apart, kettlebell on the floor in front. Hinge at hips to grasp the handle with both hands. Swing the kettlebell back between legs, then thrust hips forward to swing it up to chest level. Let it swing back down and repeat.",
+    "breathingTips": "Inhale as kettlebell swings down; exhale forcefully during the upswing.",
+    "commonMistakes": "Squatting instead of hinging, using arms instead of hips, rounding the back.",
+    "focusAreas": ["Glutes", "Hamstrings", "Core", "Shoulders"]
+  },
+  {
+    "id": 15,
+    "name": "Lunges",
+    "imageResName": "lunges",
+    "videoUrl": "https://www.youtube.com/watch?v=QOVaHwm-Q6U",
+    "instructions": "Stand upright, take a step forward with one leg, lowering hips until both knees are bent at about 90°. Ensure front knee is above ankle. Push back to starting position and repeat with the other leg.",
+    "breathingTips": "Inhale as you step forward; exhale as you push back.",
+    "commonMistakes": "Knee extending beyond toes, leaning forward, not keeping torso upright.",
+    "focusAreas": ["Quadriceps", "Glutes", "Hamstrings", "Core"]
+  },
+  {
+    "id": 16,
+    "name": "Mountain Climbers",
+    "imageResName": "mountain_climbers",
+    "videoUrl": "https://www.youtube.com/watch?v=nmwgirgXLYM",
+    "instructions": "Start in a high plank position. Drive one knee toward the chest, then quickly switch legs, simulating a running motion while keeping hips level.",
+    "breathingTips": "Maintain steady breathing; exhale with each knee drive.",
+    "commonMistakes": "Bouncing hips, not engaging core, letting shoulders sag.",
+    "focusAreas": ["Core", "Shoulders", "Legs", "Cardiovascular System"]
+  },
+  {
+    "id": 17,
+    "name": "Overhead Press",
+    "imageResName": "overhead_press",
+    "videoUrl": "https://www.youtube.com/watch?v=2yjwXTZQDDI",
+    "instructions": "Stand with feet shoulder-width apart, barbell at shoulder level. Press the bar overhead until arms are fully extended, then lower it back to shoulder level.",
+    "breathingTips": "Inhale before pressing; exhale as you push the bar overhead.",
+    "commonMistakes": "Arching the back, flaring elbows, not locking out elbows.",
+    "focusAreas": ["Shoulders", "Triceps", "Upper Chest"]
+  },
+  {
+    "id": 18,
+    "name": "Plank",
+    "imageResName": "plank",
+    "videoUrl": "https://www.youtube.com/watch?v=pSHjTRCQxIw",
+    "instructions": "Lie face down, then lift your body onto forearms and toes, keeping a straight line from head to heels. Engage core and hold the position.",
+    "breathingTips": "Maintain steady breathing; avoid holding your breath.",
+    "commonMistakes": "Sagging hips, raised buttocks, holding breath.",
+    "focusAreas": ["Core", "Shoulders", "Back"]
+  },
+  {
+    "id": 19,
+    "name": "Power Clean",
+    "imageResName": "power_clean",
+    "videoUrl": "https://www.youtube.com/watch?v=5cW1de8ZtGg",
+    "instructions": "Start with barbell on the floor. Lift it by extending hips and knees, shrug shoulders, and pull the bar up. Drop under the bar into a quarter squat, catching it on the shoulders. Stand up to complete the lift.",
+    "breathingTips": "Inhale before lifting; exhale after standing up.",
+    "commonMistakes": "Using arms instead of hips, not dropping under the bar, poor timing.",
+    "focusAreas": ["Full Body", "Explosiveness", "Coordination"]
+  },
+  {
+    "id": 20,
+    "name": "Pull-ups",
+    "imageResName": "pull_ups",
+    "videoUrl": "https://www.youtube.com/watch?v=eGo4IYlbE5g",
+    "instructions": "Hang from a bar with hands shoulder-width apart, palms facing away. Pull your body up until chin is above the bar, then lower back down with control.",
+    "breathingTips": "Exhale as you pull up; inhale as you lower down.",
+    "commonMistakes": "Using momentum, incomplete range of motion, shrugging shoulders.",
+    "focusAreas": ["Back", "Biceps", "Shoulders"]
+  },
+  {
+    "id": 21,
+    "name": "Push-ups",
     "imageResName": "push_ups",
-    "videoUrl": "https://www.youtube.com/watch?v=jBhZWX91bec",
-    "instructions": "Keep your core tight...",
-    "breathingTips": "Inhale down, exhale up.",
-    "commonMistakes": "Avoid flared elbows.",
-    "focusAreas": ["Chest", "Triceps", "Core"]
+    "videoUrl": "https://www.youtube.com/watch?v=_l3ySVKYVJ8",
+    "instructions": "Start in a high plank position with hands slightly wider than shoulder-width. Lower your body until your chest nearly touches the floor, keeping elbows at a 45-degree angle. Push back up to the starting position.",
+    "breathingTips": "Inhale as you lower your body; exhale as you push up.",
+    "commonMistakes": "Flaring elbows, sagging hips, incomplete range of motion.",
+    "focusAreas": ["Chest", "Triceps", "Shoulders", "Core"]
   },
   {
-    "id": "squats",
-    "name": "Squats",
-    "imageResName": "squats",
-    "videoUrl": "https://www.youtube.com/watch?v=jBhZWX91bec",
-    "instructions": "Lower hips, keep chest up...",
-    "breathingTips": "Inhale down, exhale up.",
-    "commonMistakes": "Knees cave in, heels lift.",
-    "focusAreas": ["Glutes", "Quads", "Hamstrings"]
+    "id": 22,
+    "name": "Sit-ups",
+    "imageResName": "sit_ups",
+    "videoUrl": "https://www.youtube.com/watch?v=1fbU_MkV7NE",
+    "instructions": "Lie on your back with knees bent and feet flat on the floor. Cross your arms over your chest or place hands behind your head. Engage your core to lift your upper body towards your knees, then slowly lower back down.",
+    "breathingTips": "Exhale as you lift up; inhale as you lower down.",
+    "commonMistakes": "Using momentum, pulling on the neck, not engaging the core.",
+    "focusAreas": ["Abdominals", "Hip Flexors"]
   },
   {
-    "id": "bicep_curls",
-    "name": "Bicep Curls",
-    "imageResName": "bicep_curls",
-    "videoUrl": "https://www.youtube.com/watch?v=jBhZWX91bec",
-    "instructions": "Curl dumbbells up, control down.",
-    "breathingTips": "Exhale curl, inhale lower.",
-    "commonMistakes": "Swinging or using momentum.",
-    "focusAreas": ["Biceps"]
+    "id": 23,
+    "name": "Romanian Deadlift",
+    "imageResName": "romanian_deadlift",
+    "videoUrl": "https://www.youtube.com/watch?v=2SHsk9AzdjA",
+    "instructions": "Stand with feet hip-width apart, holding a barbell in front of your thighs. Hinge at the hips to lower the bar along your legs, keeping a slight bend in the knees and back flat. Engage glutes and hamstrings to return to standing.",
+    "breathingTips": "Inhale as you lower the bar; exhale as you return to standing.",
+    "commonMistakes": "Rounding the back, locking knees, lowering the bar too far.",
+    "focusAreas": ["Hamstrings", "Glutes", "Lower Back"]
   },
   {
-    "id": "shoulder_press",
-    "name": "Shoulder Press",
-    "imageResName": "shoulder_press",
-    "videoUrl": "https://www.youtube.com/watch?v=jBhZWX91bec",
-    "instructions": "Press dumbbells overhead.",
-    "breathingTips": "Exhale press, inhale lower.",
-    "commonMistakes": "Arching back, flared elbows.",
-    "focusAreas": ["Shoulders", "Triceps"]
+    "id": 24,
+    "name": "Russian Twists",
+    "imageResName": "russian_twists",
+    "videoUrl": "https://www.youtube.com/watch?v=wkD8rjkodUI",
+    "instructions": "Sit on the floor with knees bent and feet lifted. Lean back slightly and clasp your hands together. Rotate your torso to the right, then to the left, tapping the floor beside your hips each time.",
+    "breathingTips": "Exhale with each twist; inhale when returning to center.",
+    "commonMistakes": "Rounding the back, using arms instead of core, moving too quickly.",
+    "focusAreas": ["Obliques", "Abdominals"]
+  },
+  {
+    "id": 25,
+    "name": "Hip Thrust",
+    "imageResName": "hip_thrust",
+    "videoUrl": "https://www.youtube.com/watch?v=LM8XHLYJoYs",
+    "instructions": "Sit on the ground with your upper back against a bench and a barbell over your hips. Bend your knees and place feet flat on the floor. Drive through your heels to lift your hips until your thighs are parallel to the floor, then lower back down.",
+    "breathingTips": "Inhale as you lower hips; exhale as you thrust upward.",
+    "commonMistakes": "Overarching the back, pushing through toes, not achieving full hip extension.",
+    "focusAreas": ["Glutes", "Hamstrings", "Core"]
+  },
+  {
+    "id": 26,
+    "name": "Wall Balls",
+    "imageResName": "wall_balls",
+    "videoUrl": "https://www.youtube.com/watch?v=Z5z4E7y5kXY",
+    "instructions": "Stand facing a wall, holding a medicine ball at chest level. Squat down, then explode upward, throwing the ball to a target on the wall. Catch the ball as it comes down and immediately go into the next squat.",
+    "breathingTips": "Inhale during the squat; exhale as you throw the ball.",
+    "commonMistakes": "Not squatting to depth, using arms instead of legs, poor timing.",
+    "focusAreas": ["Quadriceps", "Glutes", "Shoulders", "Cardiovascular System"]
+  },
+  {
+    "id": 27,
+    "name": "Lateral Raises",
+    "imageResName": "lateral_raises",
+    "videoUrl": "https://www.youtube.com/watch?v=3VcKaXpzqRo",
+    "instructions": "Stand with a dumbbell in each hand at your sides. Keeping a slight bend in the elbows, raise your arms out to the sides until they are parallel to the floor. Lower them back down slowly.",
+    "breathingTips": "Exhale as you lift; inhale as you lower.",
+    "commonMistakes": "Using momentum, lifting weights too high, not controlling the descent.",
+    "focusAreas": ["Shoulders"]
+  },
+  {
+    "id": 28,
+    "name": "Egyptian Lateral Raise",
+    "imageResName": "egyptian_lateral_raise",
+    "videoUrl": "https://www.youtube.com/watch?v=QKk3n4s8q8g",
+    "instructions": "Stand next to a support and hold it with one hand. Lean away from the support, holding a dumbbell in the other hand. Raise the dumbbell to the side until your arm is parallel to the floor, then lower it back down.",
+    "breathingTips": "Exhale as you lift; inhale as you lower.",
+    "commonMistakes": "Swinging the weight, not maintaining body alignment, lifting too high.",
+    "focusAreas": ["Shoulders"]
+  },
+  {
+    "id": 29,
+    "name": "Jogging",
+    "imageResName": "jogging",
+    "videoUrl": "https://www.youtube.com/watch?v=0nYbZ7Kx4vM",
+    "instructions": "Maintain a steady, moderate pace suitable for your fitness level. Keep your posture upright, arms relaxed, and strides consistent.",
+    "breathingTips": "Inhale through the nose and exhale through the mouth in a rhythmic pattern.",
+    "commonMistakes": "Overstriding, poor posture, inconsistent pacing.",
+    "focusAreas": ["Cardiovascular System", "Leg Muscles", "Endurance"]
+  },
+  {
+    "id": 30,
+    "name": "Running",
+    "imageResName": "running",
+    "videoUrl": "https://www.youtube.com/watch?v=3eGgkW5j4xI",
+    "instructions": "Run at a pace faster than jogging, maintaining proper form with upright posture, relaxed arms, and consistent strides.",
+    "breathingTips": "Utilize deep, rhythmic breathing to match your running pace.",
+    "commonMistakes": "Overstriding, holding breath, tensing upper body.",
+    "focusAreas": ["Cardiovascular System", "Leg Muscles", "Endurance"]
+  },
+  {
+    "id": 31,
+    "name": "Sprinting",
+    "imageResName": "sprinting",
+    "videoUrl": "https://www.youtube.com/watch?v=3eGgkW5j4xI",
+    "instructions": "Begin with a dynamic warm-up. Accelerate quickly to your top speed, maintaining an upright posture with relaxed shoulders and arms swinging in coordination with your legs. Land on the balls of your feet and drive your knees upward. Sprint for the desired distance, then decelerate gradually.",
+    "breathingTips": "Inhale through the nose and exhale through the mouth in a rhythmic pattern to meet oxygen demands.",
+    "commonMistakes": "Overstriding, tensing the upper body, improper arm movement.",
+    "focusAreas": ["Cardiovascular System", "Leg Muscles", "Core", "Explosiveness"]
+  },
+  {
+    "id": 32,
+    "name": "Goblet Squats",
+    "imageResName": "goblet_squats",
+    "videoUrl": "https://www.youtube.com/watch?v=6xwGFn-J_QA",
+    "instructions": "Hold a dumbbell or kettlebell close to your chest with both hands. Stand with feet shoulder-width apart. Lower into a squat by pushing your hips back and bending your knees, keeping your chest up and back straight. Descend until your thighs are parallel to the floor, then push through your heels to return to standing.",
+    "breathingTips": "Inhale as you lower into the squat; exhale as you push back up.",
+    "commonMistakes": "Allowing knees to cave in, lifting heels off the ground, rounding the back.",
+    "focusAreas": ["Quadriceps", "Glutes", "Hamstrings", "Core"]
+  },
+  {
+    "id": 33,
+    "name": "Leg Press",
+    "imageResName": "leg_press",
+    "videoUrl": "https://www.youtube.com/watch?v=IZxyjW7MPJQ",
+    "instructions": "Sit on the leg press machine with your back and head against the support. Place your feet shoulder-width apart on the platform. Release the safety handles and lower the platform by bending your knees until they form a 90-degree angle. Push the platform back up by extending your legs, without locking your knees.",
+    "breathingTips": "Inhale as you lower the platform; exhale as you press it back up.",
+    "commonMistakes": "Locking knees at the top, placing feet too high or low on the platform, lifting hips off the seat.",
+    "focusAreas": ["Quadriceps", "Glutes", "Hamstrings"]
+  },
+  {
+    "id": 34,
+    "name": "Calf Raises",
+    "imageResName": "calf_raises",
+    "videoUrl": "https://www.youtube.com/watch?v=-M4-G8p8fmc",
+    "instructions": "Stand upright with feet hip-width apart. Slowly raise your heels off the ground, balancing on the balls of your feet. Hold the top position briefly, then lower your heels back down with control.",
+    "breathingTips": "Exhale as you lift your heels; inhale as you lower them.",
+    "commonMistakes": "Bouncing, not achieving full range of motion, leaning forward.",
+    "focusAreas": ["Calves"]
+  },
+  {
+    "id": 35,
+    "name": "Leg Extension",
+    "imageResName": "leg_extension",
+    "videoUrl": "https://www.youtube.com/watch?v=YyvSfVjQeL0",
+    "instructions": "Sit on the leg extension machine with your back against the pad. Place your feet under the padded bar, adjusting the pad so it rests on your lower shins. Extend your legs to lift the weight, keeping your back pressed against the seat. Pause at the top, then slowly lower the weight back down.",
+    "breathingTips": "Exhale as you extend your legs; inhale as you lower them.",
+    "commonMistakes": "Using momentum, lifting hips off the seat, locking knees at the top.",
+    "focusAreas": ["Quadriceps"]
+  },
+  {
+    "id": 36,
+    "name": "Leg Curls",
+    "imageResName": "leg_curls",
+    "videoUrl": "https://www.youtube.com/watch?v=1Tq3QdYUuHs",
+    "instructions": "Lie face down on the leg curl machine with the pad against the back of your lower legs. Grasp the handles for support. Curl your legs upward as far as possible without lifting your thighs off the pad. Hold briefly, then lower the weight back down with control.",
+    "breathingTips": "Exhale as you curl your legs; inhale as you return to the starting position.",
+    "commonMistakes": "Lifting hips off the pad, using momentum, not completing full range of motion.",
+    "focusAreas": ["Hamstrings"]
+  },
+  {
+    "id": 37,
+    "name": "Good Mornings",
+    "imageResName": "good_mornings",
+    "videoUrl": "https://www.youtube.com/watch?v=vxWcV0WJZzI",
+    "instructions": "Stand with feet shoulder-width apart, barbell resting on your upper back. Keep a slight bend in your knees. Hinge at the hips to lower your torso forward until it's nearly parallel to the floor, keeping your back straight. Engage your glutes and hamstrings to return to standing.",
+    "breathingTips": "Inhale as you lower your torso; exhale as you return to standing.",
+    "commonMistakes": "Rounding the back, locking knees, going too low without flexibility.",
+    "focusAreas": ["Hamstrings", "Glutes", "Lower Back"]
+  },
+  {
+    "id": 38,
+    "name": "Single-Leg Deadlift",
+    "imageResName": "single_leg_deadlift",
+    "videoUrl": "https://www.youtube.com/watch?v=2SHsk9AzdjA",
+    "instructions": "Stand on one leg with a slight bend in the knee, holding a dumbbell in the opposite hand. Hinge at the hips to lower the weight toward the floor while extending the free leg straight behind you. Keep your back flat and core engaged. Return to the starting position by driving through the heel of the standing leg.",
+    "breathingTips": "Inhale as you lower the weight; exhale as you return to standing.",
+    "commonMistakes": "Rounding the back, twisting the hips, losing balance.",
+    "focusAreas": ["Hamstrings", "Glutes", "Core", "Balance"]
+  },
+  {
+    "id": 39,
+    "name": "Triceps Extension",
+    "imageResName": "triceps_extension",
+    "videoUrl": "https://www.youtube.com/watch?v=2-LAMcpzODU",
+    "instructions": "Stand or sit with a dumbbell held overhead with both hands, arms fully extended. Keeping your elbows close to your head, lower the dumbbell behind your head by bending your elbows. Extend your arms to return to the starting position.",
+    "breathingTips": "Inhale as you lower the weight; exhale as you extend your arms.",
+    "commonMistakes": "Flaring elbows, using momentum, not controlling the movement.",
+    "focusAreas": ["Triceps"]
+  },
+  {
+    "id": 40,
+    "name": "Skull Crushers",
+    "imageResName": "skull_crushers",
+    "videoUrl": "https://www.youtube.com/watch?v=d_KZxkY_0cM",
+    "instructions": "Lie on a bench with a barbell or dumbbells held above your chest, arms extended. Keeping your upper arms stationary, bend your elbows to lower the weight toward your forehead. Extend your arms to return to the starting position.",
+    "breathingTips": "Inhale as you lower the weight; exhale as you extend your arms.",
+    "commonMistakes": "Moving upper arms, using excessive weight, not controlling the descent.",
+    "focusAreas": ["Triceps"]
+  },
+  {
+    "id": 41,
+    "name": "Tricep Pushdown",
+    "imageResName": "tricep_pushdown",
+    "videoUrl": "https://www.youtube.com/watch?v=2-LAMcpzODU",
+    "instructions": "Stand facing a cable machine with a straight bar attached to the high pulley. Grasp the bar with an overhand grip, elbows close to your sides. Push the bar downward until your arms are fully extended, then slowly return to the starting position.",
+    "breathingTips": "Exhale as you push down; inhale as you return to the starting position.",
+    "commonMistakes": "Flaring elbows, using momentum, not fully extending the arms.",
+    "focusAreas": ["Triceps"]
+  },
+  {
+    "id": 42,
+    "name": "Diamond Push-ups",
+    "imageResName": "diamond_push_ups",
+    "videoUrl": "https://www.youtube.com/watch?v=J0DnG1_S92I",
+    "instructions": "Assume a push-up position with your hands close together under your chest, forming a diamond shape with your thumbs and index fingers. Lower your body until your chest nearly touches your hands, then push back up to the starting position.",
+    "breathingTips": "Inhale as you lower your body; exhale as you push up.",
+    "commonMistakes": "Flaring elbows, sagging hips, incomplete range of motion.",
+    "focusAreas": ["Triceps", "Chest", "Shoulders"]
+  },
+  {
+    "id": 43,
+    "name": "Dumbbell Bench Press",
+    "imageResName": "dumbbell_bench_press",
+    "videoUrl": "https://www.youtube.com/watch?v=VmB1G1K7v94",
+    "instructions": "Lie on a flat bench holding a dumbbell in each hand at chest level. Press the dumbbells upward until your arms are fully extended, then lower them back down to the starting position.",
+    "breathingTips": "Inhale as you lower the dumbbells; exhale as you press them up.",
+    "commonMistakes": "Arching the back excessively, uneven lifting, not controlling the descent.",
+    "focusAreas": ["Chest", "Triceps", "Shoulders"]
+  },
+  {
+    "id": 44,
+    "name": "Close-grip Bench Press",
+    "imageResName": "close_grip_bench_press",
+    "videoUrl": "https://www.youtube.com/watch?v=GNPz-Dv5Bjg",
+    "instructions": "Lie on a flat bench and grasp the barbell with a grip narrower than shoulder-width. Lower the bar to your chest, keeping elbows close to your body, then press it back up to the starting position.",
+    "breathingTips": "Inhale as you lower the bar; exhale as you press it up.",
+    "commonMistakes": "Flaring elbows, bouncing the bar off the chest, improper grip width.",
+    "focusAreas": ["Triceps", "Chest", "Shoulders"]
+  },
+  {
+    "id": 45,
+    "name": "Close-grip Dumbbell Bench Press",
+    "imageResName": "close_grip_dumbbell_bench_press",
+    "videoUrl": "https://www.youtube.com/watch?v=J0KbhXitsFA",
+    "instructions": "Lie on a flat bench holding two dumbbells together at chest level. Press the dumbbells upward until your arms are fully extended, then lower them back down while keeping the dumbbells in contact with each other.",
+    "breathingTips": "Inhale as you lower the dumbbells; exhale as you press them up.",
+    "commonMistakes": "Allowing dumbbells to drift apart, arching the back, not controlling the movement.",
+    "focusAreas": ["Triceps", "Chest", "Shoulders"]
+  },
+  {
+    "id": 46,
+    "name": "Bird Dog",
+    "imageResName": "bird_dog",
+    "videoUrl": "https://www.youtube.com/watch?v=wiFNA3sqjCA",
+    "instructions": "Start on your hands and knees with a neutral spine. Extend your right arm forward and left leg backward simultaneously, keeping hips and shoulders square. Hold briefly, then return to the starting position and repeat on the opposite side.",
+    "breathingTips": "Inhale as you extend; exhale as you return to the starting position.",
+    "commonMistakes": "Arching the back, rotating the hips, not engaging the core.",
+    "focusAreas": ["Core", "Lower Back", "Glutes", "Shoulders"]
+  },
+  {
+    "id": 47,
+    "name": "Heel Tap",
+    "imageResName": "heel_tap",
+    "videoUrl": "https://www.youtube.com/watch?v=Q3j3f2yU0K0",
+    "instructions": "Lie on your back with knees bent and feet flat on the floor. Crunch up slightly and reach your right hand toward your right heel, then your left hand toward your left heel, alternating sides in a controlled manner.",
+    "breathingTips": "Exhale as you reach toward each heel; inhale as you return to center.",
+    "commonMistakes": "Pulling on the neck, using momentum, not engaging the obliques.",
+    "focusAreas": ["Obliques", "Abdominals"]
+  },
+  {
+    "id": 48,
+    "name": "Side Plank",
+    "imageResName": "side_plank",
+    "videoUrl": "https://www.youtube.com/watch?v=K2VljzCC16g",
+    "instructions": "Lie on your side with legs extended and stacked. Prop yourself up on your forearm, keeping your body in a straight line from head to feet. Hold the position, engaging your core and glutes.",
+    "breathingTips": "Maintain steady breathing throughout the hold.",
+    "commonMistakes": "Dropping the hips, rotating the torso, not aligning the body properly.",
+    "focusAreas": ["Obliques", "Core", "Shoulders"]
+  },
+  {
+    "id": 49,
+    "name": "Side Plank with Dips",
+    "imageResName": "side_plank_with_dips",
+    "videoUrl": "https://www.youtube.com/watch?v=K2VljzCC16g",
+    "instructions": "Assume a side plank position. Lower your hip toward the floor without touching it, then raise it back to the starting position. Repeat for the desired number of repetitions, then switch sides.",
+    "breathingTips": "Inhale as you lower the hip; exhale as you raise it.",
+    "commonMistakes": "Dropping the hips too low, moving too quickly, not maintaining alignment.",
+    "focusAreas": ["Obliques", "Core", "Shoulders"]
+  },
+  {
+    "id": 50,
+    "name": "Flutter Kicks",
+    "imageResName": "flutter_kicks",
+    "videoUrl": "https://www.youtube.com/watch?v=K2VljzCC16g",
+    "instructions": "Lie on your back with legs extended. Lift your heels about 6 inches off the floor. Keeping your core engaged, alternate kicking your legs up and down in a controlled manner.",
+    "breathingTips": "Maintain steady breathing; exhale with each kick.",
+    "commonMistakes": "Arching the lower back, moving legs too high, not engaging the core.",
+    "focusAreas": ["Lower Abdominals", "Hip Flexors"]
+  },
+  {
+    "id": 51,
+    "name": "Dead Bugs",
+    "imageResName": "dead_bugs",
+    "videoUrl": "https://www.youtube.com/watch?v=K2VljzCC16g",
+    "instructions": "Lie on your back with arms extended toward the ceiling and knees bent at 90 degrees. Slowly lower your right arm and left leg toward the floor while keeping your core engaged. Return to the starting position and repeat on the opposite side.",
+    "breathingTips": "Inhale as you lower limbs; exhale as you return to the starting position.",
+    "commonMistakes": "Arching the lower back, moving too quickly, not controlling the movement.",
+    "focusAreas": ["Core", "Abdominals", "Lower Back"]
+  },
+  {
+    "id": 52,
+    "name": "V-ups",
+    "imageResName": "v_ups",
+    "videoUrl": "https://www.youtube.com/watch?v=K2VljzCC16g",
+    "instructions": "Lie on your back with arms extended overhead and legs straight. Simultaneously lift your legs and upper body off the floor, reaching your hands toward your feet to form a 'V' shape. Lower back down with control.",
+    "breathingTips": "Exhale as you lift into the 'V'; inhale as you lower back down.",
+    "commonMistakes": "Using momentum, not keeping legs straight, arching the back.",
+    "focusAreas": ["Abdominals", "Hip Flexors"]
   }
-]
+  ]
+
+
+
+
+
+
