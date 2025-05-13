@@ -214,21 +214,21 @@ def clean_and_parse_json(raw_text):
             return {"error": "Response is not valid JSON", "raw": cleaned}
 
 # # # Sample form data
-# form_input = """
-# I am a Male 25 years of age
-# My height is 5'6 and weight is 55 kgs
-# My goal is Muscle Gain
-# My experience is Beginner
-# I am willing to work 2 days a week
-# I will workout from my gym
-# I want to build my core muscles
-# Give me a workout routine only for targeted muscle
-# """
+form_input = """
+I am a Male 25 years of age
+My height is 180 cm and weight is 90 kgs
+My goal is Fat Loss
+My experience is Beginner
+I am willing to work 3 days a week
+I will workout from my Home
+I want to build my Chest and Shoulders muscles
+Give me a workout routine only for targeted muscle
+ """
 # # #Add a plank exercise for each day
 # # #Focus on a descending pyramid workout style
 # # #Include a cardio exercise at the end of each day
-# result = generate_workout_routine(form_input)
-# print(result)
+result = generate_workout_routine(form_input)
+print(result)
 
 def format_llm_workout(workout_data_llm):
     """

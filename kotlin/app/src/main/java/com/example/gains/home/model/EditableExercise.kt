@@ -9,5 +9,6 @@ data class EditableExercise(
     val exerciseId: Int,
     var sets: Int,
     var reps: Int,
-    var weight: Float
+    var weight: Float,
+    var is_done: Boolean = false
 )

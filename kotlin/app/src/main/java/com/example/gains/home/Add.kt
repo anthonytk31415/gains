@@ -1,5 +1,6 @@
 package com.example.gains.home
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -27,11 +28,12 @@ import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -39,12 +41,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.gains.home.model.WorkoutFormRequest
+import com.example.gains.home.model.WorkoutViewModel
+import com.example.gains.home.network.UserService
+import com.example.gains.home.network.WorkoutService
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 
 @Composable
-fun AddScreen(navController: NavController) {
+fun AddScreen(navController: NavController, workoutViewModel: WorkoutViewModel) {
     var selection by remember { mutableStateOf<String?>(null) }
     Box(
         modifier = Modifier
@@ -87,7 +97,9 @@ fun AddScreen(navController: NavController) {
 
             "ai" -> {
                 AIWorkoutForm(
-                    onBack = { selection = null }
+                    navController = navController,
+                    onBack = { selection = null },
+                    workoutViewModel = workoutViewModel
                 )
             }
         }
@@ -107,27 +119,57 @@ fun ManualWorkoutEntry(onBack: () -> Unit) {
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun AIWorkoutForm(onBack: () -> Unit) {
+fun AIWorkoutForm(
+    navController: NavController,
+    onBack: () -> Unit,
+    workoutViewModel: WorkoutViewModel
+) {
     val scrollState = rememberScrollState()
-    var height by remember { mutableStateOf("") }
-    var weight by remember { mutableStateOf("") }
-    var age by remember { mutableStateOf("") }
     var expandedExperience by remember { mutableStateOf(false) }
     var expandedDay by remember { mutableStateOf(false) }
     val experienceOptions = listOf("Beginner", "Intermediate", "Advanced")
     var experience by remember { mutableStateOf<String?>(null) }
     var workoutLocation by remember { mutableStateOf<String?>(null) }
     var gender by remember { mutableStateOf<String?>(null) }
-    var dayOptions = listOf("2","3","4","5","6")
+    var dayOptions = listOf("1","2","3","4","5","6","7")
     var days by remember { mutableStateOf<String?>(null) }
-//    val goalOptions = listOf("Muscle Gain", "Fat Loss", "Strength", "Toning", "Endurance")
-//    var goals by remember { mutableStateOf<String?>(null) }
+    val goalOptions = listOf("Muscle Gain", "Fat Loss", "Strength", "Toning", "Endurance")
+    val goals = remember { mutableStateMapOf<String, Boolean>() }
     val muscleOptions = listOf("Chest", "Back", "Shoulders", "Legs", "Biceps", "Triceps", "Abs")
     val selectedMuscles = remember { mutableStateMapOf<String, Boolean>() }
+    var dob by remember { mutableStateOf("") }
+    var height by remember { mutableFloatStateOf(0f) }
+    var weight by remember { mutableFloatStateOf(0f) }
     var errorMessage by remember { mutableStateOf<String?>(null) }
+//    val workoutViewModel = viewModel<WorkoutViewModel>()
+
+    val coroutineScope = rememberCoroutineScope()
+    val userId = 1
+    var isDataLoaded by remember { mutableStateOf(false) }
+
     muscleOptions.forEach { option ->
         if (!selectedMuscles.containsKey(option)) {
             selectedMuscles[option] = false
+        }
+    }
+    goalOptions.forEach { option ->
+        if (!goals.containsKey(option)) {
+            goals[option] = false
+        }
+    }
+    // Fetch user data once on load
+    if (!isDataLoaded) {
+        LaunchedEffect(Unit) {
+            try {
+                val user = UserService.getUserDetails(userId)
+//                Log.d("2","$user")
+                dob = user.dob
+                height = user.height
+                weight = user.weight
+                isDataLoaded = true
+            } catch (e: Exception) {
+                errorMessage = "Failed to load user: ${e.message}"
+            }
         }
     }
 
@@ -136,59 +178,7 @@ fun AIWorkoutForm(onBack: () -> Unit) {
         .verticalScroll(scrollState)
         .padding(16.dp)) {
         Text("AI Workout Form Screen", style = MaterialTheme.typography.titleLarge)
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 8.dp)
-        ) {
-            Text(
-                text = "Enter Age:",
-                modifier = Modifier.weight(1f)
-            )
-            TextField(
-                value = age,
-                onValueChange = { age = it },
-                modifier = Modifier.weight(2f),
-                singleLine = true
-            )
-        }
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 8.dp)
-        ) {
-            Text(
-                text = "Enter Height:",
-                modifier = Modifier.weight(1f)
-            )
-            TextField(
-                value = height,
-                onValueChange = { height = it },
-                modifier = Modifier.weight(2f),
-                singleLine = true
-            )
-        }
 
-
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 8.dp)
-        ) {
-            Text(
-                text = "Enter Weight:",
-                modifier = Modifier.weight(1f)
-            )
-            TextField(
-                value = weight,
-                onValueChange = { weight = it },
-                modifier = Modifier.weight(2f),
-                singleLine = true
-            )
-        }
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
@@ -387,6 +377,40 @@ fun AIWorkoutForm(onBack: () -> Unit) {
             }
         }
         Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 8.dp)
+        ) {
+            Text(
+                text = "Your Goal",
+                style = MaterialTheme.typography.bodyLarge,
+                modifier = Modifier.padding(bottom = 8.dp)
+            )
+            FlowRow(
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                goalOptions.forEach { goal ->
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Checkbox(
+                            checked = goals[goal] == true,
+                            onCheckedChange = { isChecked ->
+                                goals[goal] = isChecked
+                            }
+                        )
+                        Text(
+                            text = goal,
+                            modifier = Modifier.padding(start = 4.dp)
+                        )
+                    }
+                }
+            }
+        }
+        Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 24.dp),
@@ -401,31 +425,37 @@ fun AIWorkoutForm(onBack: () -> Unit) {
                 errorMessage = null
 
                 // Input validations
-                if (age.toIntOrNull() == null || height.toFloatOrNull() == null || weight.toFloatOrNull() == null) {
-                    errorMessage = "Please enter valid age, height, and weight"
-                    return@Button
-                }
-
-                if (workoutLocation == null || experience == null || gender == null || days == null || selectedMuscles.values.none { it }) {
+                if (workoutLocation == null || experience == null || gender == null || days == null || selectedMuscles.values.none { it } || goals.values.none { it }) {
                     errorMessage = "Please fill all the fields"
                     return@Button
                 }
 
                 // Prepare data
-                val data = mapOf(
-                    "age" to age,
-                    "height" to height,
-                    "weight" to weight,
-                    "gender" to gender!!,
-                    "location" to workoutLocation!!,
-                    "experience" to experience!!,
-                    "days" to days!!,
-                    "muscles" to selectedMuscles.filter { it.value }.keys.toList()
+                val formData = WorkoutFormRequest(
+                    gender = gender!!,
+                    location = workoutLocation!!,
+                    experience = experience!!,
+                    workout_days = days!!,
+                    muscle_focus = selectedMuscles.filter { it.value }.keys.toList().toString(),
+                    goal = goals.filter { it.value }.keys.toList().toString(),
+                    height = height,
+                    weight = weight,
+                    age = "12"
+//                    dob = dob
                 )
 
-                // Use your networking library (like Retrofit or Ktor) here to send a POST request
-                // to Django backend endpoint (e.g., "http://yourbackend.com/api/ai-workout/")
-                println("Sending data to backend: $data")
+
+                coroutineScope.launch {
+                    try {
+                        Log.d("FormSubmit", "Calling WorkoutService.submitUserForm")
+                        val response = WorkoutService.submitUserForm(userId, formData)
+                        Log.d("FormSubmit", "response: $response")
+                        workoutViewModel.setWorkout(response)
+                        navController.navigate("generatedWorkout")
+                    } catch (e: Exception) {
+                        Log.e("FormSubmit", "Failed to send data: ${e.message}", e)
+                    }
+                }
 
             }) {
                 Text("Submit")
