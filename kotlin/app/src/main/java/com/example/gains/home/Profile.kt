@@ -1,5 +1,6 @@
 package com.example.gains.home
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -10,7 +11,10 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -19,23 +23,52 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.gains.UserSession
 import kotlinx.coroutines.runBlocking
+import com.example.gains.home.network.UserService
+import com.example.gains.home.model.UserProfile
 
 @Composable
 fun ProfileScreen(navController: NavController) {
-    var height by remember { mutableStateOf("") }
-    var weight by remember { mutableStateOf("") }
-    var age by remember { mutableStateOf("") }
+    val userId = UserSession.userId
+
+    var dob by remember { mutableStateOf("") }
+    var height by remember { mutableFloatStateOf(0f) }
+    var weight by remember { mutableFloatStateOf(0f) }
+    var heightInput by remember { mutableStateOf("") }
+    var weightInput by remember { mutableStateOf("") }
     var errorMessage by remember { mutableStateOf<String?>(null) }
+    var isDataLoaded by remember { mutableStateOf(false) }
+
+    // Fetch user data once on load
+    if (!isDataLoaded) {
+        LaunchedEffect(Unit) {
+            try {
+                val user = userId?.let { UserService.getUserDetails(userId) }
+                if (user != null) {
+                    dob = user.dob
+                }
+                if (user != null) {
+                    height = user.height
+                }
+                if (user != null) {
+                    weight = user.weight
+                }
+                isDataLoaded = true
+            } catch (e: Exception) {
+                errorMessage = "Failed to load user: ${e.message}"
+            }
+        }
+    }
 
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp),
-        verticalArrangement = Arrangement.Top, // align from top
-        horizontalAlignment = Alignment.Start // align all content to start (left)
+        verticalArrangement = Arrangement.Top,
+        horizontalAlignment = Alignment.Start
     ) {
-
+        // Name Row
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -56,60 +89,56 @@ fun ProfileScreen(navController: NavController) {
             Text(text = "Email: ", modifier = Modifier.padding(end = 8.dp))
             Text(text = "john@example.com")
         }
+
+        // Age input
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = 8.dp)
         ) {
-            Text(
-                text = "Enter Age:",
-                modifier = Modifier.weight(1f)
-            )
+            Text(text = "Enter Age:", modifier = Modifier.weight(1f))
             TextField(
-                value = age,
-                onValueChange = { age = it },
+                value = dob,
+                onValueChange = { dob = it },
                 modifier = Modifier.weight(2f),
                 singleLine = true
             )
         }
+
+        // Height input
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = 8.dp)
         ) {
-            Text(
-                text = "Enter Height:",
-                modifier = Modifier.weight(1f)
-            )
+            Text(text = "Enter Height:", modifier = Modifier.weight(1f))
             TextField(
-                value = height,
-                onValueChange = { height = it },
+                value = heightInput,
+                onValueChange = { heightInput = it; height = it.toFloatOrNull() ?: 0f },
                 modifier = Modifier.weight(2f),
                 singleLine = true
             )
         }
 
-
+        // Weight input
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = 8.dp)
         ) {
-            Text(
-                text = "Enter Weight:",
-                modifier = Modifier.weight(1f)
-            )
+            Text(text = "Enter Weight:", modifier = Modifier.weight(1f))
             TextField(
-                value = weight,
-                onValueChange = { weight = it },
+                value = weightInput,
+                onValueChange = { weightInput = it; weight = it.toFloatOrNull() ?: 0f },
                 modifier = Modifier.weight(2f),
                 singleLine = true
             )
         }
 
+        // Submit button
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -120,34 +149,38 @@ fun ProfileScreen(navController: NavController) {
             Button(onClick = {
                 errorMessage = null
 
-                // Input validations
-                if (age.toIntOrNull() == null || height.toFloatOrNull() == null || weight.toFloatOrNull() == null) {
-                    errorMessage = "Please enter valid age, height, and weight"
-                    return@Button
-                }
-
-                // Prepare data
-                val data = mapOf(
-                    "age" to age,
-                    "height" to height,
-                    "weight" to weight,
-                )
-
-                println("$data");
-
-                runBlocking {
-                    try {
-//                        val response = WorkoutService.sendWorkoutData()
-//                        println("Response: $response")
-                        navController.navigate("generatedWorkout")
-                    } catch (e: Exception) {
-                        errorMessage = "Failed to send data: ${e.message}"
+                val profile = userId?.let {
+                    UserSession.email?.let { it1 ->
+                        UserProfile(
+                            user_id = userId,
+                            dob = dob,
+                            height = height,
+                            weight = weight
+                        )
                     }
                 }
 
+                runBlocking {
+                    try {
+                        Log.d("ProfileScreen2", "User ID: $userId")
+                        Log.d("ProfileScreen", "Profile: $profile")
+                        val response = userId?.let {
+                            if (profile != null) {
+                                Log.d("ProfileScreen", "$profile")
+                                UserService.sendUserData(it, userProfile = profile)
+                            }
+                        }
+                        Log.d("ProfileScreen", "Response: $response")
+                        //navController.navigate("generatedWorkout")
+                        //Add Toast saying User Profile updated successfully
+                    } catch (e: Exception) {
+                        errorMessage = "Failed to update data: ${e.message}"
+                    }
+                }
             }) {
                 Text("Update")
             }
+
             if (errorMessage != null) {
                 Text(
                     text = errorMessage!!,

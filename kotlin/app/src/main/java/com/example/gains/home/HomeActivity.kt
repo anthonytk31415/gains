@@ -1,5 +1,8 @@
 package com.example.gains.home
 
+import android.os.Build
+import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -15,44 +18,50 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.gains.home.model.EditableExercise
 import com.example.gains.home.model.EditableWorkoutDay
+import com.example.gains.home.model.ExerciseDetail
 import com.example.gains.home.model.ExerciseMappings
+import com.example.gains.home.model.WorkoutDay
 import com.example.gains.home.model.WorkoutRoutine
 import com.example.gains.home.network.WorkoutApi
 import com.example.gains.home.network.WorkoutService
 import kotlinx.coroutines.launch
+import com.example.gains.UserSession
 
 @OptIn(ExperimentalMaterial3Api::class)
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun HomeScreen(navController: NavController) {
     val coroutineScope = rememberCoroutineScope()
     var workoutRoutine by remember { mutableStateOf<WorkoutRoutine?>(null) }
     val editableWorkout = remember { mutableStateListOf<EditableWorkoutDay>() }
     val exerciseCheckStates = remember { mutableStateMapOf<Pair<Int, Int>, Boolean>() }
-    val userId = "1";
+    //val userId = "1";
 
     LaunchedEffect(Unit) {
         coroutineScope.launch {
-            val fetchedWorkout = WorkoutApi.getWorkout(userId)
+            val fetchedWorkout = UserSession.userId?.let { WorkoutApi.getWorkout(it) }
             workoutRoutine = fetchedWorkout
             editableWorkout.clear()
-            editableWorkout.addAll(
-                fetchedWorkout.schedule.mapIndexed { index, day ->
-                    val exercisesRaw = day.exercise_sets ?: day.exercises ?: emptyList()
-                    EditableWorkoutDay(
-                        day = "Day ${index + 1}",
-                        exercises = mutableStateListOf<EditableExercise>().apply {
-                            addAll(exercisesRaw.map {
-                                EditableExercise(
-                                    exerciseId = it.exercise_id,
-                                    sets = it.sets,
-                                    reps = it.reps,
-                                    weight = it.weights
-                                )
-                            })
-                        }
-                    )
-                }
-            )
+            if (fetchedWorkout != null) {
+                editableWorkout.addAll(
+                    fetchedWorkout.schedule.mapIndexed { index, day ->
+                        val exercisesRaw = day.exercise_sets ?: day.exercises ?: emptyList()
+                        EditableWorkoutDay(
+                            day = "Day ${index + 1}",
+                            exercises = mutableStateListOf<EditableExercise>().apply {
+                                addAll(exercisesRaw.map {
+                                    EditableExercise(
+                                        exerciseId = it.exercise_id,
+                                        sets = it.sets,
+                                        reps = it.reps,
+                                        weight = it.weight
+                                    )
+                                })
+                            }
+                        )
+                    }
+                )
+            }
         }
     }
 
@@ -69,7 +78,7 @@ fun HomeScreen(navController: NavController) {
 
     if (workoutRoutine == null) {
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-            CircularProgressIndicator()
+            Text("No Workouts Created")
         }
     } else {
         LazyColumn(modifier = Modifier.fillMaxSize().padding(16.dp)) {
@@ -88,23 +97,34 @@ fun HomeScreen(navController: NavController) {
                     )
                 }
             }
+
             item {
                 Button(
                     onClick = {
                         coroutineScope.launch {
-                            val updatedSchedule = editableWorkout.mapIndexed { dayIndex, workoutDay ->
-                                workoutDay.exercises.mapIndexed { exIndex, exercise ->
-                                    val isDone = exerciseCheckStates[dayIndex to exIndex] == true
-                                    mapOf(
-                                        "exercise_id" to exercise.exerciseId,
-                                        "sets" to exercise.sets,
-                                        "reps" to exercise.reps,
-                                        "weight" to exercise.weight,
-                                        "isDone" to isDone
-                                    )
-                                }
+                            val today = java.time.LocalDate.now().toString()
+                            val schedule = editableWorkout.mapIndexed { dayIndex, workoutDay ->
+                                WorkoutDay(
+                                    workout_id = workoutRoutine?.schedule?.get(dayIndex)?.workout_id ?: 0,
+                                    execution_date = workoutRoutine?.schedule?.get(dayIndex)?.execution_date ?: today,
+                                    created_at = today,
+                                    exercise_sets = workoutDay.exercises.mapIndexed { exIndex, exercise ->
+                                        ExerciseDetail(
+                                            exercise_id = exercise.exerciseId,
+                                            sets = exercise.sets,
+                                            reps = exercise.reps,
+                                            weight = exercise.weight,
+                                            is_done = exerciseCheckStates[dayIndex to exIndex] ?: false
+                                        )
+                                    }
+                                )
                             }
-                            WorkoutService.sendWorkoutData(updatedSchedule)
+                            val workoutPayload = WorkoutRoutine(schedule = schedule)
+                            val response = UserSession.userId?.let {
+                                WorkoutService.sendWorkoutData(
+                                    it, workoutPayload)
+                            }
+                            // Handle response if needed
                         }
                     },
                     modifier = Modifier
@@ -127,7 +147,6 @@ fun HomeScreen(navController: NavController) {
                     )
                 }
             }
-
         }
     }
 }

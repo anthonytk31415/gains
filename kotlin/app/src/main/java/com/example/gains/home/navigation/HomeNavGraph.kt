@@ -1,6 +1,11 @@
 package com.example.gains.home.navigation
 
+import android.annotation.SuppressLint
 import android.content.Context
+import android.os.Build
+import android.util.Log
+import androidx.activity.ComponentActivity
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -11,24 +16,74 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.compose.material3.*
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import com.example.gains.R
+import com.example.gains.UserSession
 import com.example.gains.home.*
 import com.example.gains.home.exercise.Exercise
 import com.example.gains.home.exercise.loadExercisesFromJson
 import com.example.gains.home.exercise.ExerciseDetailsScreen
+import com.example.gains.home.model.WorkoutRoutine
+import com.example.gains.home.network.CreationService.createUserAccount
+import com.example.gains.home.network.LoginService.loginUser
+import com.example.gains.home.network.WorkoutApi
+import com.example.gains.home.network.WorkoutService
+import com.example.gains.home.model.WorkoutViewModel
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import org.json.JSONObject
 
+@SuppressLint("ContextCastToActivity")
+@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeNavGraph(
     mainNavController: NavHostController,
-    username: String
+    username: String,
+    email: String,
+    isNewAccount: Boolean
 ) {
     val homeNavController = rememberNavController()
+    val isLoaded = remember { mutableStateOf(false) }
+    val workout = remember { mutableStateOf<WorkoutRoutine?>(null) }
     val context = LocalContext.current
+    val workoutViewModel: WorkoutViewModel = viewModel(LocalContext.current as ComponentActivity)//May cause issues in future
+    Log.d("HomeNavGraph", "isNewAccount: $isNewAccount")
+    LaunchedEffect(isNewAccount) {
+        // When it's a new account, fetch data after creating the user
+        if (isNewAccount) {
+            try {
+                // Assume we create a user account here, get the userId and fetch workout data
+                Log.d("HomeNavGraph", "isNewAccount: $isNewAccount")
+                val response = createUserAccount(email)
+                val json = JSONObject(response)
+                val userId = json.getInt("user_id")
+                UserSession.userId = userId
+                isLoaded.value = true
+            } catch (e: Exception) {
+                println("Error creating user or fetching workout: ${e.message}")
+                isLoaded.value = true
+            }
+        } else {
+            // For existing users, load data from UserSession
+            try{
+                val response = loginUser(email)
+                Log.d("HomeNavGraph", "Response: $response")
+                val jsonResponse = JSONObject(response)
+                val userId = jsonResponse.getInt("user_id")
+                Log.d("HomeNavGraph", "User ID: $userId")
+                UserSession.userId = userId
+                Log.d("UserSession", "UserSession.userId = ${UserSession.userId}") // log from object
+                isLoaded.value = true
+            } catch (e: Exception) {
+                println("Error creating user or fetching workout: ${e.message}")
+                isLoaded.value = true
+            }
+
+        }
+    }
 
     // Load exercises once and remember
     val exercises by remember {
@@ -75,10 +130,13 @@ fun HomeNavGraph(
             modifier = Modifier.padding(innerPadding)
         ) {
             composable(BottomNav.Home.route) { HomeScreen(navController = homeNavController) }
-            composable(BottomNav.Add.route) { AddScreen(navController = homeNavController) }
+            composable(BottomNav.Add.route) { AddScreen(navController = homeNavController,  workoutViewModel = workoutViewModel) }
             composable(BottomNav.View.route) { ViewScreen(navController = homeNavController) }
             composable(BottomNav.Profile.route) { ProfileScreen(navController = homeNavController) }
             composable(BottomNav.Settings.route) { SettingsScreen(navController = homeNavController) }
+            composable("generatedWorkout") {
+                GeneratedWorkoutScreen(navController = homeNavController,  workoutViewModel = workoutViewModel)
+            }
 
             composable(
                 route = "exerciseDetail/{exerciseId}",
