@@ -320,6 +320,7 @@ int layout notification_template_icon_group 0x7f070008
 int layout notification_template_part_chronometer 0x7f070009
 int layout notification_template_part_time 0x7f07000a
 int mipmap ic_launcher 0x7f080000
+int mipmap ic_launcher_foreground 0x7f080002
 int mipmap ic_launcher_round 0x7f080001
 int raw exercises 0x7f090000
 int raw firebase_common_keep 0x7f090001

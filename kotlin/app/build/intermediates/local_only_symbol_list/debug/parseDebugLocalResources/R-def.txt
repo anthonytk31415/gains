@@ -67,6 +67,7 @@ drawable tricep_pushdown
 drawable v_ups
 drawable wall_balls
 mipmap ic_launcher
+mipmap ic_launcher_foreground
 mipmap ic_launcher_round
 raw exercises
 string app_name
