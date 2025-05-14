@@ -12,7 +12,6 @@ def create_user(request):
     '''Create a new user.'''
     try:
         data = json.loads(request.body)
-        print("data", data)
         # required fields
         for field in ['email']:  #maybe include password later
             if not data.get(field):
@@ -44,16 +43,11 @@ def create_user(request):
 def login_user(request): 
     ''' Given a email, return the user_id and thus login the user'''
     try:
-        print('hello this path1')
         data = json.loads(request.body) 
-        print("data", data)
         email = data.get('email')
-        print(email)
         if not email:
             return JsonResponse({'error': 'Email is required'}, status=400)
-        print('hello this path')
         user = User.objects.get(email=email)
-        print(user)
         return JsonResponse({'user_id': user.user_id})
     except User.DoesNotExist:
         return JsonResponse({'error': 'Error with email address'}, status=404)
@@ -80,8 +74,6 @@ def serialize_user(user):
 def get_user(request, user_id):
     '''Given the user id, return the user.'''
     try:
-        print("hello get user")
-        print(user_id)
         user = User.objects.get(user_id=user_id)
         return JsonResponse({'user': serialize_user(user)})
     except User.DoesNotExist:
