@@ -17,9 +17,9 @@ object CreationService {
             // Build JSON payload with non-null fields
             val payload = mutableMapOf<String, String>()
             payload["email"] = email
-            dob?.let { payload["dob"] = it }
-            height?.let { payload["height"] = it.toString() }
-            weight?.let { payload["weight"] = it.toString() }
+            //dob?.let { payload["dob"] = it }
+            //height?.let { payload["height"] = it.toString() }
+            //weight?.let { payload["weight"] = it.toString() }
             //print("$payload")
             Log.d("Payload", "$payload")
             val response: HttpResponse = httpClient.post("http://52.24.121.169:8000/api/user/create/") {
