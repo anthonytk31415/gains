@@ -6,6 +6,8 @@ import android.os.Build
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -16,6 +18,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.compose.material3.*
+import androidx.compose.ui.Alignment
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
@@ -124,37 +127,58 @@ fun HomeNavGraph(
             }
         }
     ) { innerPadding ->
-        NavHost(
-            navController = homeNavController,
-            startDestination = BottomNav.Home.route,
-            modifier = Modifier.padding(innerPadding)
-        ) {
-            composable(BottomNav.Home.route) { HomeScreen(navController = homeNavController) }
-            composable(BottomNav.Add.route) { AddScreen(navController = homeNavController,  workoutViewModel = workoutViewModel) }
-            composable(BottomNav.View.route) { ViewScreen(navController = homeNavController) }
-            composable(BottomNav.Profile.route) { ProfileScreen(navController = homeNavController) }
-            composable(BottomNav.Settings.route) { SettingsScreen(navController = homeNavController) }
-            composable("generatedWorkout") {
-                GeneratedWorkoutScreen(navController = homeNavController,  workoutViewModel = workoutViewModel)
-            }
-
-            composable(
-                route = "exerciseDetail/{exerciseId}",
-                arguments = listOf(navArgument("exerciseId") { type = NavType.StringType })
-            ) { backStackEntry ->
-                val exerciseId = backStackEntry.arguments?.getString("exerciseId") ?: ""
-                val matched = exercises.find { it.id == exerciseId }
-
-                matched?.let {
-                    val resId = context.resources.getIdentifier(it.imageResName, "drawable", context.packageName)
-                    ExerciseDetailsScreen(
+        if(isLoaded.value) {
+            NavHost(
+                navController = homeNavController,
+                startDestination = BottomNav.Home.route,
+                modifier = Modifier.padding(innerPadding)
+            ) {
+                composable(BottomNav.Home.route) { HomeScreen(navController = homeNavController) }
+                composable(BottomNav.Add.route) {
+                    AddScreen(
                         navController = homeNavController,
-                        exercise = it.copy(imageRes = resId)
+                        workoutViewModel = workoutViewModel
                     )
                 }
+                composable(BottomNav.View.route) { ViewScreen(navController = homeNavController) }
+                composable(BottomNav.Profile.route) { ProfileScreen(navController = homeNavController) }
+                composable(BottomNav.Settings.route) { SettingsScreen(navController = homeNavController) }
+                composable("generatedWorkout") {
+                    GeneratedWorkoutScreen(
+                        navController = homeNavController,
+                        workoutViewModel = workoutViewModel
+                    )
+                }
+
+
+                composable(
+                    route = "exerciseDetail/{exerciseId}",
+                    arguments = listOf(navArgument("exerciseId") { type = NavType.IntType }) // Use IntType here
+                ) { backStackEntry ->
+
+                    val exerciseId = backStackEntry.arguments?.getInt("exerciseId")
+//                    Log.d("Debug", "exerciseId type: ${exerciseId?.javaClass?.name}")
+                    val matched = exercises.find { it.id == exerciseId }
+
+                    matched?.let {
+                        val resId = context.resources.getIdentifier(it.imageResName, "drawable", context.packageName)
+                        ExerciseDetailsScreen(
+                            navController = homeNavController,
+                            exercise = it.copy(imageRes = resId)
+                        )
+                    }
+                }
+            }
+        }
+        else{
+            Box(
+                modifier = Modifier
+                    .padding(innerPadding)
+                    .fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator()
             }
         }
     }
 }
-
-

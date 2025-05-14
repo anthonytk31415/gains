@@ -1,5 +1,6 @@
 package com.example.gains
 
+import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -20,6 +21,7 @@ object UserSession {
         val uid = FirebaseAuth.getInstance().currentUser?.uid
         if (uid != null) {
             val db = FirebaseFirestore.getInstance()
+            Log.d("Hellos", "User ID: $uid")
             db.collection("users").document(uid)
                 .get()
                 .addOnSuccessListener { document ->
