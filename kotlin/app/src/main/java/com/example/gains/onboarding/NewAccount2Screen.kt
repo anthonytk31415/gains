@@ -246,6 +246,30 @@ fun NewAccount2(navController: NavController, email: String, modifier: Modifier 
                         )
                     }
                 }
+                // Back to Login
+                Button(
+                    onClick = {
+                        navController.navigate("Login") {
+                            popUpTo("Login") { inclusive = true }
+                            launchSingleTop = true
+                        }
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(50.dp),
+                    shape = RoundedCornerShape(8.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color.Black,
+                        contentColor = Color.White
+                    ),
+                    contentPadding = PaddingValues(0.dp)
+                ) {
+                    Text(
+                        text = "Back to Login",
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.Medium
+                    )
+                }
             }
             Text(
                 textAlign = TextAlign.Center,
