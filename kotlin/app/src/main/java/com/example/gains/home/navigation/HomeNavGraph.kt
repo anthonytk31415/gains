@@ -19,6 +19,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.compose.material3.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.text.font.FontWeight
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
@@ -103,7 +104,28 @@ fun HomeNavGraph(
 
     Scaffold(
         topBar = {
-            TopAppBar(title = { Text("gAIns - $username") })
+            TopAppBar(
+                title = { Text("gAIns - $username") },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    titleContentColor = MaterialTheme.colorScheme.onPrimary
+                ),
+                actions = {
+                    TextButton(
+                        onClick = {
+                            mainNavController.navigate("Login") {
+                                popUpTo(0) { inclusive = true } // Clear backstack
+                            }
+                        }
+                    ) {
+                        Text(
+                            text = "Logout",
+                            color = MaterialTheme.colorScheme.onPrimary,
+                            style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold)
+                        )
+                    }
+                }
+            )
         },
         bottomBar = {
             NavigationBar {

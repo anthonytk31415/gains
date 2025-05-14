@@ -27,7 +27,7 @@ drawable decline_bench_press
 drawable diamond_push_ups
 drawable dips
 drawable dumbbell_bench_press
-drawable egyption_lateral_raise
+drawable egyptian_lateral_raise
 drawable flutter_kicks
 drawable front_squat
 drawable goblet_squats
