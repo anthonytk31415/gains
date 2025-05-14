@@ -19,8 +19,9 @@ data class WorkoutDay(
 @Serializable
 data class ExerciseDetail(
     val exercise_id: Int,
+    val exercise_set_id: Int? = null,
     val sets: Int,
     val reps: Int,
     val weight: Float,
-    var is_done: Boolean = false
+    val is_done: Boolean
 )

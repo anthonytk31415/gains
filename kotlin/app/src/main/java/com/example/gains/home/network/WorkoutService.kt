@@ -15,8 +15,23 @@ object WorkoutService {
 
     suspend fun sendWorkoutData(userId: Int, routine: WorkoutRoutine): String {
         return try {
-            Log.d("WorkoutSave", "Payload: $routine")
+            Log.d("Got request 1", " $routine")
             val response: HttpResponse = httpClient.post("http://52.24.121.169:8000/api/$userId/schedule/save/") {
+                contentType(ContentType.Application.Json)
+                setBody(routine)
+            }
+            Log.d("Response","$response")
+            response.bodyAsText()
+        } catch (e: Exception) {
+            println("Caught exception in sendWorkoutData: ${e.message}")
+            throw e
+        }
+    }
+
+    suspend fun updateWorkoutData(userId: Int, routine: WorkoutRoutine): String {
+        return try {
+            Log.d("Got request 2", " $routine")
+            val response: HttpResponse = httpClient.put("http://52.24.121.169:8000/api/$userId/schedule/update/") {
                 contentType(ContentType.Application.Json)
                 setBody(routine)
             }
@@ -60,7 +75,4 @@ object WorkoutService {
             throw e
         }
     }
-//
-
-
 }

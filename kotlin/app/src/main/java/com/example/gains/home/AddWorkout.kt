@@ -28,8 +28,13 @@ import com.example.gains.home.model.WorkoutViewModel
 import com.example.gains.home.model.WorkoutDay
 import com.example.gains.home.model.ExerciseDetail
 import com.example.gains.home.network.WorkoutService
+import kotlinx.serialization.encodeToString
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.jsonObject
+import kotlinx.serialization.json.decodeFromJsonElement
 
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
@@ -42,7 +47,7 @@ fun GeneratedWorkoutScreen(navController: NavController, workoutViewModel: Worko
 //    var workoutRoutine by remember { mutableStateOf<WorkoutRoutine?>(null) }
     var editableWorkout by remember { mutableStateOf<MutableList<EditableWorkoutDay>>(mutableListOf()) }
     val userId = UserSession.userId
-
+//      val userId = 1
     if (workoutRoutine != null) {
         editableWorkout = workoutRoutine.schedule.mapIndexed { index, day ->
             val exercisesRaw = day.exercise_sets ?: day.exercises ?: emptyList()
@@ -50,6 +55,7 @@ fun GeneratedWorkoutScreen(navController: NavController, workoutViewModel: Worko
                 day = "Day ${index + 1}",
                 exercises = exercisesRaw.map { ex ->
                     EditableExercise(
+                        exercise_set_id =  ex.exercise_set_id,
                         exerciseId = ex.exercise_id,
                         sets = ex.sets,
                         reps = ex.reps,
@@ -186,6 +192,7 @@ fun GeneratedWorkoutScreen(navController: NavController, workoutViewModel: Worko
                                     if (exerciseId != -1 && sets.isNotBlank() && reps.isNotBlank()) {
                                         val newExercise = EditableExercise(
                                             exerciseId = exerciseId,
+                                            exercise_set_id = null,
                                             sets = sets.toIntOrNull() ?: 0,
                                             reps = reps.toIntOrNull() ?: 0,
                                             weight = weight.toFloatOrNull() ?: 0f,
@@ -220,15 +227,16 @@ fun GeneratedWorkoutScreen(navController: NavController, workoutViewModel: Worko
                 Button(onClick = {
                     coroutineScope.launch {
                         try {
+
                             val request = WorkoutRoutine(
                                 schedule = editableWorkout.map { day ->
                                     WorkoutDay(
-                                        workout_id = null,
-                                        execution_date = null,
+                                        execution_date = LocalDateTime.now().format(DateTimeFormatter.ISO_DATE),
                                         created_at = LocalDateTime.now().format(DateTimeFormatter.ISO_DATE),
                                         exercise_sets = day.exercises.map { ex ->
                                             ExerciseDetail(
                                                 exercise_id = ex.exerciseId,
+                                                exercise_set_id = ex.exercise_set_id,
                                                 sets = ex.sets,
                                                 reps = ex.reps,
                                                 weight = ex.weight,
@@ -238,10 +246,14 @@ fun GeneratedWorkoutScreen(navController: NavController, workoutViewModel: Worko
                                     )
                                 }
                             )
+                            Log.d("Calling final call","$request")
+                            val json = Json.encodeToString(request)
+                            Log.d("SerializedJSON", json)
 
 
                             val response = userId?.let { WorkoutService.sendWorkoutData(it, request) }
-                            Log.d("FormSubmit", "response: $response")
+
+                            Log.d("Final response", "response: $response")
 //                            workoutViewModel.setWorkout(response)
 //                            navController.navigate("generatedWorkout")
                         } catch (e: Exception) {

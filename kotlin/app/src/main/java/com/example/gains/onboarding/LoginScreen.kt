@@ -52,12 +52,12 @@ fun Login(navController: NavController, modifier: Modifier = Modifier) {
     // Check if the user is already signed in
     //val currentUser = auth.currentUser
     //if (currentUser != null) {
-        // If the user is signed in, navigate to HomeScreen
+    // If the user is signed in, navigate to HomeScreen
     //    navController.navigate("HomeScreen") {
     //        popUpTo("Login") { inclusive = true }
     //        launchSingleTop = true
     //    }
-   // }
+    // }
 
     Box(
         modifier = modifier
@@ -192,10 +192,10 @@ fun Login(navController: NavController, modifier: Modifier = Modifier) {
                         keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
                         keyboardActions = KeyboardActions(
                             onDone = {
-                                    //if (isLoginFormValid(username, password)) {
-                                    //    navController.navigate("HomeNav")
-                                    //} else {
-                                    // You can show an error state or Toast here
+                                //if (isLoginFormValid(username, password)) {
+                                //    navController.navigate("HomeNav")
+                                //} else {
+                                // You can show an error state or Toast here
                                 //}
                             }
                         )
@@ -232,6 +232,7 @@ fun Login(navController: NavController, modifier: Modifier = Modifier) {
                                             UserSession.loadUserData(
                                                 onComplete = {
                                                     val isNewAccount = false
+                                                    Log.d("Hello", "User ID: ${UserSession.userId}")
                                                     navController.navigate("HomeNav/$isNewAccount") {
                                                         popUpTo("Login") { inclusive = true }
                                                         launchSingleTop = true
@@ -257,10 +258,19 @@ fun Login(navController: NavController, modifier: Modifier = Modifier) {
                                         auth.signInWithEmailAndPassword(email, password)
                                             .addOnCompleteListener { task ->
                                                 if (task.isSuccessful) {
-                                                    navController.navigate("HomeNav") {
-                                                        popUpTo("Login") { inclusive = true }
-                                                        launchSingleTop = true
-                                                    }
+                                                    UserSession.loadUserData(
+                                                        onComplete = {
+                                                            val isNewAccount = false
+                                                            navController.navigate("HomeNav/$isNewAccount") {
+                                                                popUpTo("Login") { inclusive = true }
+                                                                launchSingleTop = true
+                                                            }
+                                                        },
+                                                        onError = { error ->
+                                                            Log.e("Login", "Failed to load user data: ${error.message}")
+                                                            Toast.makeText(context, "Failed to load user data", Toast.LENGTH_SHORT).show()
+                                                        }
+                                                    )
                                                 } else {
                                                     val errorMessage =
                                                         task.exception?.message ?: "Login failed"

@@ -6,7 +6,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
 data class Exercise(
-    val id: String,
+    val id: Int,
     val name: String,
     val imageResName: String,
     val videoUrl: String,
@@ -16,8 +16,6 @@ data class Exercise(
     val focusAreas: List<String> = emptyList(),
     val imageRes: Int = 0
 )
-
-
 
 fun loadExercisesFromJson(context: Context): List<Exercise> {
     val inputStream = context.resources.openRawResource(R.raw.exercises)

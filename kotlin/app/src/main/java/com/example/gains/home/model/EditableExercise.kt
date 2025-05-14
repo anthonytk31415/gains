@@ -7,8 +7,9 @@ data class EditableWorkoutDay(
 
 data class EditableExercise(
     val exerciseId: Int,
+    val exercise_set_id: Int? = null,
     var sets: Int,
     var reps: Int,
     var weight: Float,
-    var is_done: Boolean = false
+    val is_done: Boolean = false
 )

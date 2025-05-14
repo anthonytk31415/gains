@@ -4,7 +4,6 @@ import android.util.Log
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
-import org.json.JSONObject
 
 object LoginService {
     suspend fun loginUser(email: String): String {

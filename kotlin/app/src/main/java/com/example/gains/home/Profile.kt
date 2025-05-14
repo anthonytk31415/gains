@@ -24,6 +24,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.gains.UserSession
+import android.widget.Toast
+import androidx.compose.ui.platform.LocalContext
 import kotlinx.coroutines.runBlocking
 import com.example.gains.home.network.UserService
 import com.example.gains.home.model.UserProfile
@@ -39,24 +41,28 @@ fun ProfileScreen(navController: NavController) {
     var weightInput by remember { mutableStateOf("") }
     var errorMessage by remember { mutableStateOf<String?>(null) }
     var isDataLoaded by remember { mutableStateOf(false) }
+    val context = LocalContext.current
 
     // Fetch user data once on load
     if (!isDataLoaded) {
         LaunchedEffect(Unit) {
             try {
-                val user = userId?.let { UserService.getUserDetails(userId) }
+                val user = userId?.let { UserService.getUserDetails(it) }
+                Log.d("ProfileScreen3", "User: $user")
+
                 if (user != null) {
-                    dob = user.dob
+                    dob = user.dob ?: ""
+                    height = user.height ?: 0f
+                    weight = user.weight ?: 0f
+                } else {
+                    Log.w("ProfileScreen3", "User data is null for userId: $userId")
                 }
-                if (user != null) {
-                    height = user.height
-                }
-                if (user != null) {
-                    weight = user.weight
-                }
+
                 isDataLoaded = true
             } catch (e: Exception) {
-                errorMessage = "Failed to load user: ${e.message}"
+                Log.e("ProfileScreen3", "Exception while loading user: ${e.message}")
+                // Optional: Only set error if you care to show it
+                // errorMessage = "Failed to load user: ${e.message}"
             }
         }
     }
@@ -97,7 +103,7 @@ fun ProfileScreen(navController: NavController) {
                 .fillMaxWidth()
                 .padding(vertical = 8.dp)
         ) {
-            Text(text = "Enter Age:", modifier = Modifier.weight(1f))
+            Text(text = "Enter Date of Birth:", modifier = Modifier.weight(1f))
             TextField(
                 value = dob,
                 onValueChange = { dob = it },
@@ -171,6 +177,7 @@ fun ProfileScreen(navController: NavController) {
                             }
                         }
                         Log.d("ProfileScreen", "Response: $response")
+                        Toast.makeText(context, "Profile updated successfully!", Toast.LENGTH_SHORT).show()
                         //navController.navigate("generatedWorkout")
                         //Add Toast saying User Profile updated successfully
                     } catch (e: Exception) {
