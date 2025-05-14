@@ -1,5 +1,4 @@
-<<<<<<< HEAD
-#Sat May 10 13:47:27 PDT 2025
+#Tue May 13 22:12:42 PDT 2025
 base.0=C\:\\Users\\people\\Documents\\Work\\MCS\\Capstone\\gains\\kotlin\\app\\build\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes.dex
 base.1=C\:\\Users\\people\\Documents\\Work\\MCS\\Capstone\\gains\\kotlin\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\0\\classes.dex
 base.10=C\:\\Users\\people\\Documents\\Work\\MCS\\Capstone\\gains\\kotlin\\app\\build\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes3.dex
@@ -12,21 +11,6 @@ base.6=C\:\\Users\\people\\Documents\\Work\\MCS\\Capstone\\gains\\kotlin\\app\\b
 base.7=C\:\\Users\\people\\Documents\\Work\\MCS\\Capstone\\gains\\kotlin\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\8\\classes.dex
 base.8=C\:\\Users\\people\\Documents\\Work\\MCS\\Capstone\\gains\\kotlin\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\9\\classes.dex
 base.9=C\:\\Users\\people\\Documents\\Work\\MCS\\Capstone\\gains\\kotlin\\app\\build\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes2.dex
-=======
-#Fri May 09 21:32:25 PDT 2025
-base.0=C\:\\Users\\james\\AndroidStudioProjects\\gains\\kotlin\\app\\build\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes.dex
-base.1=C\:\\Users\\james\\AndroidStudioProjects\\gains\\kotlin\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\0\\classes.dex
-base.10=C\:\\Users\\james\\AndroidStudioProjects\\gains\\kotlin\\app\\build\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes3.dex
-base.11=C\:\\Users\\james\\AndroidStudioProjects\\gains\\kotlin\\app\\build\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes4.dex
-base.2=C\:\\Users\\james\\AndroidStudioProjects\\gains\\kotlin\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\11\\classes.dex
-base.3=C\:\\Users\\james\\AndroidStudioProjects\\gains\\kotlin\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\15\\classes.dex
-base.4=C\:\\Users\\james\\AndroidStudioProjects\\gains\\kotlin\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\1\\classes.dex
-base.5=C\:\\Users\\james\\AndroidStudioProjects\\gains\\kotlin\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\6\\classes.dex
-base.6=C\:\\Users\\james\\AndroidStudioProjects\\gains\\kotlin\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\7\\classes.dex
-base.7=C\:\\Users\\james\\AndroidStudioProjects\\gains\\kotlin\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\8\\classes.dex
-base.8=C\:\\Users\\james\\AndroidStudioProjects\\gains\\kotlin\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\9\\classes.dex
-base.9=C\:\\Users\\james\\AndroidStudioProjects\\gains\\kotlin\\app\\build\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes2.dex
->>>>>>> b157bdb65763b647d090e004270fde623d8b275c
 path.0=classes.dex
 path.1=0/classes.dex
 path.10=classes3.dex

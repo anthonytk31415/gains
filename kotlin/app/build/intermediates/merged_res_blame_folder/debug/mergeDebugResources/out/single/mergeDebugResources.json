@@ -1,41 +1,185 @@
 [
     {
-        "merged": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\mipmap-hdpi_ic_launcher.webp.flat",
-        "source": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\mipmap-hdpi\\ic_launcher.webp"
-    },
-    {
         "merged": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\drawable_body_back.png.flat",
         "source": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\drawable\\body_back.png"
     },
     {
-<<<<<<< HEAD
-        "merged": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\xml_data_extraction_rules.xml.flat",
-        "source": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\xml\\data_extraction_rules.xml"
+        "merged": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\drawable_kettlebell_swings.png.flat",
+        "source": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\drawable\\kettlebell_swings.png"
     },
     {
-        "merged": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\mipmap-anydpi-v26_ic_launcher.xml.flat",
-        "source": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\mipmap-anydpi-v26\\ic_launcher.xml"
-=======
-        "merged": "C:\\Users\\james\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\drawable_squats.png.flat",
-        "source": "C:\\Users\\james\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\drawable\\squats.png"
+        "merged": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\drawable_deadlift.png.flat",
+        "source": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\drawable\\deadlift.png"
     },
     {
-        "merged": "C:\\Users\\james\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\mipmap-xhdpi_ic_launcher.webp.flat",
-        "source": "C:\\Users\\james\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\mipmap-xhdpi\\ic_launcher.webp"
->>>>>>> b157bdb65763b647d090e004270fde623d8b275c
+        "merged": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\drawable_close_grip_dumbbell_bench_press.png.flat",
+        "source": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\drawable\\close_grip_dumbbell_bench_press.png"
+    },
+    {
+        "merged": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\drawable_hip_thrust.png.flat",
+        "source": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\drawable\\hip_thrust.png"
+    },
+    {
+        "merged": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\drawable_bird_dog.png.flat",
+        "source": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\drawable\\bird_dog.png"
+    },
+    {
+        "merged": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\drawable_bulgarian_split_squat.png.flat",
+        "source": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\drawable\\bulgarian_split_squat.png"
     },
     {
         "merged": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\xml_network_security_config.xml.flat",
         "source": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\xml\\network_security_config.xml"
     },
     {
-<<<<<<< HEAD
-=======
-        "merged": "C:\\Users\\james\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\mipmap-hdpi_ic_launcher.webp.flat",
-        "source": "C:\\Users\\james\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\mipmap-hdpi\\ic_launcher.webp"
+        "merged": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\drawable_wall_balls.png.flat",
+        "source": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\drawable\\wall_balls.png"
     },
     {
->>>>>>> b157bdb65763b647d090e004270fde623d8b275c
+        "merged": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\drawable_front_squat.png.flat",
+        "source": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\drawable\\front_squat.png"
+    },
+    {
+        "merged": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\drawable_overhead_press.png.flat",
+        "source": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\drawable\\overhead_press.png"
+    },
+    {
+        "merged": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\drawable_sprinting.png.flat",
+        "source": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\drawable\\sprinting.png"
+    },
+    {
+        "merged": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\drawable_decline_bench_press.png.flat",
+        "source": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\drawable\\decline_bench_press.png"
+    },
+    {
+        "merged": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\drawable_v_ups.png.flat",
+        "source": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\drawable\\v_ups.png"
+    },
+    {
+        "merged": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\drawable_pull_ups.png.flat",
+        "source": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\drawable\\pull_ups.png"
+    },
+    {
+        "merged": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\drawable_leg_press.png.flat",
+        "source": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\drawable\\leg_press.png"
+    },
+    {
+        "merged": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\mipmap-mdpi_ic_launcher.webp.flat",
+        "source": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\mipmap-mdpi\\ic_launcher.webp"
+    },
+    {
+        "merged": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\drawable_chest_fly.png.flat",
+        "source": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\drawable\\chest_fly.png"
+    },
+    {
+        "merged": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\drawable_tricep_extension.png.flat",
+        "source": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\drawable\\tricep_extension.png"
+    },
+    {
+        "merged": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\drawable_single_leg_deadlift.png.flat",
+        "source": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\drawable\\single_leg_deadlift.png"
+    },
+    {
+        "merged": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\drawable_russian_twists.png.flat",
+        "source": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\drawable\\russian_twists.png"
+    },
+    {
+        "merged": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\drawable_leg_extension.png.flat",
+        "source": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\drawable\\leg_extension.png"
+    },
+    {
+        "merged": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\drawable_romanian_deadlift.png.flat",
+        "source": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\drawable\\romanian_deadlift.png"
+    },
+    {
+        "merged": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\drawable_side_plank_with_dips.png.flat",
+        "source": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\drawable\\side_plank_with_dips.png"
+    },
+    {
+        "merged": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\drawable_incline_bench_press.png.flat",
+        "source": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\drawable\\incline_bench_press.png"
+    },
+    {
+        "merged": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\drawable_bicep_curls.png.flat",
+        "source": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\drawable\\bicep_curls.png"
+    },
+    {
+        "merged": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\drawable_bent_over_dumbbell_row.png.flat",
+        "source": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\drawable\\bent_over_dumbbell_row.png"
+    },
+    {
+        "merged": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\drawable_body_front.png.flat",
+        "source": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\drawable\\body_front.png"
+    },
+    {
+        "merged": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\drawable_mountain_climbers.png.flat",
+        "source": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\drawable\\mountain_climbers.png"
+    },
+    {
+        "merged": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\drawable_good_mornings.png.flat",
+        "source": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\drawable\\good_mornings.png"
+    },
+    {
+        "merged": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\drawable_clean_and_press.png.flat",
+        "source": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\drawable\\clean_and_press.png"
+    },
+    {
+        "merged": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\mipmap-xhdpi_ic_launcher.webp.flat",
+        "source": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\mipmap-xhdpi\\ic_launcher.webp"
+    },
+    {
+        "merged": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\drawable_flutter_kicks.png.flat",
+        "source": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\drawable\\flutter_kicks.png"
+    },
+    {
+        "merged": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\drawable_ic_launcher_foreground.xml.flat",
+        "source": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\drawable\\ic_launcher_foreground.xml"
+    },
+    {
+        "merged": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\drawable_heel_tap.png.flat",
+        "source": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\drawable\\heel_tap.png"
+    },
+    {
+        "merged": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\mipmap-hdpi_ic_launcher_round.webp.flat",
+        "source": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\mipmap-hdpi\\ic_launcher_round.webp"
+    },
+    {
+        "merged": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\mipmap-xxhdpi_ic_launcher.webp.flat",
+        "source": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\mipmap-xxhdpi\\ic_launcher.webp"
+    },
+    {
+        "merged": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\drawable_tricep_pushdown.png.flat",
+        "source": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\drawable\\tricep_pushdown.png"
+    },
+    {
+        "merged": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\drawable_dips.png.flat",
+        "source": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\drawable\\dips.png"
+    },
+    {
+        "merged": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\drawable_running.png.flat",
+        "source": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\drawable\\running.png"
+    },
+    {
+        "merged": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\drawable_egyption_lateral_raise.png.flat",
+        "source": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\drawable\\egyption_lateral_raise.png"
+    },
+    {
+        "merged": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\drawable_dead_bugs.png.flat",
+        "source": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\drawable\\dead_bugs.png"
+    },
+    {
+        "merged": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\mipmap-hdpi_ic_launcher.webp.flat",
+        "source": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\mipmap-hdpi\\ic_launcher.webp"
+    },
+    {
+        "merged": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\xml_data_extraction_rules.xml.flat",
+        "source": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\xml\\data_extraction_rules.xml"
+    },
+    {
+        "merged": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\mipmap-anydpi-v26_ic_launcher.xml.flat",
+        "source": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\mipmap-anydpi-v26\\ic_launcher.xml"
+    },
+    {
         "merged": "com.example.gains.app-debug-65:/xml_network_security_config.xml.flat",
         "source": "com.example.gains.app-main-67:/xml/network_security_config.xml"
     },
@@ -44,8 +188,24 @@
         "source": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\drawable\\squats.png"
     },
     {
-        "merged": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\mipmap-mdpi_ic_launcher.webp.flat",
-        "source": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\mipmap-mdpi\\ic_launcher.webp"
+        "merged": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\drawable_sit_ups.png.flat",
+        "source": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\drawable\\sit_ups.png"
+    },
+    {
+        "merged": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\drawable_box_jumps.png.flat",
+        "source": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\drawable\\box_jumps.png"
+    },
+    {
+        "merged": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\drawable_calf_raises.png.flat",
+        "source": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\drawable\\calf_raises.png"
+    },
+    {
+        "merged": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\drawable_jogging.png.flat",
+        "source": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\drawable\\jogging.png"
+    },
+    {
+        "merged": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\drawable_diamond_push_ups.png.flat",
+        "source": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\drawable\\diamond_push_ups.png"
     },
     {
         "merged": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\mipmap-anydpi-v26_ic_launcher_round.xml.flat",
@@ -56,49 +216,32 @@
         "source": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\raw\\exercises.json"
     },
     {
+        "merged": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\drawable_lunges.png.flat",
+        "source": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\drawable\\lunges.png"
+    },
+    {
         "merged": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\drawable_shoulder_press.png.flat",
         "source": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\drawable\\shoulder_press.png"
     },
     {
-        "merged": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\drawable_bicep_curls.png.flat",
-        "source": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\drawable\\bicep_curls.png"
-    },
-    {
-<<<<<<< HEAD
         "merged": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\mipmap-xxxhdpi_ic_launcher_round.webp.flat",
         "source": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\mipmap-xxxhdpi\\ic_launcher_round.webp"
     },
     {
-        "merged": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\drawable_body_front.png.flat",
-        "source": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\drawable\\body_front.png"
+        "merged": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\drawable_back_squat.png.flat",
+        "source": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\drawable\\back_squat.png"
+    },
+    {
+        "merged": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\drawable_close_grip_bench_press.png.flat",
+        "source": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\drawable\\close_grip_bench_press.png"
     },
     {
         "merged": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\mipmap-xhdpi_ic_launcher_round.webp.flat",
         "source": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\mipmap-xhdpi\\ic_launcher_round.webp"
     },
     {
-        "merged": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\mipmap-xhdpi_ic_launcher.webp.flat",
-        "source": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\mipmap-xhdpi\\ic_launcher.webp"
-    },
-    {
         "merged": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\mipmap-mdpi_ic_launcher_round.webp.flat",
         "source": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\mipmap-mdpi\\ic_launcher_round.webp"
-=======
-        "merged": "C:\\Users\\james\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\xml_data_extraction_rules.xml.flat",
-        "source": "C:\\Users\\james\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\xml\\data_extraction_rules.xml"
-    },
-    {
-        "merged": "C:\\Users\\james\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\mipmap-mdpi_ic_launcher_round.webp.flat",
-        "source": "C:\\Users\\james\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\mipmap-mdpi\\ic_launcher_round.webp"
-    },
-    {
-        "merged": "C:\\Users\\james\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\xml_network_security_config.xml.flat",
-        "source": "C:\\Users\\james\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\xml\\network_security_config.xml"
-    },
-    {
-        "merged": "C:\\Users\\james\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\mipmap-anydpi-v26_ic_launcher.xml.flat",
-        "source": "C:\\Users\\james\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\mipmap-anydpi-v26\\ic_launcher.xml"
->>>>>>> b157bdb65763b647d090e004270fde623d8b275c
     },
     {
         "merged": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\mipmap-xxxhdpi_ic_launcher.webp.flat",
@@ -109,53 +252,55 @@
         "source": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\drawable\\leg_raises.png"
     },
     {
-        "merged": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\drawable_ic_launcher_foreground.xml.flat",
-        "source": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\drawable\\ic_launcher_foreground.xml"
+        "merged": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\drawable_side_plank.png.flat",
+        "source": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\drawable\\side_plank.png"
     },
     {
-<<<<<<< HEAD
+        "merged": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\drawable_plank.png.flat",
+        "source": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\drawable\\plank.png"
+    },
+    {
+        "merged": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\drawable_dumbbell_bench_press.png.flat",
+        "source": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\drawable\\dumbbell_bench_press.png"
+    },
+    {
         "merged": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\drawable_push_ups.png.flat",
         "source": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\drawable\\push_ups.png"
     },
     {
+        "merged": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\drawable_leg_curls.png.flat",
+        "source": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\drawable\\leg_curls.png"
+    },
+    {
         "merged": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\drawable_ic_launcher_background.xml.flat",
         "source": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\drawable\\ic_launcher_background.xml"
-=======
-        "merged": "C:\\Users\\james\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\drawable_body_front.png.flat",
-        "source": "C:\\Users\\james\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\drawable\\body_front.png"
->>>>>>> b157bdb65763b647d090e004270fde623d8b275c
     },
     {
         "merged": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\mipmap-xxhdpi_ic_launcher_round.webp.flat",
         "source": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\mipmap-xxhdpi\\ic_launcher_round.webp"
     },
     {
-<<<<<<< HEAD
         "merged": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\xml_backup_rules.xml.flat",
         "source": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\xml\\backup_rules.xml"
     },
     {
-        "merged": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\mipmap-hdpi_ic_launcher_round.webp.flat",
-        "source": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\mipmap-hdpi\\ic_launcher_round.webp"
+        "merged": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\drawable_goblet_squats.png.flat",
+        "source": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\drawable\\goblet_squats.png"
     },
     {
-        "merged": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\mipmap-xxhdpi_ic_launcher.webp.flat",
-        "source": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\mipmap-xxhdpi\\ic_launcher.webp"
-=======
-        "merged": "C:\\Users\\james\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\mipmap-xxxhdpi_ic_launcher_round.webp.flat",
-        "source": "C:\\Users\\james\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\mipmap-xxxhdpi\\ic_launcher_round.webp"
+        "merged": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\drawable_barbell_row.png.flat",
+        "source": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\drawable\\barbell_row.png"
     },
     {
-        "merged": "C:\\Users\\james\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\mipmap-xxxhdpi_ic_launcher.webp.flat",
-        "source": "C:\\Users\\james\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\mipmap-xxxhdpi\\ic_launcher.webp"
+        "merged": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\drawable_skull_crushers.png.flat",
+        "source": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\drawable\\skull_crushers.png"
     },
     {
-        "merged": "C:\\Users\\james\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\mipmap-hdpi_ic_launcher_round.webp.flat",
-        "source": "C:\\Users\\james\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\mipmap-hdpi\\ic_launcher_round.webp"
+        "merged": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\drawable_power_clean.png.flat",
+        "source": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\drawable\\power_clean.png"
     },
     {
-        "merged": "C:\\Users\\james\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\drawable_bicep_curls.png.flat",
-        "source": "C:\\Users\\james\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\drawable\\bicep_curls.png"
->>>>>>> b157bdb65763b647d090e004270fde623d8b275c
+        "merged": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-debug-65:\\drawable_lateral_raises.png.flat",
+        "source": "C:\\Users\\people\\.gradle\\daemon\\8.10.2\\com.example.gains.app-main-67:\\drawable\\lateral_raises.png"
     }
 ]
