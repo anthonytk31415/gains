@@ -137,7 +137,7 @@ int drawable decline_bench_press 0x7f040024
 int drawable diamond_push_ups 0x7f040025
 int drawable dips 0x7f040026
 int drawable dumbbell_bench_press 0x7f040027
-int drawable egyption_lateral_raise 0x7f040028
+int drawable egyptian_lateral_raise 0x7f040067
 int drawable flutter_kicks 0x7f040029
 int drawable front_squat 0x7f04002a
 int drawable goblet_squats 0x7f04002b
