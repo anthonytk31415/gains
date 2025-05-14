@@ -12,6 +12,7 @@ com.example.gains:styleable/ActivityNavigator = 0x7f0c0000
 com.example.gains:id/title = 0x7f050062
 com.example.gains:string/m3c_suggestions_available = 0x7f0a0056
 com.example.gains:string/app_name = 0x7f0a0003
+<<<<<<< HEAD
 com.example.gains:styleable/SignInButton = 0x7f0c000f
 com.example.gains:id/hide_graphics_layer_in_inspector_tag = 0x7f050038
 com.example.gains:styleable/NavDeepLink = 0x7f0c000a
@@ -19,6 +20,28 @@ com.example.gains:style/Widget.Compat.NotificationActionContainer = 0x7f0b000b
 com.example.gains:xml/network_security_config = 0x7f0d0003
 com.example.gains:xml/image_share_filepaths = 0x7f0d0002
 com.example.gains:string/call_notification_answer_video_action = 0x7f0a0005
+=======
+com.example.gains:id/title = 0x7f050062
+com.example.gains:style/Theme.Gains = 0x7f0b0008
+com.example.gains:styleable/ActivityNavigator = 0x7f0c0000
+com.example.gains:string/m3c_dropdown_menu_collapsed = 0x7f0a0052
+com.example.gains:styleable/NavInclude = 0x7f0c000d
+com.example.gains:attr/shortcutMatchRequired = 0x7f010029
+com.example.gains:id/accessibility_custom_action_5 = 0x7f05001c
+com.example.gains:id/right_icon = 0x7f05004d
+com.example.gains:drawable/push_ups = 0x7f040032
+com.example.gains:string/template_percent = 0x7f0a0071
+com.example.gains:id/tag_on_apply_window_listener = 0x7f050055
+com.example.gains:styleable/NavGraphNavigator = 0x7f0c000b
+com.example.gains:styleable/GradientColor = 0x7f0c0005
+com.example.gains:id/accessibility_custom_action_29 = 0x7f050017
+com.example.gains:drawable/body_front = 0x7f040003
+com.example.gains:id/accessibility_custom_action_15 = 0x7f050008
+com.example.gains:styleable/NavHost = 0x7f0c000c
+com.example.gains:id/accessibility_custom_action_9 = 0x7f050020
+com.example.gains:style/TextAppearance.Compat.Notification.Info = 0x7f0b0004
+com.example.gains:id/hide_in_inspector_tag = 0x7f05003a
+>>>>>>> b157bdb65763b647d090e004270fde623d8b275c
 com.example.gains:style/TextAppearance.Compat.Notification = 0x7f0b0003
 com.example.gains:id/tag_screen_reader_focusable = 0x7f050058
 com.example.gains:string/tab = 0x7f0a0070
@@ -95,6 +118,14 @@ com.example.gains:id/view_tree_disjoint_parent = 0x7f050063
 com.example.gains:string/call_notification_ongoing_text = 0x7f0a0009
 com.example.gains:string/m3c_date_input_label = 0x7f0a0037
 com.example.gains:drawable/common_google_signin_btn_icon_light_normal_background = 0x7f04000d
+<<<<<<< HEAD
+=======
+com.example.gains:string/m3c_date_range_input_invalid_range_input = 0x7f0a0049
+com.example.gains:id/accessibility_custom_action_14 = 0x7f050007
+com.example.gains:string/status_bar_notification_info_overflow = 0x7f0a006e
+com.example.gains:drawable/leg_raises = 0x7f040024
+com.example.gains:id/accessibility_custom_action_27 = 0x7f050015
+>>>>>>> b157bdb65763b647d090e004270fde623d8b275c
 com.example.gains:color/common_google_signin_btn_tint = 0x7f020013
 com.example.gains:id/accessibility_custom_action_27 = 0x7f050015
 com.example.gains:drawable/leg_raises = 0x7f040024
@@ -113,10 +144,20 @@ com.example.gains:string/m3c_bottom_sheet_expand_description = 0x7f0a0030
 com.example.gains:string/range_start = 0x7f0a0069
 com.example.gains:dimen/notification_action_icon_size = 0x7f030009
 com.example.gains:string/m3c_date_input_headline = 0x7f0a0032
+<<<<<<< HEAD
 com.example.gains:string/m3c_date_input_headline_description = 0x7f0a0033
 com.example.gains:drawable/squats = 0x7f040034
 com.example.gains:string/m3c_date_range_input_invalid_range_input = 0x7f0a0049
 com.example.gains:id/accessibility_custom_action_14 = 0x7f050007
+=======
+com.example.gains:string/range_start = 0x7f0a0069
+com.example.gains:id/accessibility_custom_action_6 = 0x7f05001d
+com.example.gains:string/m3c_bottom_sheet_drag_handle_description = 0x7f0a002f
+com.example.gains:drawable/squats = 0x7f040034
+com.example.gains:string/m3c_date_input_headline_description = 0x7f0a0033
+com.example.gains:string/m3c_date_picker_no_selection_description = 0x7f0a003d
+com.example.gains:id/text = 0x7f05005f
+>>>>>>> b157bdb65763b647d090e004270fde623d8b275c
 com.example.gains:string/m3c_bottom_sheet_dismiss_description = 0x7f0a002e
 com.example.gains:id/accessibility_custom_action_30 = 0x7f050019
 com.example.gains:string/m3c_date_picker_headline = 0x7f0a003a
