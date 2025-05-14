@@ -349,6 +349,12 @@ def generate_workout(request, user_id):
         if not is_valid:
             return err
         data = json.loads(request.body)        
+        user = User.objects.get(user_id=user_id)
+        data['age'] = user.get_age()
+        data['height'] = user.height
+        data['weight'] = user.weight
+
+
         # TO DO: extract data in a predefined object
         form_text = build_llm_form(data)
         if not form_text.strip():

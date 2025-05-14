@@ -1,5 +1,5 @@
 from django.db import models
-
+from datetime import datetime
 class User(models.Model):
     user_id = models.AutoField(primary_key=True)
     email = models.EmailField(max_length=200, unique=True)
@@ -11,3 +11,9 @@ class User(models.Model):
 
     def __str__(self):
         return f"{self.email} (ID: {self.user_id})"
+    
+    def get_age(self):
+        if self.dob:
+            today = datetime.now()
+            return today.year - self.dob.year
+        return None
