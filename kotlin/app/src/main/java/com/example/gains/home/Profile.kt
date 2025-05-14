@@ -54,6 +54,8 @@ fun ProfileScreen(navController: NavController) {
                     dob = user.dob ?: ""
                     height = user.height ?: 0f
                     weight = user.weight ?: 0f
+                    heightInput = user.height.toString()
+                    weightInput = user.weight.toString()
                 } else {
                     Log.w("ProfileScreen3", "User data is null for userId: $userId")
                 }
@@ -82,7 +84,7 @@ fun ProfileScreen(navController: NavController) {
             horizontalArrangement = Arrangement.Start
         ) {
             Text(text = "Name: ", modifier = Modifier.padding(end = 8.dp))
-            Text(text = "John Doe")
+            UserSession.username?.let { Text(text = it) }
         }
 
         // Email Row
@@ -93,7 +95,7 @@ fun ProfileScreen(navController: NavController) {
             horizontalArrangement = Arrangement.Start
         ) {
             Text(text = "Email: ", modifier = Modifier.padding(end = 8.dp))
-            Text(text = "john@example.com")
+            UserSession.email?.let { Text(text = it) }
         }
 
         // Age input
