@@ -12,6 +12,7 @@ def create_user(request):
     '''Create a new user.'''
     try:
         data = json.loads(request.body)
+        print("data", data)
         # required fields
         for field in ['email']:  #maybe include password later
             if not data.get(field):
@@ -24,7 +25,6 @@ def create_user(request):
         # Create user with required fields and optional fields if provided
         user = User.objects.create(
             email=data.get('email'),
-            password=data.get('password'),
             dob=data.get('dob'),  
             height=data.get('height'),  
             weight=data.get('weight')  
