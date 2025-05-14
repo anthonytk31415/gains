@@ -9,6 +9,7 @@ object CreationService {
 
     suspend fun createUserAccount(
         email: String,
+        password: String? = null,
         dob: String? = null,
         height: Float? = null,
         weight: Float? = null
@@ -17,6 +18,7 @@ object CreationService {
             // Build JSON payload with non-null fields
             val payload = mutableMapOf<String, String>()
             payload["email"] = email
+            password?.let { payload["password"] = it }
             dob?.let { payload["dob"] = it }
             height?.let { payload["height"] = it.toString() }
             weight?.let { payload["weight"] = it.toString() }

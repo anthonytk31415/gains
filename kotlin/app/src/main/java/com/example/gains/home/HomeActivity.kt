@@ -105,7 +105,7 @@ fun HomeScreen(navController: NavController) {
             }
         }
 
-        workoutRoutine == null -> {
+        workoutRoutine == null || workoutRoutine?.schedule.isNullOrEmpty() -> {
             Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                 Text("No Workouts Created")
             }
@@ -129,45 +129,45 @@ fun HomeScreen(navController: NavController) {
                     }
                 }
 
-                item {
-                    Button(
-                        onClick = {
-                            coroutineScope.launch {
-                                val today = java.time.LocalDate.now().toString()
-                                val schedule = editableWorkout.mapIndexed { dayIndex, workoutDay ->
-                                    WorkoutDay(
-                                        workout_id = workoutRoutine?.schedule?.get(dayIndex)?.workout_id
-                                            ?: 0,
-                                        execution_date = workoutRoutine?.schedule?.get(dayIndex)?.execution_date
-                                            ?: today,
-                                        created_at = today,
-                                        exercise_sets = workoutDay.exercises.mapIndexed { exIndex, exercise ->
-                                            ExerciseDetail(
-                                                exercise_id = exercise.exerciseId,
-                                                exercise_set_id = exercise.exercise_set_id,
-                                                sets = exercise.sets,
-                                                reps = exercise.reps,
-                                                weight = exercise.weight,
-                                                is_done = exerciseCheckStates[dayIndex to exIndex]
-                                                    ?: false
-                                            )
-                                        }
-                                    )
+                if (editableWorkout.isNotEmpty()) {
+                    item {
+                        Button(
+                            onClick = {
+                                coroutineScope.launch {
+                                    val today = java.time.LocalDate.now().toString()
+                                    val schedule = editableWorkout.mapIndexed { dayIndex, workoutDay ->
+                                        WorkoutDay(
+                                            workout_id = workoutRoutine?.schedule?.get(dayIndex)?.workout_id
+                                                ?: 0,
+                                            execution_date = workoutRoutine?.schedule?.get(dayIndex)?.execution_date
+                                                ?: today,
+                                            created_at = today,
+                                            exercise_sets = workoutDay.exercises.mapIndexed { exIndex, exercise ->
+                                                ExerciseDetail(
+                                                    exercise_id = exercise.exerciseId,
+                                                    exercise_set_id = exercise.exercise_set_id,
+                                                    sets = exercise.sets,
+                                                    reps = exercise.reps,
+                                                    weight = exercise.weight,
+                                                    is_done = exerciseCheckStates[dayIndex to exIndex]
+                                                        ?: false
+                                                )
+                                            }
+                                        )
+                                    }
+
+                                    val workoutPayload = WorkoutRoutine(schedule = schedule)
+                                    val response = UserSession.userId?.let {
+                                        WorkoutService.updateWorkoutData(it, workoutPayload)
+                                    }
                                 }
-                                val workoutPayload = WorkoutRoutine(schedule = schedule)
-                                val response = UserSession.userId?.let {
-                                    WorkoutService.updateWorkoutData(
-                                        it, workoutPayload
-                                    )
-                                }
-                                // Handle response if needed
-                            }
-                        },
-                        modifier = Modifier
-                            .padding(vertical = 16.dp)
-                            .fillMaxWidth()
-                    ) {
-                        Text("Save Progress")
+                            },
+                            modifier = Modifier
+                                .padding(vertical = 16.dp)
+                                .fillMaxWidth()
+                        ) {
+                            Text("Save Progress")
+                        }
                     }
                 }
 
