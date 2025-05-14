@@ -149,6 +149,27 @@ fun NewAccount1(navController: NavController, modifier: Modifier = Modifier) {
                         fontWeight = FontWeight.Medium
                     )
                 }
+                // Back to Login
+                Button(
+                    onClick = {
+                        navController.popBackStack()
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(50.dp),
+                    shape = RoundedCornerShape(8.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color.Black,
+                        contentColor = Color.White
+                    ),
+                    contentPadding = PaddingValues(0.dp)
+                ) {
+                    Text(
+                        text = "Back to Login",
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.Medium
+                    )
+                }
             }
         }
     }
