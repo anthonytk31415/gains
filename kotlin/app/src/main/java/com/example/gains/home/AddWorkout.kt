@@ -385,10 +385,24 @@ fun WorkoutDayCard(
                             sets = ex.sets,
                             reps = ex.reps,
                             onRemoveClick = {
-                                val updated = editableWorkout.toMutableList().apply {
-                                    this[editableWorkout.indexOf(day)].exercises.removeAt(idx)
+                                // Find the correct day in the editableWorkout list
+                                val dayIndex = editableWorkout.indexOfFirst { it.day == day.day }
+                                if (dayIndex != -1) {
+                                    // Create a new list to trigger recomposition
+                                    val updatedWorkout = editableWorkout.toMutableList()
+                                    // Make a copy of the exercises list and remove the exercise
+                                    val updatedExercises = updatedWorkout[dayIndex].exercises.toMutableList()
+                                    if (idx < updatedExercises.size) { // Check if index is valid
+                                        updatedExercises.removeAt(idx)
+                                        // Create a new day with updated exercises
+                                        updatedWorkout[dayIndex] = EditableWorkoutDay(
+                                            day = day.day,
+                                            exercises = updatedExercises
+                                        )
+                                        // Update the state
+                                        onWorkoutUpdated(updatedWorkout)
+                                    }
                                 }
-                                onWorkoutUpdated(updated)
                             }
                         )
                     }
@@ -421,7 +435,7 @@ fun WorkoutDayCard(
                                     readOnly = true,
                                     label = { Text("Exercise") },
                                     trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = dropdownExpanded) },
-                                    modifier = Modifier.fillMaxWidth()
+                                    modifier = Modifier.menuAnchor().fillMaxWidth()
                                 )
                                 ExposedDropdownMenu(
                                     expanded = dropdownExpanded,
@@ -447,14 +461,71 @@ fun WorkoutDayCard(
                             Spacer(modifier = Modifier.height(16.dp))
 
                             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                                Button(onClick = { addExerciseExpanded = false }, modifier = Modifier.weight(1f)) { Text("Cancel") }
-                                Button(onClick = { /* Add logic */ }, modifier = Modifier.weight(1f)) { Text("Add") }
+                                OutlinedButton(
+                                    onClick = { addExerciseExpanded = false },
+                                    modifier = Modifier.weight(1f)
+                                ) {
+                                    Text("Cancel")
+                                }
+                                Button(
+                                    onClick = {
+                                        val exerciseId = ExerciseMappings.getExerciseId(selectedExerciseName)
+                                        if (exerciseId != -1 && sets.isNotBlank() && reps.isNotBlank()) {
+                                            // Find the day index
+                                            val dayIndex = editableWorkout.indexOfFirst { it.day == day.day }
+                                            if (dayIndex != -1) {
+                                                // Create new workout list
+                                                val updatedWorkout = editableWorkout.toMutableList()
+                                                // Create new exercises list
+                                                val updatedExercises = updatedWorkout[dayIndex].exercises.toMutableList()
+
+                                                // Add the new exercise
+                                                updatedExercises.add(
+                                                    EditableExercise(
+                                                        exerciseId = exerciseId,
+                                                        exercise_set_id = null,
+                                                        sets = sets.toIntOrNull() ?: 3,
+                                                        reps = reps.toIntOrNull() ?: 10,
+                                                        weight = weight.toFloatOrNull() ?: 0f,
+                                                        is_done = false
+                                                    )
+                                                )
+
+                                                // Create new day with updated exercises
+                                                updatedWorkout[dayIndex] = EditableWorkoutDay(
+                                                    day = day.day,
+                                                    exercises = updatedExercises
+                                                )
+
+                                                // Update state
+                                                onWorkoutUpdated(updatedWorkout)
+
+                                                // Reset form
+                                                selectedExerciseName = ""
+                                                sets = ""
+                                                reps = ""
+                                                weight = ""
+                                                addExerciseExpanded = false
+                                            }
+                                        }
+                                    },
+                                    modifier = Modifier.weight(1f)
+                                ) {
+                                    Text("Add")
+                                }
                             }
                         }
                     }
 
                     if (!addExerciseExpanded) {
-                        Button(onClick = { addExerciseExpanded = true }, modifier = Modifier.fillMaxWidth()) {
+                        Button(
+                            onClick = { addExerciseExpanded = true },
+                            modifier = Modifier.fillMaxWidth(),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = MaterialTheme.colorScheme.primaryContainer,
+                                contentColor = MaterialTheme.colorScheme.onPrimaryContainer
+                            )
+                        ) {
                             Icon(Icons.Default.Add, contentDescription = null)
                             Spacer(modifier = Modifier.width(8.dp))
                             Text("Add Exercise")
