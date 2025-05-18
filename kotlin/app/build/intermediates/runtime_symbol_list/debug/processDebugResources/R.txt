@@ -100,6 +100,7 @@ int dimen notification_top_pad 0x7f030016
 int dimen notification_top_pad_large_text 0x7f030017
 int drawable back_squat 0x7f040001
 int drawable barbell_row 0x7f040002
+int drawable bench_press 0x7f040067
 int drawable bent_over_dumbbell_row 0x7f040003
 int drawable bicep_curls 0x7f040004
 int drawable bird_dog 0x7f040005
@@ -137,7 +138,7 @@ int drawable decline_bench_press 0x7f040024
 int drawable diamond_push_ups 0x7f040025
 int drawable dips 0x7f040026
 int drawable dumbbell_bench_press 0x7f040027
-int drawable egyptian_lateral_raise 0x7f040067
+int drawable egyptian_lateral_raise 0x7f040028
 int drawable flutter_kicks 0x7f040029
 int drawable front_squat 0x7f04002a
 int drawable goblet_squats 0x7f04002b
@@ -320,8 +321,8 @@ int layout notification_template_icon_group 0x7f070008
 int layout notification_template_part_chronometer 0x7f070009
 int layout notification_template_part_time 0x7f07000a
 int mipmap ic_launcher 0x7f080000
-int mipmap ic_launcher_foreground 0x7f080002
-int mipmap ic_launcher_round 0x7f080001
+int mipmap ic_launcher_foreground 0x7f080001
+int mipmap ic_launcher_round 0x7f080002
 int raw exercises 0x7f090000
 int raw firebase_common_keep 0x7f090001
 int string android_credentials_TYPE_PASSWORD_CREDENTIAL 0x7f0a0000

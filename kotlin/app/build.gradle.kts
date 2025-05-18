@@ -68,4 +68,5 @@ dependencies {
     implementation(libs.ktor.serialization.kotlinx.json)
     implementation(libs.kotlinx.serialization.json)
     implementation("com.google.code.gson:gson:2.10.1")
+    implementation("androidx.compose.material:material-icons-extended:1.5.4")
 }
