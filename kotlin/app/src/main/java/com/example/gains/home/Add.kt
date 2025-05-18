@@ -314,7 +314,7 @@ fun AddScreen(navController: NavController, workoutViewModel: WorkoutViewModel) 
         var days by remember { mutableStateOf<String?>(null) }
         val goalOptions = listOf("Muscle Gain", "Fat Loss", "Strength", "Toning", "Endurance")
         val goals = remember { mutableStateMapOf<String, Boolean>() }
-        val muscleOptions = listOf("Chest", "Back", "Shoulders", "Legs", "Biceps", "Triceps", "Abs")
+        val muscleOptions = listOf("Chest", "Back", "Shoulders", "Legs", "Biceps", "Triceps", "Abs", "Full Body")
         val selectedMuscles = remember { mutableStateMapOf<String, Boolean>() }
         var errorMessage by remember { mutableStateOf<String?>(null) }
         val coroutineScope = rememberCoroutineScope()

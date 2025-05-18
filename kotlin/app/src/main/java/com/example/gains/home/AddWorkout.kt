@@ -246,6 +246,7 @@ fun GeneratedWorkoutScreen(
                             }
                         }
                     },
+
                     containerColor = MaterialTheme.colorScheme.primary,
                     contentColor = MaterialTheme.colorScheme.onPrimary,
                     modifier = Modifier

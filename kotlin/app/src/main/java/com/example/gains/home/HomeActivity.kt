@@ -26,6 +26,7 @@ import androidx.compose.material.icons.filled.DirectionsRun
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
+import androidx.compose.material.icons.filled.Save
 import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -176,7 +177,7 @@ fun HomeScreen(navController: NavController) {
         },
         floatingActionButton = {
             if (workoutRoutine != null && editableWorkout.isNotEmpty()) {
-                FloatingActionButton(
+                ExtendedFloatingActionButton(
                     onClick = {
                         coroutineScope.launch {
                             val today = java.time.LocalDate.now().toString()
@@ -213,11 +214,11 @@ fun HomeScreen(navController: NavController) {
                             showSaveSuccessMessage = false
                         }
                     },
+                    icon = { Icon(Icons.Default.Save, contentDescription = "Save Progress") },
+                    text = { Text("Save Progress") },
                     containerColor = MaterialTheme.colorScheme.primary,
                     contentColor = MaterialTheme.colorScheme.onPrimary
-                ) {
-                    Icon(Icons.Default.Check, contentDescription = "Save Progress")
-                }
+                )
             }
         }
     ) { paddingValues ->
@@ -341,7 +342,10 @@ fun HomeScreen(navController: NavController) {
                             modifier = Modifier
                                 .fillMaxSize()
                                 .padding(horizontal = 16.dp),
-                            contentPadding = PaddingValues(vertical = 16.dp)
+                            contentPadding = PaddingValues(
+                                top = 16.dp,
+                                bottom = 80.dp // Extra bottom padding for FAB
+                            )
                         ) {
                             val todoDays = editableWorkout.withIndex().filter { !isDayDone(it.index) }
                             val doneDays = editableWorkout.withIndex().filter { isDayDone(it.index) }
@@ -413,7 +417,7 @@ fun HomeScreen(navController: NavController) {
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Icon(
-                            Icons.Default.Check,
+                            Icons.Default.Save,
                             contentDescription = null,
                             tint = MaterialTheme.colorScheme.onPrimaryContainer
                         )
