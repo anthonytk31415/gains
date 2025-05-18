@@ -1,164 +1,379 @@
 package com.example.gains.home
 
 import android.util.Log
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableFloatStateOf
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import android.widget.Toast
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.gains.UserSession
-import android.widget.Toast
-import androidx.compose.ui.platform.LocalContext
-import kotlinx.coroutines.runBlocking
-import com.example.gains.home.network.UserService
 import com.example.gains.home.model.UserProfile
+import com.example.gains.home.network.UserService
+import kotlinx.coroutines.runBlocking
+import java.time.LocalDate
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileScreen(navController: NavController) {
     val userId = UserSession.userId
+    val context = LocalContext.current
+    val scrollState = rememberScrollState()
 
-    var dob by remember { mutableStateOf("") }
-    var height by remember { mutableFloatStateOf(0f) }
-    var weight by remember { mutableFloatStateOf(0f) }
+    // State variables
+    var height by remember { mutableStateOf(0f) }
+    var weight by remember { mutableStateOf(0f) }
     var heightInput by remember { mutableStateOf("") }
     var weightInput by remember { mutableStateOf("") }
     var errorMessage by remember { mutableStateOf<String?>(null) }
     var isDataLoaded by remember { mutableStateOf(false) }
-    val context = LocalContext.current
+    var isUpdating by remember { mutableStateOf(false) }
 
-    // Fetch user data once on load
-    if (!isDataLoaded) {
-        LaunchedEffect(Unit) {
+    // DOB state with dropdowns
+    var selectedYear by remember { mutableStateOf("") }
+    var selectedMonth by remember { mutableStateOf("") }
+    var selectedDay by remember { mutableStateOf("") }
+
+    var yearExpanded by remember { mutableStateOf(false) }
+    var monthExpanded by remember { mutableStateOf(false) }
+    var dayExpanded by remember { mutableStateOf(false) }
+
+    // Options for dropdowns
+    val currentYear = LocalDate.now().year
+    val years = (currentYear downTo 1920).map { it.toString() }
+
+    val months = listOf(
+        "January" to "01", "February" to "02", "March" to "03", "April" to "04",
+        "May" to "05", "June" to "06", "July" to "07", "August" to "08",
+        "September" to "09", "October" to "10", "November" to "11", "December" to "12"
+    )
+
+    val days = (1..31).map { it.toString().padStart(2, '0') }
+
+    // Calculate DOB string for database
+    val dob = if (selectedYear.isNotEmpty() && selectedMonth.isNotEmpty() && selectedDay.isNotEmpty()) {
+        val monthNum = months.first { it.first == selectedMonth }.second
+        "$selectedYear-$monthNum-$selectedDay"
+    } else {
+        ""
+    }
+
+    // Fetch user data
+    LaunchedEffect(Unit) {
+        if (!isDataLoaded) {
             try {
                 val user = userId?.let { UserService.getUserDetails(it) }
-                Log.d("ProfileScreen3", "User: $user")
-
                 if (user != null) {
-                    dob = user.dob ?: ""
+                    // Set height and weight
                     height = user.height ?: 0f
                     weight = user.weight ?: 0f
-                    heightInput = user.height.toString()
-                    weightInput = user.weight.toString()
-                } else {
-                    Log.w("ProfileScreen3", "User data is null for userId: $userId")
-                }
+                    heightInput = if (user.height != null && user.height > 0) user.height.toString() else ""
+                    weightInput = if (user.weight != null && user.weight > 0) user.weight.toString() else ""
 
+                    // Parse DOB if available
+                    if (!user.dob.isNullOrEmpty()) {
+                        val parts = user.dob.split("-")
+                        if (parts.size == 3) {
+                            selectedYear = parts[0]
+                            val monthIndex = parts[1].toIntOrNull()?.minus(1) ?: 0
+                            if (monthIndex in 0..11) {
+                                selectedMonth = months[monthIndex].first
+                            }
+                            selectedDay = parts[2]
+                        }
+                    }
+                }
                 isDataLoaded = true
             } catch (e: Exception) {
-                Log.e("ProfileScreen3", "Exception while loading user: ${e.message}")
-                // Optional: Only set error if you care to show it
-                // errorMessage = "Failed to load user: ${e.message}"
+                Log.e("ProfileScreen", "Error loading user data", e)
+                isDataLoaded = true
             }
         }
     }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.Top,
-        horizontalAlignment = Alignment.Start
-    ) {
-        // Name Row
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 16.dp),
-            horizontalArrangement = Arrangement.Start
-        ) {
-            Text(text = "Name: ", modifier = Modifier.padding(end = 8.dp))
-            UserSession.username?.let { Text(text = it) }
-        }
-
-        // Email Row
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 8.dp),
-            horizontalArrangement = Arrangement.Start
-        ) {
-            Text(text = "Email: ", modifier = Modifier.padding(end = 8.dp))
-            UserSession.email?.let { Text(text = it) }
-        }
-
-        // Age input
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 8.dp)
-        ) {
-            Text(text = "Enter Date of Birth:", modifier = Modifier.weight(1f))
-            TextField(
-                value = dob,
-                onValueChange = { dob = it },
-                modifier = Modifier.weight(2f),
-                singleLine = true
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text("My Profile") },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.surface
+                )
             )
         }
-
-        // Height input
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
+    ) { paddingValues ->
+        Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 8.dp)
+                .fillMaxSize()
+                .padding(paddingValues)
+                .verticalScroll(scrollState)
+                .padding(horizontal = 16.dp, vertical = 8.dp),
+            verticalArrangement = Arrangement.Top,
+            horizontalAlignment = Alignment.Start
         ) {
-            Text(text = "Enter Height:", modifier = Modifier.weight(1f))
-            TextField(
-                value = heightInput,
-                onValueChange = { heightInput = it; height = it.toFloatOrNull() ?: 0f },
-                modifier = Modifier.weight(2f),
-                singleLine = true
-            )
-        }
+            // Profile info card
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 16.dp),
+                shape = RoundedCornerShape(16.dp),
+                elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.primaryContainer
+                )
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    horizontalAlignment = Alignment.Start
+                ) {
+                    // User info
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Person,
+                            contentDescription = "Profile",
+                            tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                            modifier = Modifier.size(32.dp)
+                        )
+                        Spacer(modifier = Modifier.width(12.dp))
+                        UserSession.username?.let {
+                            Text(
+                                text = it,
+                                style = MaterialTheme.typography.titleLarge.copy(
+                                    fontWeight = FontWeight.Bold
+                                ),
+                                color = MaterialTheme.colorScheme.onPrimaryContainer
+                            )
+                        }
+                    }
 
-        // Weight input
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 8.dp)
-        ) {
-            Text(text = "Enter Weight:", modifier = Modifier.weight(1f))
-            TextField(
-                value = weightInput,
-                onValueChange = { weightInput = it; weight = it.toFloatOrNull() ?: 0f },
-                modifier = Modifier.weight(2f),
-                singleLine = true
-            )
-        }
+                    Spacer(modifier = Modifier.height(12.dp))
 
-        // Submit button
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 24.dp),
-            horizontalArrangement = Arrangement.SpaceEvenly,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Button(onClick = {
-                errorMessage = null
+                    // Email
+                    UserSession.email?.let {
+                        Text(
+                            text = it,
+                            style = MaterialTheme.typography.bodyLarge,
+                            color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.8f)
+                        )
+                    }
+                }
+            }
 
-                val profile = userId?.let {
-                    UserSession.email?.let { it1 ->
+            // Personal Information card
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp),
+                shape = RoundedCornerShape(16.dp),
+                elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp)
+                ) {
+                    Text(
+                        text = "Personal Information",
+                        style = MaterialTheme.typography.titleMedium.copy(
+                            fontWeight = FontWeight.Bold
+                        ),
+                        modifier = Modifier.padding(bottom = 16.dp)
+                    )
+
+                    // Date of Birth dropdown selectors
+                    Text(
+                        text = "Date of Birth",
+                        style = MaterialTheme.typography.bodyMedium,
+                        modifier = Modifier.padding(bottom = 8.dp)
+                    )
+
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        // Month dropdown
+                        ExposedDropdownMenuBox(
+                            expanded = monthExpanded,
+                            onExpandedChange = { monthExpanded = it },
+                            modifier = Modifier.weight(1.2f)
+                        ) {
+                            OutlinedTextField(
+                                value = selectedMonth,
+                                onValueChange = {},
+                                readOnly = true,
+                                label = { Text("Month") },
+                                trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = monthExpanded) },
+                                modifier = Modifier.menuAnchor(),
+                                singleLine = true
+                            )
+
+                            ExposedDropdownMenu(
+                                expanded = monthExpanded,
+                                onDismissRequest = { monthExpanded = false }
+                            ) {
+                                months.forEach { (month, _) ->
+                                    DropdownMenuItem(
+                                        text = { Text(month) },
+                                        onClick = {
+                                            selectedMonth = month
+                                            monthExpanded = false
+                                        }
+                                    )
+                                }
+                            }
+                        }
+
+                        // Day dropdown
+                        ExposedDropdownMenuBox(
+                            expanded = dayExpanded,
+                            onExpandedChange = { dayExpanded = it },
+                            modifier = Modifier.weight(0.8f)
+                        ) {
+                            OutlinedTextField(
+                                value = selectedDay,
+                                onValueChange = {},
+                                readOnly = true,
+                                label = { Text("Day") },
+                                trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = dayExpanded) },
+                                modifier = Modifier.menuAnchor(),
+                                singleLine = true
+                            )
+
+                            ExposedDropdownMenu(
+                                expanded = dayExpanded,
+                                onDismissRequest = { dayExpanded = false }
+                            ) {
+                                days.forEach { day ->
+                                    DropdownMenuItem(
+                                        text = { Text(day) },
+                                        onClick = {
+                                            selectedDay = day
+                                            dayExpanded = false
+                                        }
+                                    )
+                                }
+                            }
+                        }
+
+                        // Year dropdown
+                        ExposedDropdownMenuBox(
+                            expanded = yearExpanded,
+                            onExpandedChange = { yearExpanded = it },
+                            modifier = Modifier.weight(1f)
+                        ) {
+                            OutlinedTextField(
+                                value = selectedYear,
+                                onValueChange = {},
+                                readOnly = true,
+                                label = { Text("Year") },
+                                trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = yearExpanded) },
+                                modifier = Modifier.menuAnchor(),
+                                singleLine = true
+                            )
+
+                            ExposedDropdownMenu(
+                                expanded = yearExpanded,
+                                onDismissRequest = { yearExpanded = false },
+                                modifier = Modifier.heightIn(max = 300.dp)
+                            ) {
+                                years.forEach { year ->
+                                    DropdownMenuItem(
+                                        text = { Text(year) },
+                                        onClick = {
+                                            selectedYear = year
+                                            yearExpanded = false
+                                        }
+                                    )
+                                }
+                            }
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    // Height input with clear unit indicator
+                    OutlinedTextField(
+                        value = heightInput,
+                        onValueChange = {
+                            heightInput = it
+                            height = it.toFloatOrNull() ?: 0f
+                        },
+                        label = { Text("Height") },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 8.dp),
+                        leadingIcon = {
+                            Icon(
+                                imageVector = Icons.Default.Height,
+                                contentDescription = "Height"
+                            )
+                        },
+                        trailingIcon = {
+                            Text(
+                                text = "cm",
+                                modifier = Modifier.padding(end = 16.dp),
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        },
+                        singleLine = true,
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+                        supportingText = { Text("Your height in centimeters") }
+                    )
+
+                    // Weight input with clear unit indicator
+                    OutlinedTextField(
+                        value = weightInput,
+                        onValueChange = {
+                            weightInput = it
+                            weight = it.toFloatOrNull() ?: 0f
+                        },
+                        label = { Text("Weight") },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 8.dp),
+                        leadingIcon = {
+                            Icon(
+                                imageVector = Icons.Default.MonitorWeight,
+                                contentDescription = "Weight"
+                            )
+                        },
+                        trailingIcon = {
+                            Text(
+                                text = "kg",
+                                modifier = Modifier.padding(end = 16.dp),
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        },
+                        singleLine = true,
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+                        supportingText = { Text("Your weight in kilograms") }
+                    )
+                }
+            }
+
+            // Update button
+            Button(
+                onClick = {
+                    errorMessage = null
+                    isUpdating = true
+
+                    val profile = userId?.let {
                         UserProfile(
                             user_id = userId,
                             dob = dob,
@@ -166,36 +381,61 @@ fun ProfileScreen(navController: NavController) {
                             weight = weight
                         )
                     }
-                }
 
-                runBlocking {
-                    try {
-                        Log.d("ProfileScreen2", "User ID: $userId")
-                        Log.d("ProfileScreen", "Profile: $profile")
-                        val response = userId?.let {
-                            if (profile != null) {
-                                Log.d("ProfileScreen", "$profile")
-                                UserService.sendUserData(it, userProfile = profile)
+                    runBlocking {
+                        try {
+                            Log.d("ProfileScreen", "Updating profile: $profile")
+                            val response = userId?.let {
+                                if (profile != null) {
+                                    UserService.sendUserData(it, userProfile = profile)
+                                }
                             }
+                            Toast.makeText(context, "Profile updated successfully!", Toast.LENGTH_SHORT).show()
+                            isUpdating = false
+                        } catch (e: Exception) {
+                            errorMessage = "Failed to update data: ${e.message}"
+                            isUpdating = false
                         }
-                        Log.d("ProfileScreen", "Response: $response")
-                        Toast.makeText(context, "Profile updated successfully!", Toast.LENGTH_SHORT).show()
-                        //navController.navigate("generatedWorkout")
-                        //Add Toast saying User Profile updated successfully
-                    } catch (e: Exception) {
-                        errorMessage = "Failed to update data: ${e.message}"
                     }
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 24.dp)
+                    .height(50.dp),
+                enabled = !isUpdating && selectedYear.isNotEmpty() &&
+                        selectedMonth.isNotEmpty() && selectedDay.isNotEmpty() &&
+                        heightInput.isNotEmpty() && weightInput.isNotEmpty()
+            ) {
+                if (isUpdating) {
+                    CircularProgressIndicator(
+                        color = MaterialTheme.colorScheme.onPrimary,
+                        modifier = Modifier.size(24.dp)
+                    )
+                } else {
+                    Icon(
+                        imageVector = Icons.Default.Save,
+                        contentDescription = "Update"
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text("Save Profile")
                 }
-            }) {
-                Text("Update")
             }
 
+            // Error message
             if (errorMessage != null) {
-                Text(
-                    text = errorMessage!!,
-                    color = Color.Red,
-                    modifier = Modifier.padding(top = 12.dp)
-                )
+                Surface(
+                    color = MaterialTheme.colorScheme.errorContainer,
+                    shape = RoundedCornerShape(8.dp),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(
+                        text = errorMessage!!,
+                        color = MaterialTheme.colorScheme.onErrorContainer,
+                        style = MaterialTheme.typography.bodyMedium,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.padding(12.dp)
+                    )
+                }
             }
         }
     }
