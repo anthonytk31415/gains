@@ -271,7 +271,7 @@ def get_workouts(request, user_id):
             user_id=user_id
         ).order_by('-execution_date')
         workouts_data = [serialize_workout(workout) for workout in workouts]
-        return JsonResponse({'workouts': workouts_data})    
+        return JsonResponse({'schedule': workouts_data})    
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
 
