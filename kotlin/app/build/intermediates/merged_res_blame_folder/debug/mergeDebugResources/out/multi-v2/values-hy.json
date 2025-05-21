@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.gains.app-mergeDebugResources-64:/values-hy/values-hy.xml",
+            "outputFile": "com.example.gains.app-mergeDebugResources-67:/values-hy/values-hy.xml",
             "map": [
                 {
                     "source": "C:\\Users\\james\\.gradle\\caches\\8.10.2\\transforms\\e331fd90d176a6e9a0feda2cb9edb139\\transformed\\browser-1.4.0\\res\\values-hy\\values-hy.xml",

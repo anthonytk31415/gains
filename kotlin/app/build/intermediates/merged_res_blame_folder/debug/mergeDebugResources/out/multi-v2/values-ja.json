@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.gains.app-mergeDebugResources-64:/values-ja/values-ja.xml",
+            "outputFile": "com.example.gains.app-mergeDebugResources-67:/values-ja/values-ja.xml",
             "map": [
                 {
                     "source": "C:\\Users\\james\\.gradle\\caches\\8.10.2\\transforms\\f8ffb04992cf65d26e3cfb8d949689e9\\transformed\\core-1.16.0\\res\\values-ja\\values-ja.xml",
@@ -13,11 +13,11 @@
                         "endOffsets": "142,242,336,432,525,618,719,820"
                     },
                     "to": {
-                        "startLines": "4,5,6,7,8,9,10,104",
+                        "startLines": "4,5,6,7,8,9,10,110",
                         "startColumns": "4,4,4,4,4,4,4,4",
-                        "startOffsets": "325,417,517,611,707,800,893,10121",
+                        "startOffsets": "325,417,517,611,707,800,893,10498",
                         "endColumns": "91,99,93,95,92,92,100,100",
-                        "endOffsets": "412,512,606,702,795,888,989,10217"
+                        "endOffsets": "412,512,606,702,795,888,989,10594"
                     }
                 },
                 {
@@ -30,11 +30,11 @@
                         "endOffsets": "135,217"
                     },
                     "to": {
-                        "startLines": "108,109",
+                        "startLines": "114,115",
                         "startColumns": "4,4",
-                        "startOffsets": "10480,10565",
+                        "startOffsets": "10857,10942",
                         "endColumns": "84,81",
-                        "endOffsets": "10560,10642"
+                        "endOffsets": "10937,11019"
                     }
                 },
                 {
@@ -69,6 +69,23 @@
                         "startOffsets": "2078",
                         "endColumns": "121",
                         "endOffsets": "2195"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\james\\.gradle\\caches\\8.10.2\\transforms\\1a753da4f15fe58c6e0457b212ac84a6\\transformed\\calendar-1.2.0\\res\\values-ja\\values-ja.xml",
+                    "from": {
+                        "startLines": "2,3,4,5,6,7",
+                        "startColumns": "4,4,4,4,4,4",
+                        "startOffsets": "55,117,178,240,301,367",
+                        "endColumns": "61,60,61,60,65,64",
+                        "endOffsets": "112,173,235,296,362,427"
+                    },
+                    "to": {
+                        "startLines": "100,101,102,103,104,105",
+                        "startColumns": "4,4,4,4,4,4",
+                        "startOffsets": "9837,9899,9960,10022,10083,10149",
+                        "endColumns": "61,60,61,60,65,64",
+                        "endOffsets": "9894,9955,10017,10078,10144,10209"
                     }
                 },
                 {
@@ -115,11 +132,11 @@
                         "endOffsets": "186,264,353,450,533,611,689,774,849,923,999,1068,1141,1213,1283,1359,1424,1541"
                     },
                     "to": {
-                        "startLines": "11,12,32,33,34,38,39,96,97,98,99,100,101,102,103,105,106,107",
+                        "startLines": "11,12,32,33,34,38,39,96,97,98,99,106,107,108,109,111,112,113",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
-                        "startOffsets": "994,1080,3210,3299,3396,3770,3848,9527,9612,9687,9761,9837,9906,9979,10051,10222,10298,10363",
+                        "startOffsets": "994,1080,3210,3299,3396,3770,3848,9527,9612,9687,9761,10214,10283,10356,10428,10599,10675,10740",
                         "endColumns": "85,77,88,96,82,77,77,84,74,73,75,68,72,71,69,75,64,116",
-                        "endOffsets": "1075,1153,3294,3391,3474,3843,3921,9607,9682,9756,9832,9901,9974,10046,10116,10293,10358,10475"
+                        "endOffsets": "1075,1153,3294,3391,3474,3843,3921,9607,9682,9756,9832,10278,10351,10423,10493,10670,10735,10852"
                     }
                 },
                 {

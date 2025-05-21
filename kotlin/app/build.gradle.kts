@@ -74,6 +74,7 @@ dependencies {
     implementation("androidx.compose.foundation:foundation:1.6.0")
     implementation("androidx.compose.material3:material3:1.2.0")
     implementation("androidx.navigation:navigation-compose:2.7.5")
-
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.6.2")
+    implementation("com.maxkeppeler.sheets-compose-dialogs:calendar:1.2.0")
+
 }

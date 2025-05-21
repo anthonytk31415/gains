@@ -2,7 +2,8 @@ package com.example.gains.home.model
 
 data class EditableWorkoutDay(
     val day: String,
-    val exercises: MutableList<EditableExercise>
+    val exercises: MutableList<EditableExercise>,
+    //val execution_date: String?
 )
 
 data class EditableExercise(

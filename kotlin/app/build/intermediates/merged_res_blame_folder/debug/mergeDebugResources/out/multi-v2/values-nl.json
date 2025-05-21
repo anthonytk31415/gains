@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.gains.app-mergeDebugResources-64:/values-nl/values-nl.xml",
+            "outputFile": "com.example.gains.app-mergeDebugResources-67:/values-nl/values-nl.xml",
             "map": [
                 {
                     "source": "C:\\Users\\james\\.gradle\\caches\\8.10.2\\transforms\\c407f810a5bd64fe716dc3d44b639e54\\transformed\\play-services-basement-18.4.0\\res\\values-nl\\values.xml",
@@ -18,6 +18,23 @@
                         "startOffsets": "2271",
                         "endColumns": "142",
                         "endOffsets": "2409"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\james\\.gradle\\caches\\8.10.2\\transforms\\1a753da4f15fe58c6e0457b212ac84a6\\transformed\\calendar-1.2.0\\res\\values-nl\\values-nl.xml",
+                    "from": {
+                        "startLines": "2,3,4,5,6,7",
+                        "startColumns": "4,4,4,4,4,4",
+                        "startOffsets": "55,129,201,273,343,420",
+                        "endColumns": "73,71,71,69,76,74",
+                        "endOffsets": "124,196,268,338,415,490"
+                    },
+                    "to": {
+                        "startLines": "100,101,102,103,104,105",
+                        "startColumns": "4,4,4,4,4,4",
+                        "startOffsets": "10930,11004,11076,11148,11218,11295",
+                        "endColumns": "73,71,71,69,76,74",
+                        "endOffsets": "10999,11071,11143,11213,11290,11365"
                     }
                 },
                 {
@@ -64,11 +81,11 @@
                         "endOffsets": "152,254,354,454,561,665,784,885"
                     },
                     "to": {
-                        "startLines": "4,5,6,7,8,9,10,104",
+                        "startLines": "4,5,6,7,8,9,10,110",
                         "startColumns": "4,4,4,4,4,4,4,4",
-                        "startOffsets": "341,443,545,645,745,852,956,11225",
+                        "startOffsets": "341,443,545,645,745,852,956,11665",
                         "endColumns": "101,101,99,99,106,103,118,100",
-                        "endOffsets": "438,540,640,740,847,951,1070,11321"
+                        "endOffsets": "438,540,640,740,847,951,1070,11761"
                     }
                 },
                 {
@@ -115,11 +132,11 @@
                         "endOffsets": "192,275,372,471,556,632,728,815,904,985,1068,1145,1220,1292,1363,1447,1517,1637"
                     },
                     "to": {
-                        "startLines": "11,12,32,33,34,38,39,96,97,98,99,100,101,102,103,105,106,107",
+                        "startLines": "11,12,32,33,34,38,39,96,97,98,99,106,107,108,109,111,112,113",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
-                        "startOffsets": "1075,1167,3651,3748,3847,4243,4319,10590,10677,10766,10847,10930,11007,11082,11154,11326,11410,11480",
+                        "startOffsets": "1075,1167,3651,3748,3847,4243,4319,10590,10677,10766,10847,11370,11447,11522,11594,11766,11850,11920",
                         "endColumns": "91,82,96,98,84,75,95,86,88,80,82,76,74,71,70,83,69,119",
-                        "endOffsets": "1162,1245,3743,3842,3927,4314,4410,10672,10761,10842,10925,11002,11077,11149,11220,11405,11475,11595"
+                        "endOffsets": "1162,1245,3743,3842,3927,4314,4410,10672,10761,10842,10925,11442,11517,11589,11660,11845,11915,12035"
                     }
                 },
                 {
@@ -132,11 +149,11 @@
                         "endOffsets": "136,222"
                     },
                     "to": {
-                        "startLines": "108,109",
+                        "startLines": "114,115",
                         "startColumns": "4,4",
-                        "startOffsets": "11600,11686",
+                        "startOffsets": "12040,12126",
                         "endColumns": "85,85",
-                        "endOffsets": "11681,11767"
+                        "endOffsets": "12121,12207"
                     }
                 }
             ]

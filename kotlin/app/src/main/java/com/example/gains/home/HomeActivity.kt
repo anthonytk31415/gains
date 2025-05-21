@@ -27,6 +27,7 @@ import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.Save
+import androidx.compose.material.icons.outlined.CalendarMonth
 import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -49,6 +50,18 @@ import com.example.gains.home.network.WorkoutApi
 import com.example.gains.home.network.WorkoutService
 import kotlinx.coroutines.launch
 import com.example.gains.UserSession
+import com.maxkeppeker.sheets.core.models.base.rememberUseCaseState
+import com.maxkeppeler.sheets.calendar.CalendarDialog
+import com.maxkeppeler.sheets.calendar.models.CalendarConfig
+import com.maxkeppeler.sheets.calendar.models.CalendarSelection
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+
+// Define a data class to store workout schedule information
+data class WorkoutScheduleInfo(
+    var executionDate: LocalDate? = null,
+    var formattedDate: String = "Unscheduled Workout"
+)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @RequiresApi(Build.VERSION_CODES.O)
@@ -64,6 +77,15 @@ fun HomeScreen(navController: NavController) {
     var showSaveSuccessMessage by remember { mutableStateOf(false) }
     var showTutorialErrorDialog by remember { mutableStateOf(false) }
     var selectedExerciseName by remember { mutableStateOf("") }
+
+    // Add workout scheduling information
+    val workoutSchedules = remember { mutableStateMapOf<Int, WorkoutScheduleInfo>() }
+
+    // State for the currently selected day to schedule
+    var selectedDayIndex by remember { mutableStateOf<Int?>(null) }
+
+    // Calendar dialog state
+    val calendarState = rememberUseCaseState()
 
     // Track workout completion percentage
     val completionPercentage = remember {
@@ -100,6 +122,37 @@ fun HomeScreen(navController: NavController) {
         )
     }
 
+    // Calendar Dialog for scheduling workouts
+    CalendarDialog(
+        state = calendarState,
+        config = CalendarConfig(
+            monthSelection = true,
+            yearSelection = true
+        ),
+        selection = CalendarSelection.Date { date ->
+            // Update workout schedule when date is selected
+            selectedDayIndex?.let { dayIndex ->
+                val formatter = DateTimeFormatter.ofPattern("MMMM d, yyyy")
+                val formattedDate = date.format(formatter) + " Workout"
+
+                workoutSchedules[dayIndex] = WorkoutScheduleInfo(
+                    executionDate = date,
+                    formattedDate = formattedDate
+                )
+
+                // Update the day title in editableWorkout
+                if (dayIndex < editableWorkout.size) {
+                    val exercises = editableWorkout[dayIndex].exercises
+                    editableWorkout[dayIndex] = EditableWorkoutDay(
+                        day = formattedDate,
+                        exercises = exercises,
+                    )
+                }
+            }
+            selectedDayIndex = null
+        }
+    )
+
     LaunchedEffect(UserSession.userId) {
         val userId = UserSession.userId
         Log.d("HomeScreen", "LaunchedEffect started")
@@ -109,12 +162,39 @@ fun HomeScreen(navController: NavController) {
             val fetchedWorkout = userId?.let { WorkoutApi.getWorkout(it) }
             workoutRoutine = fetchedWorkout
             editableWorkout.clear()
+            workoutSchedules.clear()
+
             if (fetchedWorkout != null) {
-                editableWorkout.addAll(
-                    fetchedWorkout.schedule.mapIndexed { index, day ->
-                        val exercisesRaw = day.exercise_sets ?: day.exercises ?: emptyList()
+                fetchedWorkout.schedule.forEachIndexed { index, day ->
+                    val exercisesRaw = day.exercise_sets ?: day.exercises ?: emptyList()
+
+                    // Process execution date if available
+                    var workoutTitle = "Unscheduled Workout"
+                    var scheduledDate: LocalDate? = null
+
+                    if (!day.execution_date.isNullOrBlank()) {
+                        try {
+                            // Parse the execution date
+                            val executionDate = LocalDate.parse(day.execution_date)
+                            scheduledDate = executionDate
+
+                            // Format the date for display
+                            val formatter = DateTimeFormatter.ofPattern("MMMM d, yyyy")
+                            workoutTitle = executionDate.format(formatter) + " Workout"
+                        } catch (e: Exception) {
+                            Log.e("HomeScreen", "Failed to parse execution date: ${day.execution_date}", e)
+                        }
+                    }
+
+                    // Store schedule info
+                    workoutSchedules[index] = WorkoutScheduleInfo(
+                        executionDate = scheduledDate,
+                        formattedDate = workoutTitle
+                    )
+
+                    editableWorkout.add(
                         EditableWorkoutDay(
-                            day = "Day ${index + 1}",
+                            day = workoutTitle,
                             exercises = mutableStateListOf<EditableExercise>().apply {
                                 addAll(exercisesRaw.map {
                                     EditableExercise(
@@ -127,16 +207,12 @@ fun HomeScreen(navController: NavController) {
                                 })
                             }
                         )
-                    }
-                )
-                editableWorkout.forEachIndexed { dayIndex, workoutDay ->
-                    workoutDay.exercises.forEachIndexed { exIndex, exercise ->
-                        val isDone = fetchedWorkout.schedule[dayIndex]
-                            .exercise_sets
-                            ?.getOrNull(exIndex)
-                            ?.is_done == true
+                    )
 
-                        exerciseCheckStates[dayIndex to exIndex] = isDone
+                    // Process exercise completion states
+                    exercisesRaw.forEachIndexed { exIndex, exercise ->
+                        val isDone = exercise.is_done
+                        exerciseCheckStates[index to exIndex] = isDone
                     }
                 }
             }
@@ -185,9 +261,8 @@ fun HomeScreen(navController: NavController) {
                                 WorkoutDay(
                                     workout_id = workoutRoutine?.schedule?.get(dayIndex)?.workout_id
                                         ?: 0,
-                                    execution_date = workoutRoutine?.schedule?.get(dayIndex)?.execution_date
-                                        ?: today,
-                                    created_at = today,
+                                    execution_date = workoutSchedules[dayIndex]?.executionDate?.toString() ?: "",
+                                    created_at = workoutRoutine?.schedule?.get(dayIndex)?.created_at ?: today,
                                     exercise_sets = workoutDay.exercises.mapIndexed { exIndex, exercise ->
                                         ExerciseDetail(
                                             exercise_id = exercise.exerciseId,
@@ -203,19 +278,31 @@ fun HomeScreen(navController: NavController) {
                             }
 
                             val workoutPayload = WorkoutRoutine(schedule = schedule)
-                            val response = UserSession.userId?.let {
-                                WorkoutService.updateWorkoutData(it, workoutPayload)
-                            }
+                            Log.d("SaveWorkout", "Saving with schedules: ${workoutSchedules.toMap()}")
 
-                            // Show success message
-                            showSaveSuccessMessage = true
-                            // Hide after delay
-                            kotlinx.coroutines.delay(2000)
-                            showSaveSuccessMessage = false
+                            try {
+                                // Convert userId safely - this was the issue
+                                val userIdInt = UserSession.userId?.toInt() ?: 0
+                                if (userIdInt > 0) {
+                                    val response = WorkoutService.updateWorkoutData(userIdInt, workoutPayload)
+                                    Log.d("WorkoutUpdate", "Response: $response")
+
+                                    // Show success message
+                                    showSaveSuccessMessage = true
+                                    // Hide after delay
+                                    kotlinx.coroutines.delay(2000)
+                                    showSaveSuccessMessage = false
+                                } else {
+                                    errorMessage = "Invalid user ID"
+                                }
+                            } catch (e: Exception) {
+                                Log.e("WorkoutUpdate", "Error updating workout: ${e.message}", e)
+                                errorMessage = "Failed to update workout: ${e.message}"
+                            }
                         }
                     },
                     icon = { Icon(Icons.Default.Save, contentDescription = "Save Progress") },
-                    text = { Text("Save Progress") },
+                    text = { Text("SAVE PROGRESS") },
                     containerColor = MaterialTheme.colorScheme.primary,
                     contentColor = MaterialTheme.colorScheme.onPrimary
                 )
@@ -297,104 +384,114 @@ fun HomeScreen(navController: NavController) {
                             )
                         }
                     }
-                }
+                }else -> {
+                Column(modifier = Modifier.fillMaxSize()) {
+                    // Progress indicator
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(MaterialTheme.colorScheme.surfaceVariant)
+                            .padding(16.dp)
+                    ) {
+                        Column {
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Text(
+                                    "Your Progress",
+                                    style = MaterialTheme.typography.titleMedium
+                                )
+                                Text(
+                                    "${(completionPercentage.value * 100).toInt()}%",
+                                    style = MaterialTheme.typography.titleMedium.copy(
+                                        fontWeight = FontWeight.Bold
+                                    )
+                                )
+                            }
+                            Spacer(modifier = Modifier.height(8.dp))
+                            LinearProgressIndicator(
+                                progress = completionPercentage.value,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(8.dp)
+                                    .clip(RoundedCornerShape(4.dp)),
+                                color = MaterialTheme.colorScheme.primary,
+                                trackColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f)
+                            )
+                        }
+                    }
 
-                else -> {
-                    Column(modifier = Modifier.fillMaxSize()) {
-                        // Progress indicator
-                        Box(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .background(MaterialTheme.colorScheme.surfaceVariant)
-                                .padding(16.dp)
-                        ) {
-                            Column {
-                                Row(
-                                    modifier = Modifier.fillMaxWidth(),
-                                    horizontalArrangement = Arrangement.SpaceBetween,
-                                    verticalAlignment = Alignment.CenterVertically
-                                ) {
-                                    Text(
-                                        "Your Progress",
-                                        style = MaterialTheme.typography.titleMedium
-                                    )
-                                    Text(
-                                        "${(completionPercentage.value * 100).toInt()}%",
-                                        style = MaterialTheme.typography.titleMedium.copy(
-                                            fontWeight = FontWeight.Bold
-                                        )
-                                    )
-                                }
-                                Spacer(modifier = Modifier.height(8.dp))
-                                LinearProgressIndicator(
-                                    progress = completionPercentage.value,
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .height(8.dp)
-                                        .clip(RoundedCornerShape(4.dp)),
-                                    color = MaterialTheme.colorScheme.primary,
-                                    trackColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f)
+                    LazyColumn(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(horizontal = 16.dp),
+                        contentPadding = PaddingValues(
+                            top = 16.dp,
+                            bottom = 80.dp // Extra bottom padding for FAB
+                        )
+                    ) {
+                        val todoDays = editableWorkout.withIndex().filter { !isDayDone(it.index) }
+                        val doneDays = editableWorkout.withIndex().filter { isDayDone(it.index) }
+
+                        if (todoDays.isNotEmpty()) {
+                            item {
+                                SectionHeader(
+                                    title = "To Do",
+                                    icon = Icons.Default.DirectionsRun
+                                )
+                            }
+                            items(todoDays) { (index, day) ->
+                                // Modified WorkoutDayCard to include scheduling
+                                WorkoutDayCard(
+                                    dayIndex = index,
+                                    day = day,
+                                    onCheckChange = ::updateCheckState,
+                                    exerciseCheckStates = exerciseCheckStates,
+                                    isDone = false,
+                                    onExerciseInfoClick = { exerciseId, exerciseName ->
+                                        safeNavigateToExerciseDetail(exerciseId, exerciseName)
+                                    },
+                                    isScheduled = workoutSchedules[index]?.executionDate != null,
+                                    onScheduleClick = {
+                                        selectedDayIndex = index
+                                        calendarState.show()
+                                    }
                                 )
                             }
                         }
 
-                        LazyColumn(
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .padding(horizontal = 16.dp),
-                            contentPadding = PaddingValues(
-                                top = 16.dp,
-                                bottom = 80.dp // Extra bottom padding for FAB
-                            )
-                        ) {
-                            val todoDays = editableWorkout.withIndex().filter { !isDayDone(it.index) }
-                            val doneDays = editableWorkout.withIndex().filter { isDayDone(it.index) }
-
-                            if (todoDays.isNotEmpty()) {
-                                item {
-                                    SectionHeader(
-                                        title = "To Do",
-                                        icon = Icons.Default.DirectionsRun
-                                    )
-                                }
-                                items(todoDays) { (index, day) ->
-                                    WorkoutDayCard(
-                                        dayIndex = index,
-                                        day = day,
-                                        onCheckChange = ::updateCheckState,
-                                        exerciseCheckStates = exerciseCheckStates,
-                                        isDone = false,
-                                        onExerciseInfoClick = { exerciseId, exerciseName ->
-                                            safeNavigateToExerciseDetail(exerciseId, exerciseName)
-                                        }
-                                    )
-                                }
+                        if (doneDays.isNotEmpty()) {
+                            item {
+                                SectionHeader(
+                                    title = "Done",
+                                    icon = Icons.Default.Check,
+                                    modifier = Modifier.padding(top = 24.dp)
+                                )
                             }
-
-                            if (doneDays.isNotEmpty()) {
-                                item {
-                                    SectionHeader(
-                                        title = "Done",
-                                        icon = Icons.Default.Check,
-                                        modifier = Modifier.padding(top = 24.dp)
-                                    )
-                                }
-                                items(doneDays) { (index, day) ->
-                                    WorkoutDayCard(
-                                        dayIndex = index,
-                                        day = day,
-                                        onCheckChange = ::updateCheckState,
-                                        exerciseCheckStates = exerciseCheckStates,
-                                        isDone = true,
-                                        onExerciseInfoClick = { exerciseId, exerciseName ->
-                                            safeNavigateToExerciseDetail(exerciseId, exerciseName)
-                                        }
-                                    )
-                                }
+                            items(doneDays) { (index, day) ->
+                                // Modified WorkoutDayCard to include scheduling
+                                WorkoutDayCard(
+                                    dayIndex = index,
+                                    day = day,
+                                    onCheckChange = ::updateCheckState,
+                                    exerciseCheckStates = exerciseCheckStates,
+                                    isDone = true,
+                                    onExerciseInfoClick = { exerciseId, exerciseName ->
+                                        safeNavigateToExerciseDetail(exerciseId, exerciseName)
+                                    },
+                                    isScheduled = workoutSchedules[index]?.executionDate != null,
+                                    onScheduleClick = {
+                                        selectedDayIndex = index
+                                        calendarState.show()
+                                    }
+                                )
                             }
                         }
                     }
                 }
+            }
             }
 
             // Save success message
@@ -467,7 +564,9 @@ fun WorkoutDayCard(
     onCheckChange: (Int, Int, Boolean) -> Unit,
     exerciseCheckStates: MutableMap<Pair<Int, Int>, Boolean>,
     isDone: Boolean,
-    onExerciseInfoClick: (Int, String) -> Unit
+    onExerciseInfoClick: (Int, String) -> Unit,
+    isScheduled: Boolean,
+    onScheduleClick: () -> Unit
 ) {
     var expanded by remember { mutableStateOf(false) }
     var addExerciseExpanded by remember { mutableStateOf(false) }
@@ -519,7 +618,7 @@ fun WorkoutDayCard(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
+                Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.weight(1f)) {
                     // Day indicator circle with completion percentage
                     Box(
                         contentAlignment = Alignment.Center,
@@ -541,21 +640,64 @@ fun WorkoutDayCard(
 
                     Column {
                         Text(
-                            "Day ${dayIndex + 1}",
-                            style = MaterialTheme.typography.titleLarge.copy(
+                            day.day,
+                            style = MaterialTheme.typography.titleMedium.copy(
                                 fontWeight = FontWeight.SemiBold
                             )
                         )
-                        Text(
-                            "${day.exercises.size} exercises",
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
-                        )
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(4.dp)
+                        ) {
+                            Text(
+                                "${day.exercises.size} exercises",
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
+                            )
+
+                            // Add schedule button if not scheduled
+                            if (!isScheduled) {
+                                OutlinedButton(
+                                    onClick = onScheduleClick,
+                                    modifier = Modifier.height(28.dp),
+                                    contentPadding = PaddingValues(horizontal = 8.dp, vertical = 0.dp),
+                                    colors = ButtonDefaults.outlinedButtonColors(
+                                        contentColor = MaterialTheme.colorScheme.primary
+                                    )
+                                ) {
+                                    Icon(
+                                        Icons.Outlined.CalendarMonth,
+                                        contentDescription = "Schedule",
+                                        modifier = Modifier.size(16.dp)
+                                    )
+                                    Spacer(Modifier.width(4.dp))
+                                    Text(
+                                        "Schedule",
+                                        style = MaterialTheme.typography.bodySmall
+                                    )
+                                }
+                            }
+                        }
                     }
                 }
 
-                // Day completion indicator
+                // Day completion indicator and calendar icon
                 Row(verticalAlignment = Alignment.CenterVertically) {
+                    // Allow rescheduling if already scheduled
+                    if (isScheduled) {
+                        IconButton(
+                            onClick = onScheduleClick,
+                            modifier = Modifier.size(28.dp)
+                        ) {
+                            Icon(
+                                Icons.Outlined.CalendarMonth,
+                                contentDescription = "Reschedule",
+                                tint = MaterialTheme.colorScheme.primary,
+                                modifier = Modifier.size(20.dp)
+                            )
+                        }
+                    }
+
                     LinearProgressIndicator(
                         progress = dayCompletionPercentage.value,
                         modifier = Modifier

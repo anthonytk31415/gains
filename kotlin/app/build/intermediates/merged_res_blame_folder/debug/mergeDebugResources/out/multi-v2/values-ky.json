@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.gains.app-mergeDebugResources-64:/values-ky/values-ky.xml",
+            "outputFile": "com.example.gains.app-mergeDebugResources-67:/values-ky/values-ky.xml",
             "map": [
                 {
                     "source": "C:\\Users\\james\\.gradle\\caches\\8.10.2\\transforms\\e8e4ff0c2927011d145cb4d0fee60a19\\transformed\\play-services-base-18.1.0\\res\\values-ky\\values.xml",
