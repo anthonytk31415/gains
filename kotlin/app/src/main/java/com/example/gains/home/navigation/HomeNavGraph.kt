@@ -98,8 +98,8 @@ fun HomeNavGraph(
 
     val navItems = listOf(
         BottomNav.Home,
-        BottomNav.Add,
         BottomNav.View,
+        BottomNav.Add,
         BottomNav.Profile,
         BottomNav.Exercises
     )
