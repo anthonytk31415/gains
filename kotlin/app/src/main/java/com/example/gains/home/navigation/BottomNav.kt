@@ -15,16 +15,18 @@ sealed interface BottomNav {
         override val label: String = "Home"
     }
 
+    data object View : BottomNav {
+        override val route: String = "view"
+        override val icon: ImageVector = Icons.Default.RemoveRedEye
+        override val label: String = "View"
+    }
+
     data object Add : BottomNav {
         override val route: String = "add"
         override val icon: ImageVector = Icons.Default.Add
         override val label: String = "Add"
     }
-    data object View : BottomNav {
-        override val route: String = "view"
-        override val icon: ImageVector = Icons.Default.Star
-        override val label: String = "View"
-    }
+
     data object Profile : BottomNav {
         override val route: String = "profile"
         override val icon: ImageVector = Icons.Default.Person
@@ -32,7 +34,7 @@ sealed interface BottomNav {
     }
     data object Settings : BottomNav {
         override val route: String = "settings"
-        override val icon: ImageVector = Icons.Default.Settings
-        override val label: String = "Settings"
+        override val icon: ImageVector = Icons.Default.FitnessCenter
+        override val label: String = "Exercises"
     }
 }

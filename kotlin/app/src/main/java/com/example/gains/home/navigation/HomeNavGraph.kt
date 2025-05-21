@@ -25,6 +25,7 @@ import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import com.example.gains.R
 import com.example.gains.UserSession
+import com.example.gains.ViewScreen
 import com.example.gains.home.*
 import com.example.gains.home.exercise.Exercise
 import com.example.gains.home.exercise.loadExercisesFromJson
@@ -96,10 +97,10 @@ fun HomeNavGraph(
 
     val navItems = listOf(
         BottomNav.Home,
-        BottomNav.Add,
         BottomNav.View,
+        BottomNav.Add,
+        BottomNav.Settings,
         BottomNav.Profile,
-        BottomNav.Settings
     )
 
     Scaffold(
