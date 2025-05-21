@@ -1,6 +1,8 @@
 package com.example.gains.home
 
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -40,6 +42,7 @@ import com.example.gains.home.model.WorkoutViewModel
 import com.example.gains.home.network.WorkoutService
 import kotlinx.coroutines.launch
 
+@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
 fun AddScreen(navController: NavController, workoutViewModel: WorkoutViewModel) {
@@ -283,20 +286,6 @@ fun AddScreen(navController: NavController, workoutViewModel: WorkoutViewModel) 
     }
 
     @Composable
-    fun ManualWorkoutEntry(modifier: Modifier = Modifier) {
-        Column(
-            modifier = modifier
-                .fillMaxSize()
-                .padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text("Manual Workout Entry Screen", style = MaterialTheme.typography.titleLarge)
-            Spacer(modifier = Modifier.height(24.dp))
-            // Your manual workout entry implementation here
-        }
-    }
-
-    @Composable
     fun AIWorkoutForm(
         navController: NavController,
         workoutViewModel: WorkoutViewModel,
@@ -310,11 +299,12 @@ fun AddScreen(navController: NavController, workoutViewModel: WorkoutViewModel) 
         var experience by remember { mutableStateOf<String?>(null) }
         var workoutLocation by remember { mutableStateOf<String?>(null) }
         var gender by remember { mutableStateOf<String?>(null) }
-        var dayOptions = listOf("1","2","3","4","5","6","7")
+        var dayOptions = listOf("1", "2", "3", "4", "5", "6", "7")
         var days by remember { mutableStateOf<String?>(null) }
         val goalOptions = listOf("Muscle Gain", "Fat Loss", "Strength", "Toning", "Endurance")
         val goals = remember { mutableStateMapOf<String, Boolean>() }
-        val muscleOptions = listOf("Chest", "Back", "Shoulders", "Legs", "Biceps", "Triceps", "Abs", "Full Body")
+        val muscleOptions =
+            listOf("Chest", "Back", "Shoulders", "Legs", "Biceps", "Triceps", "Abs", "Full Body")
         val selectedMuscles = remember { mutableStateMapOf<String, Boolean>() }
         var errorMessage by remember { mutableStateOf<String?>(null) }
         val coroutineScope = rememberCoroutineScope()
@@ -331,10 +321,12 @@ fun AddScreen(navController: NavController, workoutViewModel: WorkoutViewModel) 
             }
         }
 
-        Column(modifier = modifier
-            .fillMaxSize()
-            .verticalScroll(scrollState)
-            .padding(16.dp)) {
+        Column(
+            modifier = modifier
+                .fillMaxSize()
+                .verticalScroll(scrollState)
+                .padding(16.dp)
+        ) {
 
             Card(
                 modifier = Modifier
@@ -499,7 +491,11 @@ fun AddScreen(navController: NavController, workoutViewModel: WorkoutViewModel) 
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .border(1.dp, MaterialTheme.colorScheme.outline, shape = RoundedCornerShape(8.dp))
+                            .border(
+                                1.dp,
+                                MaterialTheme.colorScheme.outline,
+                                shape = RoundedCornerShape(8.dp)
+                            )
                             .clickable { expandedExperience = true }
                             .padding(horizontal = 16.dp, vertical = 12.dp)
                     ) {
@@ -510,7 +506,9 @@ fun AddScreen(navController: NavController, workoutViewModel: WorkoutViewModel) 
                         ) {
                             Text(
                                 text = experience ?: "Select your experience level",
-                                color = if (experience == null) MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+                                color = if (experience == null) MaterialTheme.colorScheme.onSurface.copy(
+                                    alpha = 0.6f
+                                )
                                 else MaterialTheme.colorScheme.onSurface
                             )
                             Icon(
@@ -561,7 +559,11 @@ fun AddScreen(navController: NavController, workoutViewModel: WorkoutViewModel) 
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .border(1.dp, MaterialTheme.colorScheme.outline, shape = RoundedCornerShape(8.dp))
+                            .border(
+                                1.dp,
+                                MaterialTheme.colorScheme.outline,
+                                shape = RoundedCornerShape(8.dp)
+                            )
                             .clickable { expandedDay = true }
                             .padding(horizontal = 16.dp, vertical = 12.dp)
                     ) {
@@ -572,7 +574,9 @@ fun AddScreen(navController: NavController, workoutViewModel: WorkoutViewModel) 
                         ) {
                             Text(
                                 text = days ?: "Select number of days",
-                                color = if (days == null) MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+                                color = if (days == null) MaterialTheme.colorScheme.onSurface.copy(
+                                    alpha = 0.6f
+                                )
                                 else MaterialTheme.colorScheme.onSurface
                             )
                             Icon(
@@ -714,7 +718,9 @@ fun AddScreen(navController: NavController, workoutViewModel: WorkoutViewModel) 
                         muscleOptions.forEach { muscle ->
                             FilterChip(
                                 selected = selectedMuscles[muscle] == true,
-                                onClick = { selectedMuscles[muscle] = !(selectedMuscles[muscle] ?: false) },
+                                onClick = {
+                                    selectedMuscles[muscle] = !(selectedMuscles[muscle] ?: false)
+                                },
                                 label = {
                                     Row(
                                         verticalAlignment = Alignment.CenterVertically,
@@ -791,7 +797,8 @@ fun AddScreen(navController: NavController, workoutViewModel: WorkoutViewModel) 
 
                     // Input validations
                     if (workoutLocation == null || experience == null || gender == null || days == null ||
-                        selectedMuscles.values.none { it } || goals.values.none { it }) {
+                        selectedMuscles.values.none { it } || goals.values.none { it }
+                    ) {
                         errorMessage = "Please fill all the fields"
                         return@Button
                     }
@@ -809,7 +816,8 @@ fun AddScreen(navController: NavController, workoutViewModel: WorkoutViewModel) 
                     coroutineScope.launch {
                         try {
                             Log.d("FormSubmit", "Calling WorkoutService.submitUserForm")
-                            val response = userId?.let { WorkoutService.submitUserForm(it, formData) }
+                            val response =
+                                userId?.let { WorkoutService.submitUserForm(it, formData) }
                             Log.d("FormSubmit", "response: $response")
                             if (response != null) {
                                 workoutViewModel.setWorkout(response)
@@ -880,7 +888,9 @@ fun AddScreen(navController: NavController, workoutViewModel: WorkoutViewModel) 
             exit = fadeOut() + slideOutVertically()
         ) {
             ManualWorkoutEntry(
-                modifier = Modifier.padding(paddingValues)
+                navController = navController,
+                //modifier = Modifier.padding(paddingValues),
+                workoutViewModel = workoutViewModel
             )
         }
 
