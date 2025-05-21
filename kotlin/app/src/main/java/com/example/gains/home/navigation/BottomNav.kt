@@ -30,9 +30,9 @@ sealed interface BottomNav {
         override val icon: ImageVector = Icons.Default.Person
         override val label: String = "Profile"
     }
-    data object Settings : BottomNav {
-        override val route: String = "settings"
+    data object Exercises : BottomNav {
+        override val route: String = "exercises"
         override val icon: ImageVector = Icons.Default.Settings
-        override val label: String = "Settings"
+        override val label: String = "Exercises"
     }
 }

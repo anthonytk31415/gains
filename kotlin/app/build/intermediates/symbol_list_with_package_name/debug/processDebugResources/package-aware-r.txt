@@ -101,6 +101,7 @@ dimen notification_top_pad
 dimen notification_top_pad_large_text
 drawable back_squat
 drawable barbell_row
+drawable bench_press
 drawable bent_over_dumbbell_row
 drawable bicep_curls
 drawable bird_dog

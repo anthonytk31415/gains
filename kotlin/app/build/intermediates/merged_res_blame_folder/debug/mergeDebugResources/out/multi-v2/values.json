@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.gains.app-mergeDebugResources-63:/values/values.xml",
+            "outputFile": "com.example.gains.app-mergeDebugResources-64:/values/values.xml",
             "map": [
                 {
                     "source": "C:\\Users\\people\\.gradle\\caches\\8.10.2\\transforms\\c27a67240b3daacf2f4a789ae3a2823b\\transformed\\credentials-play-services-auth-1.2.0-rc01\\res\\values\\values.xml",
