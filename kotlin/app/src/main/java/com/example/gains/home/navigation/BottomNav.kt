@@ -32,7 +32,7 @@ sealed interface BottomNav {
     }
     data object Exercises : BottomNav {
         override val route: String = "exercises"
-        override val icon: ImageVector = Icons.Default.Settings
+        override val icon: ImageVector = Icons.Default.FitnessCenter
         override val label: String = "Exercises"
     }
 }
