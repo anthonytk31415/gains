@@ -22,7 +22,7 @@ sealed interface BottomNav {
     }
     data object View : BottomNav {
         override val route: String = "view"
-        override val icon: ImageVector = Icons.Default.Star
+        override val icon: ImageVector = Icons.Default.RemoveRedEye
         override val label: String = "View"
     }
     data object Profile : BottomNav {
