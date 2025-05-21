@@ -27,4 +27,21 @@ object WorkoutApi {
             throw e
         }
     }
+    suspend fun getAllWorkout(userId: Int): WorkoutRoutine {
+        try{
+            Log.d("Making requet","$userId")
+            val response = httpClient.get("http://52.24.121.169:8000/api/$userId/workouts/all/") {
+                contentType(ContentType.Application.Json)
+            }
+            val responseBody = response.body<String>()
+            Log.d("Workout","$response")
+
+            return Json { ignoreUnknownKeys = true }.decodeFromString(WorkoutRoutine.serializer(), responseBody)
+
+        }
+        catch (e: Exception) {
+            println("Error logging in: ${e.message}")
+            throw e
+        }
+    }
 }

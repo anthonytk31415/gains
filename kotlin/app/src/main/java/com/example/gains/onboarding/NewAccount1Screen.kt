@@ -5,171 +5,220 @@ import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Email
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.*
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.*
 import androidx.navigation.NavController
-import androidx.compose.ui.platform.LocalContext
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.FirebaseNetworkException
-import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.example.gains.onboarding.FirebaseAuthSingleton.auth
+import com.google.firebase.FirebaseNetworkException
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 
 @Composable
 fun NewAccount1(navController: NavController, modifier: Modifier = Modifier) {
     var email by remember { mutableStateOf("") }
     var isLoading by remember { mutableStateOf(false) }
     val context = LocalContext.current
-    //val auth = FirebaseAuth.getInstance()
+    val scrollState = rememberScrollState()
 
     Box(
         modifier = modifier
             .fillMaxSize()
-            .background(
-                brush = Brush.linearGradient(
-                    0f to Color(0xffe80707),
-                    1f to Color(0xff0010f4),
-                    start = Offset(0f, 0f),
-                    end = Offset(1000f, 0f)
-                )
-            )
+            .background(MaterialTheme.colorScheme.background)
     ) {
         Column(
-            verticalArrangement = Arrangement.spacedBy(24.dp, Alignment.Top),
+            verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = modifier
-                .fillMaxWidth()
-                .align(Alignment.Center)
-                .padding(horizontal = 24.dp)
-                .offset(y = (-100).dp)
+                .fillMaxSize()
+                .verticalScroll(scrollState)
+                .padding(horizontal = 24.dp, vertical = 40.dp)
         ) {
+            Spacer(modifier = Modifier.height(48.dp))
+
+            // App Logo/Title with styled "AI" highlight
             Text(
-                text = "gAIns",
-                color = Color.White,
-                textAlign = TextAlign.Center,
+                text = buildAnnotatedString {
+                    // Regular style for 'G'
+                    withStyle(
+                        style = SpanStyle(
+                            color = MaterialTheme.colorScheme.onBackground,
+                            fontWeight = FontWeight.Bold
+                        )
+                    ) {
+                        append("G")
+                    }
+                    // Highlighted style for 'AI'
+                    withStyle(
+                        style = SpanStyle(
+                            color = MaterialTheme.colorScheme.primary,
+                            fontWeight = FontWeight.ExtraBold
+                        )
+                    ) {
+                        append("AI")
+                    }
+                    // Regular style for 'NS'
+                    withStyle(
+                        style = SpanStyle(
+                            color = MaterialTheme.colorScheme.onBackground,
+                            fontWeight = FontWeight.Bold
+                        )
+                    ) {
+                        append("NS")
+                    }
+                },
                 style = MaterialTheme.typography.headlineLarge,
-                modifier = Modifier
-                    .requiredWidth(width = 210.dp)
-                    .requiredHeight(height = 58.dp)
+                modifier = Modifier.padding(bottom = 8.dp)
             )
 
-            Column(
-                verticalArrangement = Arrangement.spacedBy(2.dp, Alignment.Top),
-                horizontalAlignment = Alignment.CenterHorizontally
+            Text(
+                text = "AI-Powered Fitness Companion",
+                style = MaterialTheme.typography.bodyLarge,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.padding(bottom = 48.dp)
+            )
+
+            // Create Account Card
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 16.dp),
+                shape = RoundedCornerShape(16.dp),
+                elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
             ) {
-                Text(
-                    text = "Create an account",
-                    color = Color.White,
-                    textAlign = TextAlign.Center,
-                    lineHeight = 9.38.em,
-                    style = TextStyle(
-                        fontSize = 16.sp
-                    )
-                )
-                Text(
-                    text = "Enter your email to sign up for this app",
-                    color = Color.White,
-                    textAlign = TextAlign.Center,
-                    lineHeight = 10.71.em,
-                    style = TextStyle(
-                        fontSize = 14.sp
-                    )
-                )
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 24.dp, vertical = 32.dp),
+                    verticalArrangement = Arrangement.spacedBy(24.dp)
+                ) {
+                    // Section Header
+                    Column(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        Text(
+                            text = "Create Your Account",
+                            style = MaterialTheme.typography.titleLarge.copy(
+                                fontWeight = FontWeight.Bold
+                            ),
+                            color = MaterialTheme.colorScheme.onSurface
+                        )
+
+                        Text(
+                            text = "Enter your email to get started with your fitness journey",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+
+                    // Email Field
+                    Column(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        Text(
+                            text = "Email Address",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurface
+                        )
+
+                        OutlinedTextField(
+                            value = email,
+                            onValueChange = { email = it },
+                            modifier = Modifier.fillMaxWidth(),
+                            shape = RoundedCornerShape(12.dp),
+                            leadingIcon = { Icon(Icons.Default.Email, contentDescription = null) },
+                            placeholder = { Text("email@example.com") },
+                            colors = OutlinedTextFieldDefaults.colors(
+                                focusedBorderColor = MaterialTheme.colorScheme.primary,
+                                unfocusedBorderColor = MaterialTheme.colorScheme.outline,
+                                cursorColor = MaterialTheme.colorScheme.primary
+                            ),
+                            singleLine = true,
+                            keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
+                            keyboardActions = KeyboardActions(
+                                onDone = {
+                                    if (email.isNotBlank() && !isLoading) {
+                                        checkEmailAndProceed(email, auth, context, navController) { isLoading = it }
+                                    }
+                                }
+                            )
+                        )
+                    }
+
+                    // Continue Button
+                    Button(
+                        onClick = {
+                            if (email.isNotBlank() && !isLoading) {
+                                checkEmailAndProceed(email, auth, context, navController) { isLoading = it }
+                            } else if (email.isBlank()) {
+                                Toast.makeText(context, "Please enter your email", Toast.LENGTH_SHORT).show()
+                            }
+                        },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(56.dp),
+                        shape = RoundedCornerShape(12.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = MaterialTheme.colorScheme.primary
+                        ),
+                        enabled = !isLoading
+                    ) {
+                        if (isLoading) {
+                            CircularProgressIndicator(
+                                color = MaterialTheme.colorScheme.onPrimary,
+                                modifier = Modifier.size(24.dp)
+                            )
+                        } else {
+                            Text(
+                                text = "Continue",
+                                style = MaterialTheme.typography.titleMedium
+                            )
+                        }
+                    }
+                }
             }
 
-            Column(
-                verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.Top),
-                modifier = Modifier.requiredWidth(width = 327.dp)
-            ) {
-                TextField(
-                    value = email, // bind the value to the email state
-                    onValueChange = { email = it }, // update the email state when the text changes
-                    placeholder = {
-                        Text(
-                            text = "email@domain.com", // Placeholder text
-                            color = Color(0xff828282),
-                            style = TextStyle(fontSize = 16.sp)
-                        )
-                    },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(50.dp)
-                        .clip(RoundedCornerShape(8.dp)),
-                    colors = TextFieldDefaults.colors(
-                        focusedContainerColor = Color.White,
-                        unfocusedContainerColor = Color.White,
-                        disabledContainerColor = Color.White,
-                        focusedIndicatorColor = Color.Transparent,
-                        unfocusedIndicatorColor = Color.Transparent,
-                        cursorColor = Color.Black
-                    ),
-                    textStyle = TextStyle(fontSize = 16.sp, color = Color.Black),
-                    keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
-                    keyboardActions = KeyboardActions(
-                        onDone = {
-                            if (email.isNotBlank()) {
-                                // Navigate when the Enter key is pressed and email is not empty
-                                //navController.navigate("NewAccount2")
-                                checkEmailAndProceed(email, auth, context, navController){ isLoading = it }
-                            }
-                        }
-                    )
+            // Back to Login Button
+            OutlinedButton(
+                onClick = {
+                    navController.popBackStack()
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(56.dp)
+                    .padding(top = 16.dp),
+                shape = RoundedCornerShape(12.dp),
+                colors = ButtonDefaults.outlinedButtonColors(
+                    contentColor = MaterialTheme.colorScheme.primary
+                ),
+                border = ButtonDefaults.outlinedButtonBorder.copy(
+                    width = 2.dp,
                 )
-                Button(
-                    onClick = {
-                        //navController.navigate("NewAccount2")
-                        if (email.isNotBlank()) {
-                            // Navigate when the Enter key is pressed and email is not empty
-                            //navController.navigate("NewAccount2")
-                            checkEmailAndProceed(email, auth, context, navController){ isLoading = it }
-                        }
-                    },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(50.dp),
-                    shape = RoundedCornerShape(8.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = Color.Black)
-                ) {
-                    Text(
-                        text = "Continue",
-                        color = Color.White,
-                        fontSize = 14.sp,
-                        fontWeight = FontWeight.Medium
-                    )
-                }
-                // Back to Login
-                Button(
-                    onClick = {
-                        navController.popBackStack()
-                    },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(50.dp),
-                    shape = RoundedCornerShape(8.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = Color.Black,
-                        contentColor = Color.White
-                    ),
-                    contentPadding = PaddingValues(0.dp)
-                ) {
-                    Text(
-                        text = "Back to Login",
-                        fontSize = 14.sp,
-                        fontWeight = FontWeight.Medium
-                    )
-                }
+            ) {
+                Text(
+                    text = "Back to Login",
+                    style = MaterialTheme.typography.titleMedium
+                )
             }
         }
     }

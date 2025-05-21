@@ -1,165 +1,240 @@
 package com.example.gains.onboarding
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Email
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.*
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.*
 import androidx.navigation.NavController
-import androidx.compose.foundation.clickable
-import androidx.compose.ui.text.style.TextDecoration
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.ui.text.input.ImeAction
+import android.widget.Toast
+import com.example.gains.onboarding.FirebaseAuthSingleton.auth
 
 @Composable
 fun ResetPassword(navController: NavController, modifier: Modifier = Modifier) {
     var email by remember { mutableStateOf("") }
+    var isLoading by remember { mutableStateOf(false) }
+    val context = LocalContext.current
+    val scrollState = rememberScrollState()
+
     Box(
         modifier = modifier
             .fillMaxSize()
-            .background(
-                brush = Brush.linearGradient(
-                    0f to Color(0xffe80707),
-                    1f to Color(0xff0010f4),
-                    start = Offset(0f, 0f),
-                    end = Offset(1000f, 0f)
-                )
-            )
+            .background(MaterialTheme.colorScheme.background)
     ) {
         Column(
-            verticalArrangement = Arrangement.spacedBy(24.dp, Alignment.Top),
+            verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = modifier
-                .fillMaxWidth()
-                .align(Alignment.Center) // centers vertically
-                .padding(horizontal = 24.dp)
-                .offset(y = (-100).dp)
+                .fillMaxSize()
+                .verticalScroll(scrollState)
+                .padding(horizontal = 24.dp, vertical = 40.dp)
         ) {
+            Spacer(modifier = Modifier.height(48.dp))
+
+            // App Logo/Title with styled "AI" highlight
             Text(
-                text = "gAIns",
-                color = Color.White,
-                textAlign = TextAlign.Center,
+                text = buildAnnotatedString {
+                    // Regular style for 'G'
+                    withStyle(
+                        style = SpanStyle(
+                            color = MaterialTheme.colorScheme.onBackground,
+                            fontWeight = FontWeight.Bold
+                        )
+                    ) {
+                        append("G")
+                    }
+                    // Highlighted style for 'AI'
+                    withStyle(
+                        style = SpanStyle(
+                            color = MaterialTheme.colorScheme.primary,
+                            fontWeight = FontWeight.ExtraBold
+                        )
+                    ) {
+                        append("AI")
+                    }
+                    // Regular style for 'NS'
+                    withStyle(
+                        style = SpanStyle(
+                            color = MaterialTheme.colorScheme.onBackground,
+                            fontWeight = FontWeight.Bold
+                        )
+                    ) {
+                        append("NS")
+                    }
+                },
                 style = MaterialTheme.typography.headlineLarge,
-                modifier = Modifier
-                    .requiredWidth(210.dp)
-                    .requiredHeight(58.dp)
+                modifier = Modifier.padding(bottom = 8.dp)
             )
 
-            Column(
-                verticalArrangement = Arrangement.spacedBy(2.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Text(
-                    text = "Reset Password",
-                    color = Color.White,
-                    textAlign = TextAlign.Center,
-                    style = TextStyle(fontSize = 16.sp),
-                    lineHeight = 9.38.em
-                )
-                Text(
-                    text = "Enter your email to receive reset instructions",
-                    color = Color.White,
-                    textAlign = TextAlign.Center,
-                    style = TextStyle(fontSize = 14.sp),
-                    lineHeight = 10.71.em
-                )
-            }
+            Text(
+                text = "AI-Powered Fitness Companion",
+                style = MaterialTheme.typography.bodyLarge,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.padding(bottom = 48.dp)
+            )
 
-            Column(
-                verticalArrangement = Arrangement.spacedBy(16.dp),
+            // Reset Password Card
+            Card(
                 modifier = Modifier
-                    .requiredWidth(327.dp)
+                    .fillMaxWidth()
+                    .padding(vertical = 16.dp),
+                shape = RoundedCornerShape(16.dp),
+                elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
             ) {
-                // Label + Input Group
                 Column(
-                    verticalArrangement = Arrangement.spacedBy(2.dp)
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 24.dp, vertical = 32.dp),
+                    verticalArrangement = Arrangement.spacedBy(24.dp)
                 ) {
-                    Text(
-                        text = "Email",
-                        color = Color.White,
-                        textAlign = TextAlign.Center,
-                        style = TextStyle(fontSize = 14.sp),
-                        lineHeight = 10.71.em,
-                        modifier = Modifier
-                            .requiredHeight(21.dp)
-                    )
+                    // Section Header
+                    Column(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        Text(
+                            text = "Reset Your Password",
+                            style = MaterialTheme.typography.titleLarge.copy(
+                                fontWeight = FontWeight.Bold
+                            ),
+                            color = MaterialTheme.colorScheme.onSurface
+                        )
 
-                    TextField(
-                        value = email,
-                        onValueChange = { email = it },
+                        Text(
+                            text = "Enter your email address and we'll send you instructions to reset your password",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+
+                    // Email Field
+                    Column(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        Text(
+                            text = "Email Address",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurface
+                        )
+
+                        OutlinedTextField(
+                            value = email,
+                            onValueChange = { email = it },
+                            modifier = Modifier.fillMaxWidth(),
+                            shape = RoundedCornerShape(12.dp),
+                            leadingIcon = { Icon(Icons.Default.Email, contentDescription = null) },
+                            placeholder = { Text("Enter your email") },
+                            colors = OutlinedTextFieldDefaults.colors(
+                                focusedBorderColor = MaterialTheme.colorScheme.primary,
+                                unfocusedBorderColor = MaterialTheme.colorScheme.outline,
+                                cursorColor = MaterialTheme.colorScheme.primary
+                            ),
+                            singleLine = true,
+                            keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
+                            keyboardActions = KeyboardActions(
+                                onDone = {
+                                    if (email.isNotBlank() && !isLoading) {
+                                        sendPasswordResetEmail(email, context) { isLoading = it }
+                                    }
+                                }
+                            )
+                        )
+                    }
+
+                    // Send Reset Link Button
+                    Button(
+                        onClick = {
+                            if (email.isNotBlank() && !isLoading) {
+                                sendPasswordResetEmail(email, context) { isLoading = it }
+                            } else if (email.isBlank()) {
+                                Toast.makeText(context, "Please enter your email", Toast.LENGTH_SHORT).show()
+                            }
+                        },
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(50.dp)
-                            .clip(RoundedCornerShape(8.dp)),
-                        colors = TextFieldDefaults.colors(
-                            focusedContainerColor = Color.White,
-                            unfocusedContainerColor = Color.White,
-                            disabledContainerColor = Color.White,
-                            focusedIndicatorColor = Color.Transparent,
-                            unfocusedIndicatorColor = Color.Transparent,
-                            cursorColor = Color.Black
+                            .height(56.dp),
+                        shape = RoundedCornerShape(12.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = MaterialTheme.colorScheme.primary
                         ),
-                        textStyle = TextStyle(fontSize = 16.sp, color = Color.Black),
-                        keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done)
-                    )
+                        enabled = !isLoading
+                    ) {
+                        if (isLoading) {
+                            CircularProgressIndicator(
+                                color = MaterialTheme.colorScheme.onPrimary,
+                                modifier = Modifier.size(24.dp)
+                            )
+                        } else {
+                            Text(
+                                text = "Send Reset Link",
+                                style = MaterialTheme.typography.titleMedium
+                            )
+                        }
+                    }
                 }
+            }
 
-                // Send Reset Link
-                Button(
-                    onClick = {
-                        // Handle password reset logic
-                    },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(50.dp),
-                    shape = RoundedCornerShape(8.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = Color.Black,
-                        contentColor = Color.White
-                    ),
-                    contentPadding = PaddingValues(0.dp)
-                ) {
-                    Text(
-                        text = "Send Reset Link",
-                        fontSize = 14.sp,
-                        fontWeight = FontWeight.Medium
-                    )
-                }
-
-                // Back to Login
-                Button(
-                    onClick = {
-                        navController.popBackStack()
-                    },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(50.dp),
-                    shape = RoundedCornerShape(8.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = Color.Black,
-                        contentColor = Color.White
-                    ),
-                    contentPadding = PaddingValues(0.dp)
-                ) {
-                    Text(
-                        text = "Back to Login",
-                        fontSize = 14.sp,
-                        fontWeight = FontWeight.Medium
-                    )
-                }
+            // Back to Login Button
+            OutlinedButton(
+                onClick = {
+                    navController.popBackStack()
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(56.dp)
+                    .padding(top = 16.dp),
+                shape = RoundedCornerShape(12.dp),
+                colors = ButtonDefaults.outlinedButtonColors(
+                    contentColor = MaterialTheme.colorScheme.primary
+                ),
+                border = ButtonDefaults.outlinedButtonBorder.copy(
+                    width = 2.dp,
+                )
+            ) {
+                Text(
+                    text = "Back to Login",
+                    style = MaterialTheme.typography.titleMedium
+                )
             }
         }
     }
+}
+
+private fun sendPasswordResetEmail(email: String, context: android.content.Context, onLoadingChange: (Boolean) -> Unit) {
+    onLoadingChange(true)
+
+    auth.sendPasswordResetEmail(email)
+        .addOnCompleteListener { task ->
+            onLoadingChange(false)
+            if (task.isSuccessful) {
+                Toast.makeText(
+                    context,
+                    "Password reset email sent. Check your inbox.",
+                    Toast.LENGTH_LONG
+                ).show()
+            } else {
+                Toast.makeText(
+                    context,
+                    "Failed to send reset email: ${task.exception?.message}",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+        }
 }
