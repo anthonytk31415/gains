@@ -45,6 +45,7 @@ import com.example.gains.home.model.WorkoutViewModel
 import com.example.gains.home.model.ExerciseMappings
 import com.example.gains.home.network.WorkoutService
 import kotlinx.coroutines.launch
+import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -71,6 +72,7 @@ fun GeneratedWorkoutScreen(
         workoutRoutine?.let { routine ->
             editableWorkout = routine.schedule.mapIndexed { idx, day ->
                 val raw = day.exercise_sets ?: day.exercises ?: emptyList()
+
                 EditableWorkoutDay(
                     day = "Day ${idx + 1}",
                     exercises = raw.map {
@@ -82,7 +84,7 @@ fun GeneratedWorkoutScreen(
                             weight = it.weight,
                             is_done = it.is_done
                         )
-                    }.toMutableList()
+                    }.toMutableList(),
                 )
             }
         }
@@ -219,7 +221,7 @@ fun GeneratedWorkoutScreen(
                                 val request = WorkoutRoutine(
                                     schedule = editableWorkout.map { d ->
                                         WorkoutDay(
-                                            execution_date = LocalDateTime.now().format(DateTimeFormatter.ISO_DATE),
+                                            execution_date = null,
                                             created_at = LocalDateTime.now().format(DateTimeFormatter.ISO_DATE),
                                             exercise_sets = d.exercises.map { ex ->
                                                 ExerciseDetail(
@@ -246,6 +248,7 @@ fun GeneratedWorkoutScreen(
                             }
                         }
                     },
+
                     containerColor = MaterialTheme.colorScheme.primary,
                     contentColor = MaterialTheme.colorScheme.onPrimary,
                     modifier = Modifier
@@ -397,7 +400,7 @@ fun WorkoutDayCard(
                                         // Create a new day with updated exercises
                                         updatedWorkout[dayIndex] = EditableWorkoutDay(
                                             day = day.day,
-                                            exercises = updatedExercises
+                                            exercises = updatedExercises,
                                         )
                                         // Update the state
                                         onWorkoutUpdated(updatedWorkout)
@@ -494,7 +497,7 @@ fun WorkoutDayCard(
                                                 // Create new day with updated exercises
                                                 updatedWorkout[dayIndex] = EditableWorkoutDay(
                                                     day = day.day,
-                                                    exercises = updatedExercises
+                                                    exercises = updatedExercises,
                                                 )
 
                                                 // Update state

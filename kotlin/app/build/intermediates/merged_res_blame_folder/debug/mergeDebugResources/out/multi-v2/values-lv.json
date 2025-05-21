@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.gains.app-mergeDebugResources-64:/values-lv/values-lv.xml",
+            "outputFile": "com.example.gains.app-mergeDebugResources-67:/values-lv/values-lv.xml",
             "map": [
                 {
                     "source": "C:\\Users\\people\\.gradle\\caches\\8.10.2\\transforms\\b1e78b36c9f90b642a909697bdf61f76\\transformed\\material3-release\\res\\values-lv\\values-lv.xml",

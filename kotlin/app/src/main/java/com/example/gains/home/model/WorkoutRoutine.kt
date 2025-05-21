@@ -5,7 +5,9 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class WorkoutRoutine(
     val schedule: List<WorkoutDay>
-)
+) {
+    companion object
+}
 
 @Serializable
 data class WorkoutDay(
